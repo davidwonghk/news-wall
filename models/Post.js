@@ -33,5 +33,17 @@ Post.schema.virtual('Title').get(function () {
 	return this.title;
 });
 
+Post.schema.methods.isPublished = function() {
+    return this.state == 'published';
+}
+
+Post.schema.pre('save', function(next) {
+    if (this.isModified('state') && this.isPublished() && !this.publishedAt) {
+        this.publishedDate = new Date();
+    }
+    next();
+});
+
+
 Post.defaultColumns = 'title, state|20%, source|20%, publishedDate|20%';
 Post.register();
