@@ -5822,7 +5822,7 @@ button.close {
     display: none !important; } }
 
 #header {
-  margin-top: 30px; }
+  padding-top: 50px; }
 
 #footer {
   margin-top: 30px;

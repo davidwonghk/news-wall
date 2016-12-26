@@ -22,8 +22,8 @@
 	</head>
 	<body>
 		<div id="header">
-			<div class="container">
-				<div role="navigation" class="navbar navbar-default">
+			<div class="container-fluid">
+				<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
 					<div class="container-fluid">
 						<div class="navbar-header">
 							<button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
@@ -34,12 +34,13 @@
 						</div>
 						<div class="collapse navbar-collapse">
 							<ul class="nav navbar-nav navbar-left">
-									{{# each data.post-categories}}
+									{{# each navLinks}}
 									<li {{#ifeq ../section key}}class="active"{{else}}{{/ifeq}}>
 										<a href="{{ href }}">{{ label }}</a>
 									</li>
 								{{/each}}
 							</ul>
+							<!--
 							<ul class="nav navbar-nav navbar-right">
 								{{#if user}}
 								<li><a href="/keystone/signout">Sign Out</a></li>
@@ -47,6 +48,7 @@
 								<li><a href="/keystone/signin">Sign In</a></li>
 								{{/if}}
 							</ul>
+						-->
 						</div>
 					</div>
 				</div>
@@ -104,10 +106,7 @@
 			//- them specifically here, instead of bootstrap-3.3.5.min.js
 		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
 		--}}
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-			crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		{{{isAdminEditorJS user}}}
 	</body>
 </html>
