@@ -1,0 +1,37 @@
+#header {
+	margin-top: 30px;
+}
+
+#footer {
+	margin-top: 30px;
+	border-top: 1px solid #eeeeee;
+	padding-top: 30px;
+	color: #777777;
+}
+
+.gallery-image img{
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.img-container {
+    position: relative;
+
+}
+
+.img-container img {
+    height: 100%;
+    width: 100%;
+}
+
+.img-container .img-footer {
+    position: absolute;
+    bottom: 0; left: 0;
+    padding: 0 10px;
+
+    width: 100%;
+
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+}
