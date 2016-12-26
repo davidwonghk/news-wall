@@ -14,12 +14,14 @@ var Post = new keystone.List('Post', {
 Post.add({
 	title: { type: String, required: true },
 	titleFull: { type: String },
+	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
+	reference: { type: Types.Url },
+	redirect: { type: Boolean, default: true },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	source: { type: Types.Select, options: 'manual, yahoo', default: 'manual' },
 	publishedDate: { type: Types.Datetime, index: true, dependsOn: { state: 'published' } },
 	image: { type: Types.CloudinaryImage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
-	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
 });
 
 Post.schema.virtual('content.full').get(function () {

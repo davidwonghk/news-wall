@@ -35,7 +35,7 @@ var routes = {
 exports = module.exports = function (app) {
 	// Views
 	app.get('/blog/:category?', routes.views.blog);
-	app.get('/blog/post/:post', routes.views.post);
+	app.get('/blog/post/:post', middleware.requireLike, routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:

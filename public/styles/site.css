@@ -5830,6 +5830,9 @@ button.close {
   padding-top: 30px;
   color: #777777; }
 
+.blog {
+  margin-top: 20px; }
+
 .gallery-image img {
   display: block;
   max-width: 100%;
@@ -5849,4 +5852,5 @@ button.close {
   padding: 0 10px;
   width: 100%;
   color: #fff;
-  background: rgba(0, 0, 0, 0.7); }
+  background: rgba(0, 0, 0, 0.7);
+  font-size: 12pt; }

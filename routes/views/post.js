@@ -41,6 +41,15 @@ exports = module.exports = function (req, res) {
 
 	});
 
+	view.on('render', function (next) {
+		if (locals.data.post.redirect) {
+			res.redirect(locals.data.post.reference);
+		} else {
+			next();
+		}
+	});
+
 	// Render the view
 	view.render('post');
+
 };

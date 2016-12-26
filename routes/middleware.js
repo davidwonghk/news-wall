@@ -53,3 +53,12 @@ exports.requireUser = function (req, res, next) {
 		next();
 	}
 };
+
+
+exports.requireLike = function(req, res, next) {
+	if (!req.user && !false) {
+		req.flash('error', 'Please like to access this page.');
+	} else {
+		next();
+	}
+}
