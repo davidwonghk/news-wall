@@ -5854,3 +5854,23 @@ button.close {
   color: #fff;
   background: rgba(0, 0, 0, 0.7);
   font-size: 12pt; }
+
+.post .fb-like {
+  display: inline-block;
+  margin-top: 5px; }
+
+.overlay {
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
+  height: 100%;
+  width: 0%;
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: #646464;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  transition: 0.2s; }
