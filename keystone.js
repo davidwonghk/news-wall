@@ -64,3 +64,8 @@ keystone.set('nav', {
 // Start Keystone to connect to your database and initialise the web server
 
 keystone.start();
+
+var crawl = require('./crawl/crawl');
+crawl.crawlYahooStyle(function(err) {
+	if (err) console.log(err);
+});

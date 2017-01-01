@@ -5855,6 +5855,15 @@ button.close {
   background: rgba(0, 0, 0, 0.7);
   font-size: 12pt; }
 
+.img-container .img-footer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.img-container .img-footer:hover {
+  text-overflow: clip;
+  white-space: normal; }
+
 .post .fb-like {
   display: inline-block;
   margin-top: 5px; }
