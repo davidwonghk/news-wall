@@ -11,9 +11,10 @@ var Post = new keystone.List('Post', {
 	autokey: { path: 'slug', from: 'title', unique: true },
 });
 
+
+
 Post.add({
 	title: { type: String, required: true },
-	titleFull: { type: String },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
 	reference: { type: Types.Url },
 	redirect: { type: Boolean, default: true },
@@ -28,11 +29,6 @@ Post.schema.virtual('content.full').get(function () {
 	return this.content;
 });
 
-Post.schema.virtual('Title').get(function () {
-	if(this.titleFull) return this.titleFull;
-	return this.title;
-});
-
 Post.schema.methods.isPublished = function() {
     return this.state == 'published';
 }
@@ -45,5 +41,5 @@ Post.schema.pre('save', function(next) {
 });
 
 
-Post.defaultColumns = 'title, state|20%, source|20%, publishedDate|20%';
+Post.defaultColumns = 'title, state|15%, source|20%, publishedDate|15%, redirect|10%';
 Post.register();
