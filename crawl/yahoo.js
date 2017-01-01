@@ -1,7 +1,7 @@
 var cheerio = require('cheerio')  ;
 var url = require('url');
 var striptags = require('striptags');
-var util = require('./util');
+var request = require('request');
 
 
 exports = module.exports = function (tag, category, callback) {
@@ -21,8 +21,8 @@ exports = module.exports = function (tag, category, callback) {
 
 function crawlTag(suburl, tag, callback) {
     const yahooHost = 'https://www.yahoo.com';
-
-    util.get(yahooHost + '/style/tagged/' + suburl, function(err, resp, html) {
+    var url = yahooHost + '/style/tagged/' + suburl
+    request(url, function(err, resp, html) {
         if (err) { callback(err); return; }
         var $ = cheerio.load(html);
 
@@ -63,14 +63,13 @@ function crawlTag(suburl, tag, callback) {
                 'imageUrl': imageUrl,
                 'link': yahooHost + link,
             });
-            break;
         }
-    });
+    } );
 }
 
 
 function crawlLink(link, callback) {
-  util.get(link, function(err, resp, html) {
+    request(link, function(err, resp, html) {
     if (err) { callback(err); return; }
     var $ = cheerio.load(html);
 
@@ -79,7 +78,7 @@ function crawlLink(link, callback) {
     var output = '';
     for (var i=0, len=pbody.length; i<len; ++i) {
       var p = pbody[i];
-      output += striptags($.html(p));
+      output += "<p>" + striptags($.html(p)) + "</p>";
     }
     callback(null, output)
   });

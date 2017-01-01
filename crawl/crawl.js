@@ -5,6 +5,7 @@ var keystone = require('keystone'),
     PostCategory = keystone.list('PostCategory');
 
 
+
 function _tagsToCategories(tags, _result, callback) {
 
 		var tag = tags.pop();
@@ -33,13 +34,25 @@ function _tagsToCategories(tags, _result, callback) {
 }
 
 
+var cloudinary = require('cloudinary');
+function _urlToCloudinaryImage(url, callback) {
+
+	cloudinary.uploader.upload(url, function(result) {
+		if (result.error) { callback(result.error); return; }
+		callback(null, result);
+	});
+}
+
+
 exports = module.exports = {
 
 crawlYahooStyle: function(callback) {
   var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
 
 	console.log('crawl yahoo style posts...');
-  crawlYahoo('power-look', 'power-look', function(err, data) {
+
+	yahooTags.forEach(function (tagName) {
+  crawlYahoo(tagName, tagName, function(err, data) {
 		if (err) {callback(err); return;}
 
 		//find post by title
@@ -51,18 +64,25 @@ crawlYahooStyle: function(callback) {
 			}
 
 			_tagsToCategories(data.tags, [], function(err, categories) {
-				var newPost = new Post.model({
-			    title: data.title,
-					state: 'draft',
-					categories: categories,
-					content: data.content
-				});
+				_urlToCloudinaryImage(data.imageUrl, function(err, image) {
+					if (err) {callback(err); return;}
+					var newPost = new Post.model({
+				    title: data.title,
+						state: 'published',
+						redirect: false,
+						image: image,
+						categories: categories,
+						content: data.content,
+						source: 'yahoo'
+					});
 
-				newPost.save(callback);
+					newPost.save(callback);
+				});
 			});
 
 		});
 
+	});
 	});
 },
 

@@ -4,13 +4,14 @@ var UA_HEADER = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv
 
 exports = module.exports = {
 
-
+/*
 // set some defaults
 request : request.defaults({
 	jar: true,                 // save cookies to jar
 	rejectUnauthorized: false,
 	followAllRedirects: true   // allow redirections
 }),
+*/
 
 get : function(url, callback) {
   request.get( {url: url, headers: UA_HEADER}, callback );
