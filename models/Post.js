@@ -20,7 +20,7 @@ Post.add({
 	redirect: { type: Boolean, default: true },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	source: { type: Types.Select, options: 'manual, yahoo', default: 'manual' },
-	publishedDate: { type: Types.Datetime, index: true, dependsOn: { state: 'published' } },
+	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
 	image: { type: Types.CloudinaryImage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
 });

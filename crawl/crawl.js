@@ -43,17 +43,10 @@ function _urlToCloudinaryImage(url, callback) {
 	});
 }
 
-
-exports = module.exports = {
-
-crawlYahooStyle: function(callback) {
-  var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
-
-	console.log('crawl yahoo style posts...');
-
-	yahooTags.forEach(function (tagName) {
-  crawlYahoo(tagName, tagName, function(err, data) {
-		if (err) {callback(err); return;}
+/**
+ * data: {title, tags, imageUrl, content}
+ */
+function _crawl(source, data, callback) {
 
 		//find post by title
 		Post.model.find().where('title', data.title).limit(1).exec(function(err, posts) {
@@ -73,7 +66,7 @@ crawlYahooStyle: function(callback) {
 						image: image,
 						categories: categories,
 						content: data.content,
-						source: 'yahoo'
+						source: source
 					});
 
 					newPost.save(callback);
@@ -82,7 +75,21 @@ crawlYahooStyle: function(callback) {
 
 		});
 
-	});
+}
+
+
+exports = module.exports = {
+
+/**
+ * callback: function(err)
+ */
+crawlYahooStyle: function(callback) {
+  var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
+	yahooTags.forEach(function (tagName) {
+    crawlYahoo(tagName, tagName, function(err, data) {
+  		if (err) {callback(err); return;}
+      _crawl('yahoo', data, callback);
+  	});
 	});
 },
 
