@@ -47,7 +47,7 @@
     white-space: nowrap;
 }
 
-.img-container .img-footer:hover {
+.img-container:hover > .img-footer {
     text-overflow:clip;
     white-space: normal;
 }
