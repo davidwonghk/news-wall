@@ -4,7 +4,17 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>BBX News</title>
+
+		<meta property="og:type"          content="article" />
+		<meta property="og:site_name"     content="News Wall" />
+		<meta property="fb:app_id"        content="361801474173911" />
+		{{#if data.meta}}
+		<meta property="og:title"         content="{{data.meta.title}}" />
+		<meta property="og:description"   content="{{data.meta.description}}" />
+		<meta property="og:image"         content="{{{data.meta.image}}}" />
+		{{/if}}
+
+		<title>News Wall</title>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 		<link href="/styles/site.css" rel="stylesheet">
 
@@ -19,6 +29,7 @@
 			<script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
+
 	</head>
 	<body>
 		<div id="header">
@@ -30,7 +41,7 @@
 								<span class="sr-only">Toggle navigation</span>
 								<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 							</button>
-							<a href="/" class="navbar-brand"><img src='/images/logo.jpeg' class='img-responsive'/></a>
+							<a href="/" class="navbar-brand">News Wall</a>
 						</div>
 						<div class="collapse navbar-collapse">
 							<ul class="nav navbar-nav navbar-left">
@@ -40,7 +51,7 @@
 									</li>
 								{{/each}}
 							</ul>
-							<!--
+							{{!--
 							<ul class="nav navbar-nav navbar-right">
 								{{#if user}}
 								<li><a href="/keystone/signout">Sign Out</a></li>
@@ -48,7 +59,7 @@
 								<li><a href="/keystone/signin">Sign In</a></li>
 								{{/if}}
 							</ul>
-						-->
+							--}}
 						</div>
 					</div>
 				</div>
@@ -84,13 +95,62 @@
 			</div>
 			{{/if}}
 			<!-- The content block should contain the body of your template's content-->
-			{{{body}}}
-		</div>
-		<div class="container">
-			<div id="footer">
-				<p>Powered by <a href="http://keystonejs.com" target="_blank">KeystoneJS</a>.</p>
+			<div class="container">
+				<div class="row">
+					{{!--
+					<div class="col-sm-9 col-md-10">
+					--}}
+					<div>
+						{{{body}}}
+					</div>
+
+					{{!--
+					<div id="ad_google_responsive" class="col-sm-3 col-md-2">
+
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!-- news-wall-ad1 -->
+						<ins class="adsbygoogle"
+						     style="display:block"
+						     data-ad-client="ca-pub-3050996155258099"
+						     data-ad-slot="1372527363"
+						     data-ad-format="auto"></ins>
+						<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
+					--}}
+
+				</div>
 			</div>
 		</div>
+		<div id="footer">
+			<div class="container">
+				{{!--
+				<div id="ad_bidvertiser_banner">
+					<SCRIPT SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=756052&bid=1861224" TYPE="text/javascript"></SCRIPT>
+				</div>
+				--}}
+				{{!--
+				<p>Powered by <a href="http://keystonejs.com" target="_blank">KeystoneJS</a>.</p>
+				--}}
+			</div>
+		</div>
+
+		<div id="cookie_directive_container" class="container" style="display: none">
+			<nav class="navbar navbar-inverse navbar-fixed-bottom">
+				<div class="container">
+					<div class="navbar-inner navbar-content-center" id="cookie_accept">
+						<a href="#" class="btn btn-warning pull-right">Got it!</a>
+						<p class="text credit">
+						This website uses cookies to ensure you get the best experience on our website.
+						<br>By using our website, you agree to our <a href="/policy/cookies">Cookie Policy</a>.
+						</p>
+						<br>
+					</div>
+				</div>
+			</nav>
+		</div>
+
 		{{!--
 			//- jQuery 1.11.3 is included by default, and required by both Bootstrap
 			//- and the KeystoneJS Content Editor. If you are not targeting IE8,
@@ -110,5 +170,8 @@
 		{{{isAdminEditorJS user}}}
 
 		<script src="/js/fb.js"></script>
+		<script src="/js/consent.js"></script>
+
+
 	</body>
 </html>

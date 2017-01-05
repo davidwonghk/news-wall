@@ -17,7 +17,7 @@ Post.add({
 	title: { type: String, required: true },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
 	reference: { type: Types.Url },
-	redirect: { type: Boolean, default: true },
+	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	source: { type: Types.Select, options: 'manual, yahoo', default: 'manual' },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
@@ -25,9 +25,6 @@ Post.add({
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
 });
 
-Post.schema.virtual('content.full').get(function () {
-	return this.content;
-});
 
 Post.schema.methods.isPublished = function() {
     return this.state == 'published';

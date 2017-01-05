@@ -34,6 +34,7 @@ var routes = {
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// Views
+	app.get('/', function(res, req) {res.redirect('/blog')});
 	app.get('/blog/:category?', routes.views.blog);
 	app.get('/blog/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);

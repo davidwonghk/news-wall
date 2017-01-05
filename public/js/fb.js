@@ -2,9 +2,10 @@
     FB.init({
       appId      : '361801474173911',
       xfbml      : true,
+      status     : true,
+      cookie     : true,
       version    : 'v2.8'
     });
-    FB.AppEvents.logPageView();
   };
 
   (function(d, s, id){
