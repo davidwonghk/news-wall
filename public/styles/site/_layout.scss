@@ -14,50 +14,53 @@
 }
 
 #cookie_accept p {
-		color: #ffffff;
+	color: #ffffff;
+}
+
+img.img-logo {
+	@extend .img-responsive;
+	height: 100%;
 }
 
 .blog {
 	margin-top: 20px;
 }
 
-.gallery-image img{
-    display: block;
-    max-width: 100%;
-    height: auto;
+.gallery-image img {
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
 
 .img-container {
-    position: relative;
-
+	position: relative;
 }
 
 .img-container img {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
 }
 
 .img-container .img-footer {
-    position: absolute;
-    bottom: 0; left: 0;
-    padding: 0 10px;
-
-    width: 100%;
-    color: #fff;
-    background: rgba(0,0,0,0.7);
-
-		font-size: 12pt;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 0 10px;
+	width: 100%;
+	color: #fff;
+	background: rgba(0,0,0,0.7);
+	font-size: 12pt;
 }
 
 .img-container .img-footer {
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .img-container:hover > .img-footer {
-    text-overflow:clip;
-    white-space: normal;
+	text-overflow: clip;
+	white-space: normal;
 }
 
 .post .fb-like {
@@ -66,15 +69,18 @@
 }
 
 .overlay {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */
-    height: 100%;
-    width: 0%;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    background-color: rgb(100,100,100);
-    background-color: rgba(0,0,0, 0.5);
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.2s;
+	/* Height & width depends on how you want to reveal the overlay (see JS below) */
+	height: 100%;
+	width: 0;
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	background-color: rgb(100,100,100);
+	background-color: rgba(0,0,0, 0.5);
+	overflow-x: hidden;
+	/* Disable horizontal scroll */
+	transition: 0.2s;
 }
