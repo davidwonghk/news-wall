@@ -1,0 +1,38 @@
+
+<link rel="stylesheet" href="/keystone/styles/auth.min.css">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+<div class="auth-wrapper">
+  <div class="alert alert-placeholder">&nbsp;</div>
+  <div class="auth-body">
+    <h1 class="sr-only">Sign In</h1>
+    <div class="auth-box">
+      <div class="auth-box-col">
+        <div class="auth-box-brand"><a href="/" class="auth-box-logo"><img src="/images/logo.png" width="205" height="68" alt="News Wall"></a>
+        </div>
+      </div>
+      <div class="auth-box-col">
+        <form method="post" novalidate class="auth-form">
+          <input type="hidden" name="_csrf" value="SrqoQrfcNcNgLKkiNXfj5OSBAnJQvXWeYl2uY=">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+	<hr/>
+	Don't have an account yet?
+  <a href='#' data-toggle="popover" data-content="Currently not open for public">Register now</a>
+  <div class="auth-footer">Terms&Conditions</div>
+
+  <script>try { document.getElementById('email').focus(); } catch(e) {};</script>
+  <script> $(document).ready(function(){ $('[data-toggle="popover"]').popover(); }); </script>
+
+</div>

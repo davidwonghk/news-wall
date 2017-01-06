@@ -29,6 +29,23 @@
 			<script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
+		{{!--
+			//- jQuery 1.11.3 is included by default, and required by both Bootstrap
+			//- and the KeystoneJS Content Editor. If you are not targeting IE8,
+			//- you can upgrade to 2.1.4 (also bundled) for better performance.
+		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
+		--}}
+		<script
+			src="https://code.jquery.com/jquery-3.1.1.min.js"
+			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			crossorigin="anonymous"></script>
+		{{!--
+			//- Customise which Bootstrap javascript files are served by including
+			//- them specifically here, instead of bootstrap-3.3.5.min.js
+		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
+		--}}
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 
 	</head>
 	<body>
@@ -60,6 +77,10 @@
 								{{/if}}
 							</ul>
 							--}}
+
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="/signin">Sign In</a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -151,22 +172,6 @@
 			</nav>
 		</div>
 
-		{{!--
-			//- jQuery 1.11.3 is included by default, and required by both Bootstrap
-			//- and the KeystoneJS Content Editor. If you are not targeting IE8,
-			//- you can upgrade to 2.1.4 (also bundled) for better performance.
-		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
-		--}}
-		<script
-			src="https://code.jquery.com/jquery-3.1.1.min.js"
-			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-			crossorigin="anonymous"></script>
-		{{!--
-			//- Customise which Bootstrap javascript files are served by including
-			//- them specifically here, instead of bootstrap-3.3.5.min.js
-		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
-		--}}
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		{{{isAdminEditorJS user}}}
 
 		<script src="/js/fb.js"></script>

@@ -34,10 +34,13 @@ var routes = {
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// Views
-	app.get('/', function(res, req) {res.redirect('/blog')});
+	app.get('/', function(res, req) {res.res.redirect('/blog')});
 	app.get('/blog/:category?', routes.views.blog);
 	app.get('/blog/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
+
+	//custom signin page
+	app.get('/signin', function (res, req){res.res.render('signin')} );
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
