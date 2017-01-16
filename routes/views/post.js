@@ -25,10 +25,9 @@ exports = module.exports = function (req, res) {
 
 		q.exec(function (err, result) {
 			locals.data.post = result;
-			locals.data.meta = { 
-				title: result.title, 
-				image: result.image.url,
-				description: striptags(result.content.substring(0,256)) + '...',
+			locals.data.meta = {
+				title: result.title,
+				description: result.description || striptags(result.content.substring(0,256)),
 			 };
 			next(err);
 		});

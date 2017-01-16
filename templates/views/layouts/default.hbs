@@ -5,18 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-		<meta property="og:type"          content="article" />
-		<meta property="og:site_name"     content="News Wall" />
-		<meta property="fb:app_id"        content="361801474173911" />
-		{{#if data.meta}}
-		<meta property="og:title"         content="{{data.meta.title}}" />
-		<meta property="og:description"   content="{{data.meta.description}}" />
-		<meta property="og:image"         content="{{{data.meta.image}}}" />
-		{{/if}}
+		{{> meta}}
 
-		<title>News Wall</title>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 		<link href="/styles/site.css" rel="stylesheet">
+		<link href="/styles/font-awesome.css" rel="stylesheet">
 
 		{{!-- This file provides the default styling for the KeystoneJS Content Editor
 			- only renders when user is logged in and admin--}}
@@ -30,9 +23,6 @@
 		<![endif]-->
 
 		{{!--
-			//- jQuery 1.11.3 is included by default, and required by both Bootstrap
-			//- and the KeystoneJS Content Editor. If you are not targeting IE8,
-			//- you can upgrade to 2.1.4 (also bundled) for better performance.
 		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
 		--}}
 		<script

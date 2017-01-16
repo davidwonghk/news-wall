@@ -1,0 +1,41 @@
+<meta property="og:type"          content="article" />
+<meta property="og:site_name"     content="News-Wall" />
+<meta property="fb:app_id"        content="361801474173911" />
+
+{{#if data.post}}
+    {{#if data.meta.title}}
+        <title>{{data.meta.title}}</title>
+        <meta property="og:title" content="{{data.meta.title}}">
+        <meta name="twitter:title" content="{{data.meta.title}}">
+    {{else}}
+        <title>{{data.post.title}}</title>
+        <meta property="og:title" content="{{data.post.title}}">
+        <meta name="twitter:title" content="{{data.post.title}}">
+    {{/if}}
+    {{#if data.meta.description}}
+        <meta name="description" content="{{data.meta.description}}">
+        <meta property="og:description" content="{{data.meta.description}}">
+        <meta name="twitter:description" content="{{data.meta.description}}">
+    {{else}}
+        <meta name="description" content="{{data.post.content.brief}}">
+        <meta property="og:description" content="{{data.post.content.brief}}">
+        <meta name="twitter:description" content="{{data.post.content.brief}}">
+    {{/if}}
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="{{data.post.image.url}}">
+    <meta name="twitter:image:src" content="{{data.post.image.url}}">
+    <meta property="og:url" content="{{data.post.url}}">
+    <meta name="twitter:url" content="{{data.post.url}}">
+    <meta property="article:published_time" content="{{data.post.publishedDate}}">
+    {{# each data.post.categories}}
+        <meta property="article:tag" content="{{name}}">
+    {{/each}}
+    <meta name="keywords" content="{{# each data.post.categories}}{{name}}, {{/each}}">
+{{else}}
+    <title>News-Wall</title>
+    <meta name="description" content="Provide the News you want to read">
+    <meta property="og:image" content="{{baseUrl}}/images/logo.png">
+    <meta name="twitter:image:src" content="{{baseUrl}}/images/logo.png">
+    <meta name="keywords" content="news, blog, information">
+{{/if}}

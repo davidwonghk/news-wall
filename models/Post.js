@@ -19,12 +19,15 @@ Post.add({
 	reference: { type: Types.Url },
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
-	source: { type: Types.Select, options: 'manual, yahoo', default: 'manual' },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
 	image: { type: Types.CloudinaryImage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
+	description: {type: String}
 });
 
+Post.schema.virtual('url').get(function() {
+    return process.env.BASE_URL + '/blog/post/' + this.slug;
+});
 
 Post.schema.methods.isPublished = function() {
     return this.state == 'published';
@@ -38,5 +41,5 @@ Post.schema.pre('save', function(next) {
 });
 
 
-Post.defaultColumns = 'title, state|15%, source|20%, publishedDate|15%, redirect|10%';
+Post.defaultColumns = 'title, state|15%, publishedDate|15%, redirect|10%';
 Post.register();

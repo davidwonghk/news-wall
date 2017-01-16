@@ -11,8 +11,8 @@ var handlebars = require('express-handlebars');
 // and documentation.
 
 keystone.init({
-	'name': 'News Wall',
-	'brand': 'News Wall',
+	'name': 'News-Wall',
+	'brand': 'News-Wall',
 
 	'sass': 'public',
 	'static': 'public',
@@ -32,6 +32,12 @@ keystone.init({
 	'session': true,
 	'auth': true,
 	'user model': 'User',
+
+	'wysiwyg menubar': true,
+	'wysiwyg skin': 'lightgray',
+	'wysiwyg additional buttons': 'searchreplace visualchars, charmap ltr rtl pagebreak paste, forecolor backcolor, emoticons media, preview print ',
+	'wysiwyg additional plugins': 'example, table, advlist, anchor, autolink, autosave, bbcode, charmap, contextmenu, directionality, emoticons, fullpage, hr, media, pagebreak, paste, preview, print, searchreplace, textcolor, visualblocks, visualchars, wordcount',
+
 });
 
 // Load your project's Models
@@ -49,10 +55,6 @@ keystone.set('locals', {
 
 // Load your project's Routes
 keystone.set('routes', require('./routes'));
-
-// Switch Keystone Email defaults to handlebars
-keystone.Email.defaults.templateExt = 'hbs';
-keystone.Email.defaults.templateEngine = require('handlebars');
 
 
 // Configure the navigation bar in Keystone's Admin UI
