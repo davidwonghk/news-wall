@@ -13,14 +13,12 @@
 
 			<div class="blog">
 				{{# each data.posts.results}}
-				<div class="col-md-4">
+				<div class="col-md-4 post">
 					<a href="{{postUrl slug}}">
-						<div class="img-container">
 							{{#if image}}
-							<img src="{{{cloudinaryUrl image crop='fit' }}}" class="img-thumbnail">
+							<img src="{{{cloudinaryUrl image crop='fit' }}}" class="img-responsive">
 							{{/if}}
-							<span class="img-footer">{{{title}}}</span>
-						</div>
+							<span class="title">{{{title}}}</span>
 					</a>
 				</div>
 				{{/each}}
