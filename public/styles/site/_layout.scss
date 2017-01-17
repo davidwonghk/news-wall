@@ -17,23 +17,26 @@
 	color: #ffffff;
 }
 
-img.img-logo {
-	@extend .img-responsive;
-	height: 100%;
-}
-
 .blog {
 	margin-top: 20px;
 }
 
-.gallery-image img {
+.gallery-image img{
 	display: block;
 	max-width: 100%;
 	height: auto;
 }
 
+img.img-logo {
+	@extend .img-responsive;
+	height: 100%;
+}
+
+
+
 .img-container {
 	position: relative;
+
 }
 
 .img-container img {
@@ -43,23 +46,24 @@ img.img-logo {
 
 .img-container .img-footer {
 	position: absolute;
-	bottom: 0;
-	left: 0;
+	bottom: 0; left: 0;
 	padding: 0 10px;
+
 	width: 100%;
 	color: #fff;
 	background: rgba(0,0,0,0.7);
+
 	font-size: 12pt;
 }
 
 .img-container .img-footer {
 	overflow: hidden;
-	text-overflow: ellipsis;
+	text-overflow:ellipsis;
 	white-space: nowrap;
 }
 
 .img-container:hover > .img-footer {
-	text-overflow: clip;
+	text-overflow:clip;
 	white-space: normal;
 }
 
@@ -71,16 +75,13 @@ img.img-logo {
 .overlay {
 	/* Height & width depends on how you want to reveal the overlay (see JS below) */
 	height: 100%;
-	width: 0;
-	position: fixed;
-	/* Stay in place */
-	z-index: 1;
-	/* Sit on top */
+	width: 0%;
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
 	left: 0;
 	top: 0;
 	background-color: rgb(100,100,100);
 	background-color: rgba(0,0,0, 0.5);
-	overflow-x: hidden;
-	/* Disable horizontal scroll */
+	overflow-x: hidden; /* Disable horizontal scroll */
 	transition: 0.2s;
 }
