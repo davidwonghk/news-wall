@@ -1,8 +1,0 @@
-#!/bin/bash
-
-cp public/styles/site/_layout.scss ../news-wall/public/styles/site/
-cp templates/views/*.hbs ../news-wall/templates/views/
-cp ./templates/views/layouts/*.hbs ../news-wall/templates/views/layouts/
-cp -r routes/* ../news-wall/routes/
-cp models/Post.js ../news-wall/models/
-cp keystone.js ../news-wall/keystone.js
