@@ -1,5 +1,4 @@
 var keystone = require('keystone');
-var striptags = require('striptags');
 
 exports = module.exports = function (req, res) {
 
@@ -27,7 +26,7 @@ exports = module.exports = function (req, res) {
 			locals.data.post = result;
 			locals.data.meta = {
 				title: result.title,
-				description: result.description || striptags(result.content.substring(0,256)),
+				description: result.Description,
 			 };
 			next(err);
 		});
