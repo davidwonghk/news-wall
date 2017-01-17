@@ -31,7 +31,7 @@ Post.add({
 });
 
 Post.schema.virtual('url').get(function() {
-	return process.env.BASE_URL + '/blog/post/' + this.slug;
+	return process.env.BASE_URL + '/post/' + this.slug;
 });
 
 Post.schema.virtual('Content').get(function() {

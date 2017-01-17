@@ -102,7 +102,8 @@ module.exports = function () {
 			if (autolink) {
 				return _.map(tags, function (tag) {
 					return linkTemplate({
-						url: ('/blog/' + tag.key),
+						//url: ('/blog/' + tag.key),
+						url: ('/' + tag.key),
 						text: _.escape(head + tag.name),
 					});
 				}).join(separator);
@@ -194,18 +195,21 @@ module.exports = function () {
 
 	// Direct url link to a specific post
 	_helpers.postUrl = function (postSlug, options) {
-		return ('/blog/post/' + postSlug);
+		//return ('/blog/post/' + postSlug);
+		return ('/post/' + postSlug);
 	};
 
 	// might be a ghost helper
 	// used for pagination urls on blog
 	_helpers.pageUrl = function (pageNumber, options) {
-		return '/blog?page=' + pageNumber;
+		//return '/blog?page=' + pageNumber;
+		return '/?page=' + pageNumber;
 	};
 
 	// create the category url for a blog-category page
 	_helpers.categoryUrl = function (categorySlug, options) {
-		return ('/blog/' + categorySlug);
+		//return ('/blog/' + categorySlug);
+		return ('/' + categorySlug);
 	};
 
 	// ### Pagination Helpers
