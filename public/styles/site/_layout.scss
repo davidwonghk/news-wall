@@ -25,7 +25,7 @@ img.img-logo {
 .blog {
 	margin-top: 20px;
 
-	.post {
+	.blog-item {
 		margin-bottom: 40px;
 
 		img {
@@ -41,7 +41,7 @@ img.img-logo {
 			display: block;
 		}
 
-		$post-color: rgba(0,0,0,0.7);
+		$blog-item-color: rgba(0,0,0,0.7);
 
 		:hover > img {
 			opacity: 0.8;
@@ -50,16 +50,14 @@ img.img-logo {
 
 		:hover > .title {
 			color: #fff;
-			background: $post-color;
+			background: $blog-item-color;
 		}
 
 	}
 
 }
 
-
-.back {
-	font-size: 16pt;
+.fb-like {
 	margin-top: 15px;
 }
 
