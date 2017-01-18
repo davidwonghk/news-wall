@@ -13,7 +13,6 @@ exports = module.exports = function (req, res) {
 	};
 	locals.data = {
 		posts: [],
-		categories: [],
 	};
 
 	// Load all categories
