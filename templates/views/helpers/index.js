@@ -103,7 +103,7 @@ module.exports = function () {
 				return _.map(tags, function (tag) {
 					return linkTemplate({
 						//url: ('/blog/' + tag.key),
-						url: ('/' + tag.key),
+						url: ('/?c=' + tag.key),
 						text: _.escape(head + tag.name),
 					});
 				}).join(separator);
@@ -209,7 +209,7 @@ module.exports = function () {
 	// create the category url for a blog-category page
 	_helpers.categoryUrl = function (categorySlug, options) {
 		//return ('/blog/' + categorySlug);
-		return ('/' + categorySlug);
+		return ('/?c=' + categorySlug);
 	};
 
 	// ### Pagination Helpers

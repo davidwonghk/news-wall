@@ -37,7 +37,7 @@ exports = module.exports = function (app) {
 	app.get('/signin', function (res, req){res.res.render('signin')} );
 
 	// Views
-	app.get('/:category?', routes.views.blog);
+	app.get('/', routes.views.blog);
 	app.get('/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
 
