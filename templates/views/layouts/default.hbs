@@ -54,7 +54,7 @@
 							<ul class="nav navbar-nav navbar-left">
 									{{# each navLinks}}
 									<li {{#ifeq ../section key}}class="active"{{else}}{{/ifeq}}>
-										<a href="{{ href }}">{{ label }}</a>
+										<a href="{{ categoryUrl key }}">{{ name }}</a>
 									</li>
 								{{/each}}
 							</ul>
