@@ -26,18 +26,7 @@
 			</article>
 			<hr>
 
-			<div>
-					<a class="btn btn-social btn-twitter" href="https://twitter.com/intent/tweet?text={{data.post.title}}&url={{data.post.url}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-						<span class="fa fa-twitter"></span> Twitter
-					</a>
-					<a class="btn btn-social btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{data.post.url}}" onclick="FB.ui({ method: 'share', display: 'popup', href: '{{data.post.url}}', }, function(response){});return false">
-						<span class="fa fa-facebook"></span> Facebook
-					</a>
-					<a class="btn btn-social btn-google" href="https://plus.google.com/share?url={{data.post.url}}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-						<span class="fa fa-google"></span> GooglePlus
-					</a>
-			</div>
-
+			{{> share}}
 		</div>
 	</div>
 </div>
