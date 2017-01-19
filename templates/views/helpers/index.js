@@ -2,10 +2,8 @@ var moment = require('moment');
 var _ = require('underscore');
 var hbs = require('handlebars');
 var keystone = require('keystone');
-var cloudinary = require('cloudinary');
 
 // Collection of templates to interpolate
-var linkTemplate = _.template('<a href="<%= url %>"><%= text %></a>');
 var scriptTemplate = _.template('<script src="<%= src %>"></script>');
 var cssLinkTemplate = _.template('<link href="<%= href %>" rel="stylesheet">');
 
@@ -76,46 +74,6 @@ module.exports = function () {
 		return date;
 	};
 
-	// ### Category Helper
-	// Ghost uses Tags and Keystone uses Categories
-	// Supports same interface, just different name/semantics
-	//
-	// *Usage example:*
-	// `{{categoryList categories separator=' - ' prefix='Filed under '}}`
-	//
-	// Returns an html-string of the categories on the post.
-	// By default, categories are separated by commas.
-	// input. categories:['tech', 'js']
-	// output. 'Filed Undder <a href="blog/tech">tech</a>, <a href="blog/js">js</a>'
-
-	_helpers.categoryList = function (categories, options) {
-		var autolink = _.isString(options.hash.autolink) && options.hash.autolink === 'false' ? false : true;
-		var separator = _.isString(options.hash.separator) ? options.hash.separator : ', ';
-		var head =  _.isString(options.hash.head) ? options.hash.head : '';
-		var prefix = _.isString(options.hash.prefix) ? options.hash.prefix : '';
-		var suffix = _.isString(options.hash.suffix) ? options.hash.suffix : '';
-		var output = '';
-
-		function createTagList (tags) {
-			var tagNames = _.pluck(tags, 'name');
-
-			if (autolink) {
-				return _.map(tags, function (tag) {
-					return linkTemplate({
-						//url: ('/blog/' + tag.key),
-						url: ('/?c=' + tag.key),
-						text: _.escape(head + tag.name),
-					});
-				}).join(separator);
-			}
-			return _.escape(tagNames.join(separator));
-		}
-
-		if (categories && categories.length) {
-			output = prefix + createTagList(categories) + suffix;
-		}
-		return new hbs.SafeString(output);
-	};
 
 	/**
 	 * KeystoneJS specific helpers
@@ -153,72 +111,7 @@ module.exports = function () {
 		return rtn;
 	};
 
-	// ### CloudinaryUrl Helper
-	// Direct support of the cloudinary.url method from Handlebars (see
-	// cloudinary package documentation for more details).
-	//
-	// *Usage examples:*
-	// `{{{cloudinaryUrl image width=640 height=480 crop='fill' gravity='north'}}}`
-	// `{{#each images}} {{cloudinaryUrl width=640 height=480}} {{/each}}`
-	//
-	// Returns an src-string for a cloudinary image
 
-	_helpers.cloudinaryUrl = function (context, options) {
-
-		// if we dont pass in a context and just kwargs
-		// then `this` refers to our default scope block and kwargs
-		// are stored in context.hash
-		if (!options && context.hasOwnProperty('hash')) {
-			// strategy is to place context kwargs into options
-			options = context;
-			// bind our default inherited scope into context
-			context = this;
-		}
-
-		// safe guard to ensure context is never null
-		context = context === null ? undefined : context;
-
-		if ((context) && (context.public_id)) {
-			options.hash.secure = keystone.get('cloudinary secure') || false;
-			var imageName = context.public_id.concat('.', context.format);
-			return cloudinary.url(imageName, options.hash);
-		}
-		else {
-			return null;
-		}
-	};
-
-	// ### abstract how to get the image ###
-	// *Usage example:*
-	//  `{{#if post.image}}
-	//     <img src="{{imageUrl post.image}}" />`
-	//   {{/if}}`
-	_helpers.imageUrl = function(image) {
-		if ( image.cloudinary ) {
-			return _helpers.cloudinaryUrl(image.cloudinary, {'crop':'fit', 'hash':{}})
-		}
-		return image.reference
-	}
-
-	// ### Content Url Helpers
-	// KeystoneJS url handling so that the routes are in one place for easier
-	// editing.  Should look at Django/Ghost which has an object layer to access
-	// the routes by keynames to reduce the maintenance of changing urls
-
-	// Direct url link to a specific post
-	_helpers.postUrl = function (postSlug, options) {
-		//return ('/blog/post/' + postSlug);
-		return ('/post/' + postSlug);
-	};
-
-	// create the category url for a blog-category page
-	_helpers.categoryUrl = function (categorySlug, options) {
-		//return ('/blog/' + categorySlug);
-		return ('/?c=' + categorySlug);
-	};
-
-
-	//  ### Flash Message Helper
 	//  KeystoneJS supports a message interface for information/errors to be passed from server
 	//  to the front-end client and rendered in a html-block.  FlashMessage mirrors the Jade Mixin
 	//  for creating the message.  But part of the logic is in the default.layout.  Decision was to
@@ -271,7 +164,9 @@ module.exports = function () {
 		return obj._[underscoreMethod].format();
 	};
 
-
+	//export sub-modules
+	var _url = require('./url')();
+	return Object.assign(_helpers, _url);
 
 	return _helpers;
 };

@@ -30,9 +30,6 @@ Post.add({
 	description: {type: String}
 });
 
-Post.schema.virtual('url').get(function() {
-	return process.env.BASE_URL + '/post/' + this.slug;
-});
 
 Post.schema.virtual('Content').get(function() {
 	return this.content.markdown.html || this.content.html;

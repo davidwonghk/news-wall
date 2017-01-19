@@ -6,7 +6,9 @@
 				<header>
 					<h1>{{{data.post.title}}}</h1>
 					<h5>
-						{{{categoryList data.post.categories head="#" separator="&nbsp;&nbsp; "}}}
+						{{# each data.post.categories}}
+						<a href="{{ categoryUrl key }}">#{{ name }} </a>
+						{{/each}}
 					</h5>
 				</header>
 				<hr>

@@ -34,7 +34,7 @@ exports.initLocals = function (req, res, next) {
 		.sort('name')
 		.exec(function (err, results) {
 			if (err || !results.length) { return next(err); }
-			res.locals.navLinks = results
+			res.locals.navLinks = results;
 			next();
 		});
 };
