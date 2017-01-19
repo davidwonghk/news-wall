@@ -188,6 +188,18 @@ module.exports = function () {
 		}
 	};
 
+	// ### abstract how to get the image ###
+	// *Usage example:*
+	//  `{{#if post.image}}
+	//     <img src="{{imageUrl post.image}}" />`
+	//   {{/if}}`
+	_helpers.imageUrl = function(image) {
+		if ( image.cloudinary ) {
+			return _helpers.cloudinaryUrl(image.cloudinary, {'crop':'fit', 'hash':{}})
+		}
+		return image.reference
+	}
+
 	// ### Content Url Helpers
 	// KeystoneJS url handling so that the routes are in one place for easier
 	// editing.  Should look at Django/Ghost which has an object layer to access
@@ -199,82 +211,10 @@ module.exports = function () {
 		return ('/post/' + postSlug);
 	};
 
-	// might be a ghost helper
-	// used for pagination urls on blog
-	_helpers.pageUrl = function (pageNumber, options) {
-		//return '/blog?page=' + pageNumber;
-		return '/?page=' + pageNumber;
-	};
-
 	// create the category url for a blog-category page
 	_helpers.categoryUrl = function (categorySlug, options) {
 		//return ('/blog/' + categorySlug);
 		return ('/?c=' + categorySlug);
-	};
-
-	// ### Pagination Helpers
-	// These are helpers used in rendering a pagination system for content
-	// Mostly generalized and with a small adjust to `_helper.pageUrl` could be universal for content types
-
-	/*
-	* expecting the data.posts context or an object literal that has `previous` and `next` properties
-	* ifBlock helpers in hbs - http://stackoverflow.com/questions/8554517/handlerbars-js-using-an-helper-function-in-a-if-statement
-	* */
-	_helpers.ifHasPagination = function (postContext, options) {
-		// if implementor fails to scope properly or has an empty data set
-		// better to display else block than throw an exception for undefined
-		if (_.isUndefined(postContext)) {
-			return options.inverse(this);
-		}
-		if (postContext.next || postContext.previous) {
-			return options.fn(this);
-		}
-		return options.inverse(this);
-	};
-
-	_helpers.paginationNavigation = function (pages, currentPage, totalPages, options) {
-		var html = '';
-
-		// pages should be an array ex.  [1,2,3,4,5,6,7,8,9,10, '....']
-		// '...' will be added by keystone if the pages exceed 10
-		_.each(pages, function (page, ctr) {
-			// create ref to page, so that '...' is displayed as text even though int value is required
-			var pageText = page;
-			// create boolean flag state if currentPage
-			var isActivePage = ((page === currentPage) ? true : false);
-			// need an active class indicator
-			var liClass = ((isActivePage) ? ' class="active"' : '');
-
-			// if '...' is sent from keystone then we need to override the url
-			if (page === '...') {
-				// check position of '...' if 0 then return page 1, otherwise use totalPages
-				page = ((ctr) ? totalPages : 1);
-			}
-
-			// get the pageUrl using the integer value
-			var pageUrl = _helpers.pageUrl(page);
-			// wrapup the html
-			html += '<li' + liClass + '>' + linkTemplate({ url: pageUrl, text: pageText }) + '</li>\n';
-		});
-		return html;
-	};
-
-	// special helper to ensure that we always have a valid page url set even if
-	// the link is disabled, will default to page 1
-	_helpers.paginationPreviousUrl = function (previousPage, totalPages) {
-		if (previousPage === false) {
-			previousPage = 1;
-		}
-		return _helpers.pageUrl(previousPage);
-	};
-
-	// special helper to ensure that we always have a valid next page url set
-	// even if the link is disabled, will default to totalPages
-	_helpers.paginationNextUrl = function (nextPage, totalPages) {
-		if (nextPage === false) {
-			nextPage = totalPages;
-		}
-		return _helpers.pageUrl(nextPage);
 	};
 
 
@@ -332,17 +272,6 @@ module.exports = function () {
 	};
 
 
-	// ### abstract how to get the image ###
-	// *Usage example:*
-	//  `{{#if post.image}}
-	//     <img src="{{imageUrl post.image}}" />`
-	//   {{/if}}`
-	_helpers.imageUrl = function(image) {
-		if ( image.cloudinary ) {
-			return _helpers.cloudinaryUrl(image.cloudinary, {'crop':'fit', 'hash':{}})
-		}
-		return image.reference
-	}
 
 	return _helpers;
 };
