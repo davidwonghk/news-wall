@@ -20,7 +20,8 @@ exports = module.exports = function (req, res) {
 		var q = keystone.list('Post').model.findOne({
 			state: 'published',
 			slug: locals.filters.post,
-		}).populate('categories');
+		})
+		.populate('categories image');
 
 		q.exec(function (err, result) {
 			locals.data.post = result;

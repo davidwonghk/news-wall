@@ -41,7 +41,7 @@ module.exports = function () {
 	//
 	// *Usage example:*
 	// `{{date format='MM YYYY}}`
-	// `{{date publishedDate format='MM YYYY'`
+	// `{{date publishedDate format='MM YYYY'}}`
 	//
 	// Returns a string formatted date
 	// By default if no date passed into helper than then a current-timestamp is used
@@ -330,6 +330,19 @@ module.exports = function () {
 	_helpers.underscoreFormat = function (obj, underscoreMethod) {
 		return obj._[underscoreMethod].format();
 	};
+
+
+	// ### abstract how to get the image ###
+	// *Usage example:*
+	//  `{{#if post.image}}
+	//     <img src="{{imageUrl post.image}}" />`
+	//   {{/if}}`
+	_helpers.imageUrl = function(image) {
+		if ( image.cloudinary ) {
+			return _helpers.cloudinaryUrl(image.cloudinary, {'crop':'fit', 'hash':{}})
+		}
+		return image.reference
+	}
 
 	return _helpers;
 };

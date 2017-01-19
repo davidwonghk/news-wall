@@ -22,7 +22,7 @@ Post.add({
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
-	image: { type: Types.CloudinaryImage },
+	image: { type: Types.Relationship, ref: 'Image', many: false},
 	content: {
 		html: {type: Types.Html, wysiwyg: true, height: 400},
 		markdown: {type: Types.Markdown, height: 400}
