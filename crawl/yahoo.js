@@ -11,7 +11,7 @@ exports = module.exports = function (tag, category, callback) {
     crawlLink(data.link, function(err, html) {
       if(err) { callback(err); return; }
 
-      data['content'] = html
+      data.content.html = html
       callback(err, data);
     })
 
@@ -61,7 +61,7 @@ function crawlTag(suburl, tag, callback) {
                 'title': title,
                 'tags': [tag],
                 'imageUrl': imageUrl,
-                'link': yahooHost + link,
+                'reference': yahooHost + link,
             });
         }
     } );

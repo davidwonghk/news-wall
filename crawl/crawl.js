@@ -1,18 +1,18 @@
-var crawlYahoo = require('./yahoo');
+var yahoo = require('./yahoo');
+var buzzbooklet = require('./buzzbooklet');
 
 var keystone = require('keystone'),
     Post = keystone.list('Post'),
-    PostCategory = keystone.list('PostCategory');
+    PostCategory = keystone.list('PostCategory'),
+    Image = keystone.list('Image');
 
 
 
 function _tagsToCategories(tags, _result, callback) {
+		if (!tags) { callback(null, _result); return; }
 
 		var tag = tags.pop();
-		if (!tag) {
-			callback(null, _result);
-			return;
-		}
+		if (!tag) { callback(null, _result); return; }
 
 		PostCategory.model.find().where('name', tag).limit(1).exec(function(err, postCategories){
 			if (err) {callback(err); return;}
@@ -23,24 +23,23 @@ function _tagsToCategories(tags, _result, callback) {
 			} else {
 				category = new PostCategory.model({name:tag});
 				category.save(function(err){
-					console.log('category ' + category + ' created');
 					if (err) callback(err);
+					console.log('category ' + category + ' created');
 				})
 			}
 
 			_result.push(category);
+      //tail recustion
 			_tagsToCategories(tags, _result, callback);
 		});
 }
 
 
-var cloudinary = require('cloudinary');
-function _urlToCloudinaryImage(url, callback) {
-
-	cloudinary.uploader.upload(url, function(result) {
-		if (result.error) { callback(result.error); return; }
-		callback(null, result);
-	});
+function _urlToImage(url, callback) {
+  var image = new Image.model({reference:url});
+  image.save(function(err) {
+    callback(null, this);
+  }.bind(image));
 }
 
 /**
@@ -57,18 +56,21 @@ function _crawl(source, data, callback) {
 			}
 
 			_tagsToCategories(data.tags, [], function(err, categories) {
-				_urlToCloudinaryImage(data.imageUrl, function(err, image) {
-					if (err) {callback(err); return;}
-					var newPost = new Post.model({
-				    title: data.title,
-						state: 'published',
-						redirect: false,
-						image: image,
-						categories: categories,
-						content: data.content,
-						source: source
-					});
+        data.categories = categories;
+        delete data.tags;
 
+				_urlToImage(data.imageUrl, function(err, image) {
+					if (err) {callback(err); return;}
+
+          data.image = image;
+          delete data.imageUrl;
+          Object.assign(data, {
+						'state': 'published',
+						'redirect': false,
+						'image': image,
+          })
+
+					var newPost = new Post.model(data);
 					newPost.save(callback);
 				});
 			});
@@ -86,11 +88,18 @@ exports = module.exports = {
 crawlYahooStyle: function(callback) {
   var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
 	yahooTags.forEach(function (tagName) {
-    crawlYahoo(tagName, tagName, function(err, data) {
+    yahoo(tagName, tagName, function(err, data) {
   		if (err) {callback(err); return;}
       _crawl('yahoo', data, callback);
   	});
 	});
+},
+
+crawlBuzzBooklet: function(callback) {
+  buzzbooklet(1, function(err, data) {
+		if (err) {callback(err); return;}
+    _crawl('buzzbooklet', data, callback);
+  });
 },
 
 }

@@ -18,7 +18,8 @@ var Post = new keystone.List('Post', {
 Post.add({
 	title: { type: String, required: true },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
-	reference: { type: Types.Url },
+	references: { type: Types.TextArray	},
+	author: { types: String },
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
@@ -31,12 +32,22 @@ Post.add({
 });
 
 
+Post.schema.virtual('Title').get(function() {
+	return decodeURI(this.title);
+});
+
+
 Post.schema.virtual('Content').get(function() {
+	if (!this.content) return "";
 	return this.content.markdown.html || this.content.html;
 });
 
 Post.schema.virtual('Description').get(function() {
 	return this.description || striptags(this.Content.substring(0,256));
+});
+
+Post.schema.virtual('reference').get(function() {
+	return this.references[0];
 });
 
 Post.schema.methods.isPublished = function() {

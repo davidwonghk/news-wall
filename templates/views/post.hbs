@@ -13,7 +13,10 @@
 				</header>
 				<hr>
 				<div class="post">
+					{{!--
 					{{#if data.post.image}}<img src="{{{imageUrl data.post.image}}}" class="img-responsive" />{{/if}}
+					--}}
+					<div class="share">
 					<div class="fb-like"
 						data-href="{{data.post.url}}"
 						data-layout="standard"
@@ -22,13 +25,16 @@
 						{{!--data-share="true"--}}
 						data-show-faces="true">
 					</div>
+					{{> share}}
+					</div>
 					<hr>
-					{{{data.post.Content}}}
+					{{#if data.post.Content}}
+						{{{data.post.Content}}}
+					{{/if}}
 				</div>
 			</article>
 			<hr>
 
-			{{> share}}
 		</div>
 	</div>
 </div>
