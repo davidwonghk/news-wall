@@ -131,7 +131,7 @@ crawlYahooStyle: function(callback) {
 },
 
 crawlBuzzBooklet: function(callback) {
-  buzzbooklet(1, function(err, data) {
+  buzzbooklet(5, function(err, data) {
 		if (err) {callback(err); return;}
     _crawl('buzzbooklet', data, callback);
   });

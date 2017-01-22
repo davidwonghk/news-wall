@@ -15,17 +15,16 @@ callback
 exports = module.exports = function (iteration, callback) {
 
 	const current = Date.now()/1000;
-	crawlCard(iteration, current, function(err, timestamp, data) {
+	crawlCard(iteration, current, function(err, data) {
     if(err) { callback(err); return; }
 
 		crawlLink(data.references[0], function(err, html) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
+			console.log('crawl ' + data.references[0]);
 			callback(null, data);
 		});
 
-		//tail recursion
-		crawlCard(iteration-1, timestamp, callback);
 	});
 };
 
@@ -39,6 +38,8 @@ function crawlCard(iteration, timestamp, callback) {
 		if (err) { callback(err); return; }
 
 		var json = JSON.parse(body);
+		crawlCard(iteration-1, json['build'], callback);
+
 		for (k in json.new_card_list) {
 			var card = json.new_card_list[k];
 			var data = {
@@ -48,7 +49,7 @@ function crawlCard(iteration, timestamp, callback) {
 				'title': card['title'],
 			}
 
-			callback(null, json['build'], data);
+			callback(null, data);
 		}
 
 	});
