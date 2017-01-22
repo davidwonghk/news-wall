@@ -2,6 +2,7 @@ var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
 var striptags = require('striptags');
+var slug = require('limax');
 
 /**
  * Post Model
@@ -10,12 +11,13 @@ var striptags = require('striptags');
 
 var Post = new keystone.List('Post', {
 	map: { name: 'title' },
-	autokey: { path: 'slug', from: 'title', unique: true },
+	//autokey: { path: 'slug', from: 'title', unique: true },
 });
 
 
 
 Post.add({
+	slug: { type: String, hidden: true },
 	title: { type: String, required: true },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
 	references: { type: Types.TextArray	},
@@ -58,6 +60,9 @@ Post.schema.pre('save', function(next) {
 	if (this.isModified('state') && this.isPublished() && !this.publishedAt) {
 		this.publishedDate = new Date();
 	}
+
+	this.slug = slug(this.title);
+
 	next();
 });
 
