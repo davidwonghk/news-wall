@@ -28,9 +28,12 @@
 					{{> share}}
 					</div>
 					<hr>
-					{{#if data.post.Content}}
+					{{#if data.html}}
+						{{{data.html}}}
+					{{else if data.post.Content}}
 						{{{data.post.Content}}}
 					{{/if}}
+
 				</div>
 			</article>
 			<hr>

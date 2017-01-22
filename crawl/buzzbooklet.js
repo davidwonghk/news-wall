@@ -64,9 +64,7 @@ function crawlLink(url, callback) {
 		$('.adv-border-cover', dec).remove();
 
 		var html = dec.html();
-
 		callback(null, html);
-
 	});
 
 }

@@ -1,3 +1,5 @@
+import waterfall from 'async/waterfall';
+var cheerio = require('cheerio')  ;
 var yahoo = require('./yahoo');
 var buzzbooklet = require('./buzzbooklet');
 
@@ -35,6 +37,9 @@ function _tagsToCategories(tags, _result, callback) {
 }
 
 
+/**
+ * callback(url, image)
+ */
 function _urlToImage(url, callback) {
   var image = new Image.model({reference:url});
   image.save(function(err) {
@@ -42,8 +47,31 @@ function _urlToImage(url, callback) {
   }.bind(image));
 }
 
+
+function _extractImages(html, callback) {
+  if (!html) {
+    callback(null, null);
+    return;
+  }
+
+  var $ = cheerio.load(html);
+  var imgs = $('img');
+  imgs.each(function(i, elem) {
+    $(elem).addClass('img-post');
+    var src = $(elem).attr('src');
+
+    _urlToImage(src, function(err, image) {
+      if (err) { callback(err); return; }
+      this[0].attr('src', "/img/" + image._id);
+      if (this[1]) {
+        callback(null, $.html());
+      }
+    }.bind([$(elem), i==imgs.length-1]) )
+  });
+}
+
 /**
- * data: {title, tags, imageUrl, content}
+ * data: {tags, imageUrl, *}
  */
 function _crawl(source, data, callback) {
 
@@ -70,8 +98,17 @@ function _crawl(source, data, callback) {
 						'image': image,
           })
 
-					var newPost = new Post.model(data);
-					newPost.save(callback);
+          _extractImages(data.content.html, function(err, html) {
+  					if (err) {callback(err); return;}
+
+            if (html) {
+              data.content.html = html;
+            }
+
+  					var newPost = new Post.model(data);
+  					newPost.save(callback);
+          });
+
 				});
 			});
 

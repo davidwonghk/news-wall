@@ -90,3 +90,8 @@ img.img-logo {
 	display: block;
 	margin-bottom: 20px;
 }
+
+.img-post {
+	@extend .img-responsive;
+	display: block;
+}
