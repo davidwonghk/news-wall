@@ -1,4 +1,4 @@
-import waterfall from 'async/waterfall';
+var async = require('async');
 var cheerio = require('cheerio')  ;
 var yahoo = require('./yahoo');
 var buzzbooklet = require('./buzzbooklet');
@@ -55,19 +55,17 @@ function _extractImages(html, callback) {
   }
 
   var $ = cheerio.load(html);
-  var imgs = $('img');
-  imgs.each(function(i, elem) {
-    $(elem).addClass('img-post');
-    var src = $(elem).attr('src');
-
+  async.reduce($('img'), $, function(s, item, cb) {
+    var src = s(item).attr('src');
     _urlToImage(src, function(err, image) {
-      if (err) { callback(err); return; }
-      this[0].attr('src', "/img/" + image._id);
-      if (this[1]) {
-        callback(null, $.html());
-      }
-    }.bind([$(elem), i==imgs.length-1]) )
+      if (err) { cb(err); return; }
+      this[1].attr('src', "/img/" + image._id);
+      cb(null, this[0]);
+    }.bind([s, s(item)]));
+  }, function(err, result) {
+    callback(null, result.html());
   });
+
 }
 
 /**

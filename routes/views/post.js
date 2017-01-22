@@ -35,7 +35,6 @@ exports = module.exports = function (req, res) {
 				description: result.Description
 			};
 
-			next(err);return;
 			//subsitute images src
 	    var $ = cheerio.load(result.Content);
 			var imgs = $('img');
