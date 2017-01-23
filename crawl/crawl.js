@@ -57,13 +57,16 @@ function _extractImages(html, callback) {
   var $ = cheerio.load(html);
   async.reduce($('img'), $, function(s, item, cb) {
     var src = s(item).attr('src');
+    if (!src) cb(null, this[0]);
+
     _urlToImage(src, function(err, image) {
-      if (err) { cb(err); return; }
-      this[1].attr('src', "/img/" + image._id);
-      cb(null, this[0]);
+      if (!err) {
+        this[1].attr('src', "/img/" + image._id);
+      }
+      cb(err, this[0]);
     }.bind([s, s(item)]));
   }, function(err, result) {
-    callback(null, result.html());
+    callback(err, result.html());
   });
 
 }
