@@ -1,3 +1,4 @@
+var async = require('async');
 var keystone = require('keystone'),
 	Image = keystone.list('Image');
 var cheerio = require('cheerio')  ;
@@ -37,29 +38,25 @@ exports = module.exports = function (req, res) {
 
 			//subsitute images src
 	    var $ = cheerio.load(result.Content);
-			var imgs = $('img');
-			if (!imgs || imgs.length==0) {
-				next(err);
-			}
-
-		  imgs.each(function(i, elem) {
-				var src = $(elem).attr('src');
-				if (!src) return true;
-				if (!src.startsWith('/img/')) return true;
+		  async.reduce($('img'), $, function(s, item, cb) {
+				var src = $(item).attr('src');
+		    if (!src || !src.startsWith('/img/')) {
+					cb(null, this[0]);
+				}
 
 				var imageId = src.substring(5);
 				Image.model.findById(imageId).exec(function(err, image) {
-					if (err) {next(err); return;}
-
-					this[0].attr('src', url.imageUrl(image));
-					if (this[1]) {
-						locals.data.html = $.html();
-						next();
+					if (!err) {
+						this[1].attr('src', url.imageUrl(image));
 					}
-				}.bind([$(elem), i==imgs.length-1]) );
+					cb(err, this[0]);
+				}.bind([s, s(item)]) );
 
+	  }, function(err, result) {
+			locals.data.html = result.html()
+			next(err);
+	  });
 
-			});
 
 		});
 
