@@ -44,7 +44,7 @@ function crawlCard(iteration, timestamp, callback) {
 			var card = json.new_card_list[k];
 			var data = {
 				'references': [getCardUrl(card['card_id'], card['uri_title']), parseHtmlEnteties(card['url'])],
-				'author': card['website'],
+				'from': card['website'],
 				'imageUrl': getImageUrl(card['image_path']),
 				'title': card['title'],
 			}

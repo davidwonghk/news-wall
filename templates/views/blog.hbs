@@ -9,6 +9,16 @@
 							{{/if}}
 							<span class="title">{{{title}}}</span>
 					</a>
+					{{#if from}}
+					<div class="blog-from">From
+							{{#if references.[1]}}
+							<a href="{{references.[1]}}">{{{from}}}</a>
+							{{else}}
+								{{{from}}}
+							{{/if}}
+					</div>
+					{{/if}}
+					<hr>
 				</div>
 				{{/each}}
 			</div>

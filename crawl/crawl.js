@@ -16,7 +16,7 @@ function _tagsToCategories(tags, _result, callback) {
 		var tag = tags.pop();
 		if (!tag) { callback(null, _result); return; }
 
-		PostCategory.model.find().where('name', tag).limit(1).exec(function(err, postCategories){
+		PostCategory.model.findOne({'name': tag}).exec(function(err, postCategories){
 			if (err) {callback(err); return;}
 
 			var category;
@@ -131,7 +131,7 @@ crawlYahooStyle: function(callback) {
 },
 
 crawlBuzzBooklet: function(callback) {
-  buzzbooklet(5, function(err, data) {
+  buzzbooklet(10, function(err, data) {
 		if (err) {callback(err); return;}
     _crawl('buzzbooklet', data, callback);
   });
