@@ -68,13 +68,14 @@ exports = module.exports = function (req, res) {
 			},
 		})
 			.sort('-publishedDate')
-			.populate('author categories');
+			.populate('author categories image');
 
 		if (locals.data.category) {
 			q.where('categories').in([locals.data.category]);
 		}
 
 		q.exec(function (err, results) {
+			if (err) console.log(err);
 			locals.data.posts = results;
 			next(err);
 		});

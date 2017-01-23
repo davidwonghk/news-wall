@@ -25,6 +25,11 @@ img.img-logo {
 .blog {
 	margin-top: 20px;
 
+	.blog-from {
+		color: #BBBBBB;
+		margin-top: 15px;
+	}
+
 	.blog-item {
 		margin-bottom: 40px;
 
@@ -78,4 +83,20 @@ img.img-logo {
 	overflow-x: hidden;
 	/* Disable horizontal scroll */
 	transition: 0.2s;
+}
+
+.post {
+	font-size: 17px;
+	line-height: 2;
+	color: #333;
+}
+
+.share {
+	display: block;
+	margin-bottom: 20px;
+}
+
+.img-post {
+	@extend .img-responsive;
+	display: block;
 }

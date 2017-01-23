@@ -60,7 +60,7 @@ keystone.set('routes', require('./routes'));
 
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
-	posts: ['posts', 'post-categories'],
+	posts: ['posts', 'post-categories', 'images'],
 	users: 'users',
 });
 
@@ -71,9 +71,10 @@ keystone.set('cloudinary secure', true);
 keystone.start();
 
 
-/*
-var crawl = require('./crawl/crawl');
-crawl.crawlYahooStyle(function(err) {
-	if (err) console.log(err);
-});
-*/
+
+if (process.env.CRAWL) {
+	var crawl = require('./crawl/crawl');
+	crawl.crawlBuzzBooklet(function(err) {
+		if (err) console.log(err);
+	});
+}
