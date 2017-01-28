@@ -2,12 +2,13 @@ jQuery(function($) {
 
 	const ITEM_PER_ROW = 4;
 
-	function loadPosts(timestamp) {
+	function loadPosts(state) {
 			$.ajax({
-				url: '/ajax/posts/' + timestamp,
+				url: '/ajax/posts/' + state.timestamp,
 				dataType: 'json',
 				success: function(data) {
-					data.forEach(function(item) {
+					state.timestamp = data.last;
+					data.posts.forEach(function(item) {
 						$('#posts').append(renderBlogItem(item));
 					});
 				}
@@ -39,12 +40,14 @@ jQuery(function($) {
 
 
 	//------------------- main ---------------------
+	var state = {"timestamp": Date.now()};
+
 	 $(window).scroll(function(){
 		if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
-			loadPosts();
+			loadPosts(state);
 		}
 	});
 
-	loadPosts(Date.now());
+	loadPosts(state);
 
 });

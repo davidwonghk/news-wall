@@ -1,6 +1,6 @@
 var keystone = require('keystone'),
-	Post = keystone.list('Post'),
-	PostCategory = keystone.list('PostCategory');
+
+	Post = keystone.list('Post');
 var async = require('async');
 var url = require('../../templates/views/helpers/url')();
 
@@ -27,7 +27,7 @@ exports = module.exports = function (req, res) {
 			return;
 		}
 
-		PostCategory.model.findOne({ key: locals.filters.category }).exec(function (err, result) {
+		keystone.list('PostCategory').model.findOne({ key: locals.filters.category }).exec(function (err, result) {
 			locals.data.category = result;
 			next(err);
 		});
@@ -35,19 +35,14 @@ exports = module.exports = function (req, res) {
 
 	// Load the posts
 	view.on('init', function (next) {
-		res.setHeader('Content-Type', 'application/json');
-
-		var q = Post.model.find({
+		var q = keystone.list('Post').model.find({
 			'state': 'published'
-		});
-		//.sort('-publishedDate')
-		//	.populate('categories image')
-		//	.limit(8);
-
+		}).sort('-publishedDate')
+			.populate('categories image')
+			.limit(8);
 
 		if(locals.filters.timestamp) {
-			var dateBefore = new Date(locals.filters.timestamp);
-			q.where('publishedDate').lt(dateBefore);
+			q.where('publishedDate').lt(locals.filters.timestamp);
 		}
 
 		if (locals.data.category) {
@@ -55,20 +50,22 @@ exports = module.exports = function (req, res) {
 		}
 
 		q.exec(function (err, results) {
-			console.log(results);
 			locals.data.posts = results;
+			res.setHeader('Content-Type', 'application/json');
 			next(err);
 		});
 	});
 
 
 	view.on('render', function (next) {
-		if (!locals.data.posts) {
+		const  data_posts = locals.data.posts;
+
+		if (!data_posts) {
 			res.send([]);
 			return;
 		}
 
-		var posts = locals.data.posts.map(function(p) {
+		var posts = data_posts.map(function(p) {
 			result = {
 				"title": p.title,
 				"postUrl": url.postUrl(p.slug),
@@ -89,7 +86,8 @@ exports = module.exports = function (req, res) {
 			return result;
 		});
 
-		res.send(posts);
+		last_post = data_posts[data_posts.length - 1]
+		res.send({"last": last_post.publishedDate.getTime(),"posts": posts});
 
 	});
 
