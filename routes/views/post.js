@@ -48,6 +48,7 @@ exports = module.exports = function (req, res) {
 				Image.model.findById(imageId).exec(function(err, image) {
 					if (!err) {
 						this[1].attr('src', url.imageUrl(image));
+						this[1].addClass('img-post');
 					}
 					cb(err, this[0]);
 				}.bind([s, s(item)]) );

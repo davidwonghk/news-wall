@@ -1,27 +1,6 @@
 <div class="container-fluid">
 	<div class="row">
-			<div class="blog">
-				{{# each data.posts.results}}
-				<div class="col-md-3 blog-item">
-					<a href="{{postUrl slug}}">
-							{{#if image}}
-							<img src="{{{imageUrl image}}}" class="img-responsive">
-							{{/if}}
-							<span class="title">{{{title}}}</span>
-					</a>
-					{{#if from}}
-					<div class="blog-from">From
-							{{#if references.[1]}}
-							<a href="{{references.[1]}}">{{{from}}}</a>
-							{{else}}
-								{{{from}}}
-							{{/if}}
-					</div>
-					{{/if}}
-					<hr>
-				</div>
-				{{/each}}
-			</div>
+			<script src="js/posts.js"></script>
+			<div class="posts" id="posts"></div>
 		</div>
-
 </div>

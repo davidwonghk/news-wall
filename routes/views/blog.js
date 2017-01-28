@@ -11,9 +11,6 @@ exports = module.exports = function (req, res) {
 	locals.filters = {
 		category: req.query.c,
 	};
-	locals.data = {
-		posts: [],
-	};
 
 	// Load all categories
 	view.on('init', function (next) {
@@ -43,43 +40,7 @@ exports = module.exports = function (req, res) {
 		});
 	});
 
-	// Load the current category filter
-	view.on('init', function (next) {
 
-		if (req.query.c) {
-			keystone.list('PostCategory').model.findOne({ key: locals.filters.category }).exec(function (err, result) {
-				locals.data.category = result;
-				next(err);
-			});
-		} else {
-			next();
-		}
-	});
-
-	// Load the posts
-	view.on('init', function (next) {
-
-		var q = keystone.list('Post').paginate({
-			page: req.query.page || 1,
-			perPage: 50,
-			maxPages: 10,
-			filters: {
-				state: 'published',
-			},
-		})
-			.sort('-publishedDate')
-			.populate('author categories image');
-
-		if (locals.data.category) {
-			q.where('categories').in([locals.data.category]);
-		}
-
-		q.exec(function (err, results) {
-			if (err) console.log(err);
-			locals.data.posts = results;
-			next(err);
-		});
-	});
 
 	// Render the view
 	view.render('blog');

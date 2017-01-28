@@ -41,7 +41,7 @@ exports = module.exports = function (app) {
 	app.get('/', routes.views.blog);
 	app.get('/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
-	app.get('/ajax/posts/:timestamp/:category', routes.ajax.posts);
+	app.get('/ajax/posts/:timestamp', routes.ajax.posts);
 
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
