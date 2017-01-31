@@ -51,13 +51,7 @@
 							<a href="/" class="navbar-brand"><img src='/images/logo.png' class='img-logo' /></a>
 						</div>
 						<div class="collapse navbar-collapse">
-							<ul class="nav navbar-nav navbar-left">
-									{{# each navLinks}}
-									<li {{#ifeq ../section key}}class="active"{{else}}{{/ifeq}}>
-										<a href="{{ categoryUrl key }}">{{ name }}</a>
-									</li>
-								{{/each}}
-							</ul>
+							<ul id="tag-bar" class="nav navbar-nav navbar-left"> </ul>
 							{{!--
 							<ul class="nav navbar-nav navbar-right">
 								{{#if user}}
@@ -166,7 +160,8 @@
 
 		<script src="/js/fb.js"></script>
 		<script src="/js/consent.js"></script>
-
+		<script src="js/util.js"></script>
+		<script src="/js/ajax-tags.js"></script>
 
 	</body>
 </html>

@@ -29,14 +29,8 @@ exports.initLocals = function (req, res, next) {
 	res.locals.user = req.user;
 	res.locals.baseUrl = process.env.BASE_URL;
 	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
-
-	keystone.list('PostCategory').model.find()
-		.sort('name')
-		.exec(function (err, results) {
-			if (err || !results.length) { return next(err); }
-			res.locals.navLinks = results;
-			next();
-		});
+	
+	next();
 };
 
 

@@ -4,7 +4,7 @@ jQuery(function($) {
 
 	function loadPosts(state) {
 			$.ajax({
-				url: '/ajax/posts/' + state.timestamp,
+				url: '/ajax/posts/' + state.timestamp + getQuery(),
 				dataType: 'json',
 				success: function(data) {
 					state.timestamp = data.last;

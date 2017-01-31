@@ -1,6 +1,6 @@
 var keystone = require('keystone'),
-
-	Post = keystone.list('Post');
+	Post = keystone.list('Post'),
+	PostCategory = keystone.list('PostCategory');
 var async = require('async');
 var url = require('../../templates/views/helpers/url')();
 
@@ -27,7 +27,7 @@ exports = module.exports = function (req, res) {
 			return;
 		}
 
-		keystone.list('PostCategory').model.findOne({ key: locals.filters.category }).exec(function (err, result) {
+		PostCategory.model.findOne({ key: locals.filters.category }).exec(function (err, result) {
 			locals.data.category = result;
 			next(err);
 		});
