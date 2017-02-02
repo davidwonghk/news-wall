@@ -76,7 +76,7 @@ exports = module.exports = function (req, res) {
 			}
 
 			if (p.from) {
-				result.from = {"text": p.from};
+				result.from = p.from;
 
 				if (p.references[1]) {
 					result.from.url = p.references[1];

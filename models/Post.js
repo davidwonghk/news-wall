@@ -21,7 +21,10 @@ Post.add({
 	title: { type: String, required: true },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
 	references: { type: Types.TextArray	},
-	from: { type: String },
+	from: {
+		site: {type: String },
+		author: {type: String}
+	},
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },

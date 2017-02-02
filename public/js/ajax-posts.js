@@ -1,4 +1,4 @@
-jQuery(function($) {
+	jQuery(function($) {
 
 	const ITEM_PER_ROW = 4;
 
@@ -19,7 +19,8 @@ jQuery(function($) {
 		image = !(data.imageUrl) ? '' : `<img src="${data.imageUrl}" class="img-responsive">`
 		from = !(data.from) ? '' : `
 						<div class="post-from">From
-								<a href="${data.from.url}">${data.from.text}</a>
+								<a href="${data.from.url}">${data.from.site}</a>
+								 By ${data.from.author}
 						</div>
 		`;
 
