@@ -9,7 +9,6 @@ var keystone = require('keystone'),
     Image = keystone.list('Image');
 
 
-
 function _tagsToCategories(tags, _result, callback) {
 		if (!tags) { callback(null, _result); return; }
 
@@ -81,7 +80,7 @@ function _crawl(source, data, callback) {
 			if (err) {callback(err); return;}
 			if (posts.length > 0) {
 				console.log("skip recreate post:" + data.title);
-				return;
+				return callback('skip');
 			}
 
 			_tagsToCategories(data.tags, [], function(err, categories) {
@@ -89,7 +88,7 @@ function _crawl(source, data, callback) {
         delete data.tags;
 
 				_urlToImage(data.imageUrl, function(err, image) {
-					if (err) {callback(err); return;}
+					if (err) return callback(err);
 
           data.image = image;
           delete data.imageUrl;
@@ -100,7 +99,7 @@ function _crawl(source, data, callback) {
           })
 
           _extractImages(data.content.html, function(err, html) {
-  					if (err) {callback(err); return;}
+  					if (err) return callback(err);
 
             if (html) {
               data.content.html = html;
@@ -127,14 +126,14 @@ crawlYahooStyle: function(callback) {
   var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
 	yahooTags.forEach(function (tagName) {
     yahoo(tagName, tagName, function(err, data) {
-  		if (err) {callback(err); return;}
+			if (err) return callback(err);
       _crawl('yahoo', data, callback);
   	});
 	});
 },
 
-crawlBuzzBooklet: function(callback) {
-  buzzbooklet(10, function(err, data) {
+crawlBuzzBooklet: function(num, callback) {
+  buzzbooklet(num, function(err, data) {
 		if (err) {callback(err); return;}
     _crawl('buzzbooklet', data, callback);
   });

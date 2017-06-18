@@ -87,7 +87,8 @@ exports = module.exports = function (req, res) {
 		});
 
 		last_post = data_posts[data_posts.length - 1]
-		res.send({"last": last_post.publishedDate.getTime(),"posts": posts});
+		last_time = last_post ? last_post.publishedDate.getTime() : null
+		res.send({"last": last_time,"posts": posts});
 
 	});
 

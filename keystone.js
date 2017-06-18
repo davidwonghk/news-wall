@@ -69,12 +69,3 @@ keystone.set('cloudinary secure', true);
 
 // Start Keystone to connect to your database and initialise the web server
 keystone.start();
-
-
-
-if (process.env.CRAWL) {
-	var crawl = require('./crawl/crawl');
-	crawl.crawlBuzzBooklet(function(err) {
-		if (err) console.log(err);
-	});
-}
