@@ -29,7 +29,8 @@ keystone.pre('render', middleware.flashMessages);
 // Import Route Controllers
 var routes = {
 	views: importRoutes('./views'),
-	ajax: importRoutes('./ajax')
+	ajax: importRoutes('./ajax'),
+	api: importRoutes('./api'),
 };
 
 // Setup Route Bindings
@@ -43,6 +44,7 @@ exports = module.exports = function (app) {
 	app.get('/protected', middleware.requireUser, routes.views.protected);
 	app.get('/ajax/posts/:timestamp', routes.ajax.posts);
 	app.get('/ajax/categories', routes.ajax.categories);
+	app.get('/api/crawl', middleware.requireUser, routes.api.crawl);
 
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:

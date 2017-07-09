@@ -132,8 +132,8 @@ crawlYahooStyle: function(callback) {
 	});
 },
 
-crawlBuzzBooklet: function(callback) {
-  buzzbooklet(10, function(err, data) {
+crawlBuzzBooklet: function(num, callback) {
+  buzzbooklet(num, function(err, data) {
 		if (err) {callback(err); return;}
     _crawl('buzzbooklet', data, callback);
   });
