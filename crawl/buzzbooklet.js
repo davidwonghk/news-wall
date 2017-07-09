@@ -12,16 +12,17 @@ callback
     'link': link,
 		'content': {html:html}
 */
-exports = module.exports = function (iteration, callback) {
+exports = module.exports = function (num, callback) {
 
 	const current = Date.now()/1000;
-	crawlCard(iteration, current, function(err, data) {
+	crawlCard(num, current, function(err, data) {
     if(err) { callback(err); return; }
 
-		crawlLink(data.references[0], function(err, html) {
+		sourceUrl = data.references[0]
+		crawlLink(sourceUrl, function(err, html) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
-			console.log('crawl ' + data.references[0]);
+			console.log('crawl ' + sourceUrl);
 			callback(null, data);
 		});
 
@@ -30,17 +31,18 @@ exports = module.exports = function (iteration, callback) {
 
 
 
-function crawlCard(iteration, timestamp, callback) {
-	if (iteration <= 0) return;
+function crawlCard(num, timestamp, callback) {
+	if (num <= 0) return;
 
 	const url = getCardListUrl(timestamp);
 	request(url, function(err, resp, body) {
 		if (err) { callback(err); return; }
 
 		var json = JSON.parse(body);
-		crawlCard(iteration-1, json['build'], callback);
 
 		for (k in json.new_card_list) {
+			if (--num < 0) return;
+			
 			var card = json.new_card_list[k];
 			var data = {
 				'references': [getCardUrl(card['card_id'], card['uri_title']), parseHtmlEnteties(card['url'])],
@@ -52,6 +54,7 @@ function crawlCard(iteration, timestamp, callback) {
 			callback(null, data);
 		}
 
+		crawlCard(num, json['build'], callback);
 	});
 }
 

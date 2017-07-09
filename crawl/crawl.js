@@ -71,9 +71,10 @@ function _extractImages(html, callback) {
 }
 
 /**
+ * origin: the origin to crawl
  * data: {tags, imageUrl, *}
  */
-function _crawl(source, data, callback) {
+function _crawl(origin, data, callback) {
 
 		//find post by title
 		Post.model.find().where('title', data.title).limit(1).exec(function(err, posts) {
