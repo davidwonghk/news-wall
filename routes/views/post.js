@@ -1,7 +1,5 @@
-var async = require('async');
 var keystone = require('keystone'),
 	Image = keystone.list('Image');
-var cheerio = require('cheerio')  ;
 var url = require('../../templates/views/helpers/url')();
 
 exports = module.exports = function (req, res) {
@@ -28,7 +26,7 @@ exports = module.exports = function (req, res) {
 		.populate('categories image');
 
 		q.exec(function (err, result) {
-			if (err) {next(err); return;}
+			if (err) return next(err);
 
 			locals.data.post = result;
 			locals.data.meta = {
@@ -36,28 +34,21 @@ exports = module.exports = function (req, res) {
 				description: result.Description
 			};
 
+			locals.data.html = result.html;
+			next();
 			//subsitute images src
-	    var $ = cheerio.load(result.Content);
-		  async.reduce($('img'), $, function(s, item, cb) {
-				var src = $(item).attr('src');
-		    if (!src || !src.startsWith('/img/')) {
-					cb(null, this[0]);
-				}
-
-				var imageId = src.substring(5);
-				Image.model.findById(imageId).exec(function(err, image) {
-					if (!err) {
-						this[1].attr('src', url.imageUrl(image));
-						this[1].addClass('img-post');
-					}
-					cb(err, this[0]);
-				}.bind([s, s(item)]) );
-
-	  }, function(err, result) {
-			locals.data.html = result.html()
-			next(err);
-	  });
-
+			/*
+			result.forEachImages(
+				function(image, imageDom) {
+					imageDom.attr('src', url.imageUrl(image));
+					imageDom.addClass('img-post');
+				},
+			  function(err, globalDom) {
+					locals.data.html = result.html
+					next(err);
+			  }
+			);
+			*/
 
 		});
 

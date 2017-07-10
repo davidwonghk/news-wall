@@ -46,10 +46,13 @@ module.exports = function () {
 	//     <img src="{{imageUrl post.image}}" />`
 	//   {{/if}}`
 	_url.imageUrl = function(image, options) {
-		if ( image.cloudinary ) {
-			return _url.cloudinaryUrl(image.cloudinary, {hash:{'crop':'fit'}})
+		if ( image.local ) {
+			return image.local;
 		}
-		return image.reference
+		if ( image.cloudinary ) {
+			return _url.cloudinaryUrl(image.cloudinary, {hash:{'crop':'fit'}});
+		}
+		return image.reference;
 	};
 
 	// ### Content Url Helpers

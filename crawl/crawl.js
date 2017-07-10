@@ -1,5 +1,6 @@
 var async = require('async');
 var cheerio = require('cheerio')  ;
+
 var yahoo = require('./yahoo');
 var buzzbooklet = require('./buzzbooklet');
 
@@ -42,7 +43,7 @@ function _tagsToCategories(tags, _result, callback) {
 function _urlToImage(url, callback) {
   var image = new Image.model({reference:url});
   image.save(function(err) {
-    callback(null, this);
+    callback(err, this);
   }.bind(image));
 }
 
@@ -81,7 +82,7 @@ function _crawl(origin, data, callback) {
 			if (err) {callback(err); return;}
 			if (posts.length > 0) {
 				console.log("skip recreate post:" + data.title);
-				return callback('skip');
+				return callback();
 			}
 
 			_tagsToCategories(data.tags, [], function(err, categories) {

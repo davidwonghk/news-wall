@@ -1,7 +1,8 @@
 var cheerio = require('cheerio')  ;
 var url = require('url');
 var striptags = require('striptags');
-var request = require('request');
+
+var request = require('./util').get;
 
 
 /**
@@ -18,11 +19,11 @@ exports = module.exports = function (num, callback) {
 	crawlCard(num, current, function(err, data) {
     if(err) { callback(err); return; }
 
-		sourceUrl = data.references[0]
-		crawlLink(sourceUrl, function(err, html) {
+		reference = data.references[0]
+		crawlLink(reference, function(err, html) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
-			console.log('crawl ' + sourceUrl);
+			console.log('crawl ' + reference);
 			callback(null, data);
 		});
 
@@ -42,7 +43,7 @@ function crawlCard(num, timestamp, callback) {
 
 		for (k in json.new_card_list) {
 			if (--num < 0) return;
-			
+
 			var card = json.new_card_list[k];
 			var data = {
 				'references': [getCardUrl(card['card_id'], card['uri_title']), parseHtmlEnteties(card['url'])],

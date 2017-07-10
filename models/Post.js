@@ -1,8 +1,12 @@
-var keystone = require('keystone');
+var keystone = require('keystone'),
+    Image = keystone.list('Image');
+
 var Types = keystone.Field.Types;
 
 var striptags = require('striptags');
 var slug = require('limax');
+
+var util = require('../crawl/util')
 
 /**
  * Post Model
@@ -59,12 +63,66 @@ Post.schema.methods.isPublished = function() {
 	return this.state == 'published';
 }
 
-Post.schema.pre('save', function(next) {
-	if (this.isModified('state') && this.isPublished() && !this.publishedAt) {
-		this.publishedDate = new Date();
-	}
+//------------------------------------------------------------
+//TODO: heavy logic, maybe a helper class in future
 
+var async = require('async');
+var cheerio = require('cheerio')  ;
+
+/**
+ * @param eachCallback function(image, imageDom)
+ * @param postCallback function(error, globalDom)
+ */
+Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
+	var $ = cheerio.load(this.Content);
+
+	async.reduce($('img'), $, function(s, item, cb) {
+		var src = $(item).attr('src');
+	  if (!src || !src.startsWith('/img/')) {
+			cb(null, $);
+		}
+
+		var imageId = src.substring(5);
+		Image.model.findById(imageId).exec(function(err, image) {
+			if (!err) {
+				eachCallback(image, this[1])
+			}
+			cb(err, this[0]);
+		}.bind([s, s(item)]) );
+
+	}, postCallback);
+}
+
+
+
+Post.schema.methods.onPublished = function(next) {
+	this.publishedDate = new Date();
+
+	//download the image from reference Url to local, with Referer set
+	this.forEachImages(function(image, imageDom){
+		if (!image.reference) return;
+
+		var localPath  = "public/img/" + image.id;
+		var headers = { Referer:this.reference, }
+		util.download(image.reference, localPath, headers, function() {
+			image.save(function(err) {
+		    if (err) throw err
+			});
+		})
+	},function(error, globalDom) {
+		next(error)
+	}.bind(this));
+}
+
+//------------------------------------------------------------
+
+Post.schema.pre('save', function(next) {
 	this.slug = slug(this.title);
+
+	if (this.isModified('state') && this.isPublished() && !this.publishedDate) {
+		//when publish a post
+		return this.onPublished(next);
+	}
 
 	next();
 });
