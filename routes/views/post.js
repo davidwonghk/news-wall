@@ -41,7 +41,6 @@ exports = module.exports = function (req, res) {
 			result.forEachImages(
 				function(image, imageDom) {
 					imageDom.attr('src', url.imageUrl(image));
-					imageDom.addClass('img-post');
 				},
 			  function(err, globalDom) {
 					locals.data.html = result.html

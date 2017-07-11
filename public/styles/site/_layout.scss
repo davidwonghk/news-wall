@@ -1,3 +1,7 @@
+#body {
+	font-family: Helvetica, "Heiti TC", "Microsoft JhengHei" , "新細明體", "PMingLiU", sans-serif
+}
+
 #header {
 	padding-top: 50px;
 }
@@ -45,6 +49,7 @@ img.img-logo {
 			font-size: 16pt;
 			color: #222;
 			display: block;
+			padding-top: 10px;
 		}
 
 		$blog-item-color: rgba(0,0,0,0.7);
@@ -89,6 +94,11 @@ img.img-logo {
 	font-size: 17px;
 	line-height: 2;
 	color: #333;
+
+	img {
+		@extend .img-responsive;
+		display: block;
+	}
 }
 
 .share {
@@ -96,7 +106,6 @@ img.img-logo {
 	margin-bottom: 20px;
 }
 
-.img-post {
-	@extend .img-responsive;
-	display: block;
+header h1 {
+	color: #555566;
 }

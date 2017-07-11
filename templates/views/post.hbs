@@ -11,11 +11,10 @@
 						{{/each}}
 					</h5>
 				</header>
-				<hr>
 				<div class="post">
-					{{!--
-					{{#if data.post.image}}<img src="{{{imageUrl data.post.image}}}" class="img-responsive" />{{/if}}
-					--}}
+					<!--
+					{{#if data.post.image}}<img src="{{{imageUrl data.post.image}}}" />{{/if}}
+				-->
 					<div class="share">
 					<div class="fb-like"
 						data-href="{{data.post.url}}"
@@ -33,6 +32,11 @@
 					{{else if data.post.Content}}
 						{{{data.post.Content}}}
 					{{/if}}
+
+					<hr>
+					<div class="share">
+						{{> share}}
+					</div>
 
 				</div>
 			</article>

@@ -6,7 +6,6 @@ var Types = keystone.Field.Types;
 var striptags = require('striptags');
 var slug = require('limax');
 
-var util = require('../crawl/util')
 
 /**
  * Post Model
@@ -95,25 +94,6 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 
 
 
-Post.schema.methods.onPublished = function(next) {
-	this.publishedDate = new Date();
-
-	//download the image from reference Url to local, with Referer set
-	this.forEachImages(function(image, imageDom){
-		if (!image.reference) return;
-
-		var localPath  = "public/img/" + image.id;
-		var headers = { Referer:this.reference, }
-		util.download(image.reference, localPath, headers, function() {
-			image.save(function(err) {
-		    if (err) throw err
-			});
-		})
-	},function(error, globalDom) {
-		next(error)
-	}.bind(this));
-}
-
 //------------------------------------------------------------
 
 Post.schema.pre('save', function(next) {
@@ -121,10 +101,29 @@ Post.schema.pre('save', function(next) {
 
 	if (this.isModified('state') && this.isPublished() && !this.publishedDate) {
 		//when publish a post
-		return this.onPublished(next);
+		this.publishedDate = new Date();
+
+		//download the image from reference Url to local, with Referer set
+		this.forEachImages(function(image, imageDom){
+			image.publish(this, function(err) {
+				if (err) throw err;
+			});
+		},function(error, globalDom) {
+			this.image.publish(this, next);
+		}.bind(this));
 	}
 
 	next();
+});
+
+Post.schema.pre('remove', function(next) {
+	this.forEachImages(function(image, imageDom) {
+		image.remove(function(err) {
+			conole.log("error remove image: " + err);
+		});
+	}, function(error, globalDom) {
+			if (err) next(err);
+	})
 });
 
 

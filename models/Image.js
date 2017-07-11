@@ -2,7 +2,7 @@ var keystone = require('keystone');
 var Types = keystone.Field.Types;
 var cloudinary = require('cloudinary');
 
-var request = require('request');
+var util = require('../crawl/util')
 
 /**
  * Image Model
@@ -19,19 +19,20 @@ Image.add({
 });
 
 
-/*
-Image.schema.pre('save', function(next) {
-	if (!this.reference || this.cloudinary.length ) {
-		next();
-	}
 
-	cloudinary.uploader.upload(this.reference, function(result) {
-		this.cloudinary = result;
-		next();
-	}.bind(this));
+Image.schema.methods.publish = function(post, callback) {
+		if (!this.reference) return callback('reference not found');
 
-});
-*/
+		var headers = {Referer: post.reference};
+		this.local = "/img/" + this.id;
+		util.download(this.reference, 'public'+this.local, headers, function() {
+			cloudinary.uploader.upload(this.local, function(result) {
+				this.cloudinary = result;
+				this.save(callback);
+			}.bind(this));
+		}.bind(this));
+
+}
 
 
 Image .defaultColumns = 'reference, cloudinary|30%'

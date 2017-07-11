@@ -3,16 +3,19 @@
 	const ITEM_PER_ROW = 4;
 
 	function loadPosts(state) {
-			$.ajax({
-				url: '/ajax/posts/' + state.timestamp + getQuery(),
-				dataType: 'json',
-				success: function(data) {
-					state.timestamp = data.last;
-					data.posts.forEach(function(item) {
-						$('#posts').append(renderBlogItem(item));
-					});
-				}
-			});
+		var timestamp = state.timestamp;
+		if (!timestamp) timestamp = '';
+		
+		$.ajax({
+			url: '/ajax/posts/' + timestamp + getQuery(),
+			dataType: 'json',
+			success: function(data) {
+				state.timestamp = data.last;
+				data.posts.forEach(function(item) {
+					$('#posts').append(renderBlogItem(item));
+				});
+			}
+		});
 	}
 
 	function renderBlogItem(data) {

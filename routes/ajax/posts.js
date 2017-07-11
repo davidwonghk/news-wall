@@ -75,6 +75,7 @@ exports = module.exports = function (req, res) {
 				result.imageUrl = url.imageUrl(p.image);
 			}
 
+/*
 			if (p.from) {
 				result.from = p.from;
 
@@ -82,6 +83,7 @@ exports = module.exports = function (req, res) {
 					result.from.url = p.references[1];
 				}
 			}
+*/
 
 			return result;
 		});
