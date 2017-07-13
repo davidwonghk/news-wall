@@ -33,10 +33,15 @@ var routes = {
 	api: importRoutes('./api'),
 };
 
+var render = function(name) {
+	return function (res, req){res.res.render(name)}
+}
+
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	//custom signin page
-	app.get('/signin', function (res, req){res.res.render('signin')} );
+	app.get('/signin', render('signin') );
+	app.get('/policy/cookies', render('cookies') );
 
 	// Views
 	app.get('/', routes.views.blog);
