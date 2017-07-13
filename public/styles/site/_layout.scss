@@ -98,6 +98,7 @@ img.img-logo {
 	img {
 		@extend .img-responsive;
 		display: block;
+		max-width: 640px;
 	}
 }
 
@@ -108,4 +109,5 @@ img.img-logo {
 
 header h1 {
 	color: #555566;
+	font-weight: bold;
 }
