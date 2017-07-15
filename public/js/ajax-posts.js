@@ -5,7 +5,7 @@
 	function loadPosts(state) {
 		var timestamp = state.timestamp;
 		if (!timestamp) timestamp = '';
-		
+
 		$.ajax({
 			url: '/ajax/posts/' + timestamp + getQuery(),
 			dataType: 'json',

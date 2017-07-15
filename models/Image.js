@@ -24,10 +24,6 @@ Image.schema.virtual('localPath').get(function() {
 	return IMAGE_LOCAL_DIR + this.id;
 });
 
-Image.schema.virtual('local').get(function() {
-	'/img/' + this.id;
-});
-
 
 Image.schema.methods.publish = function(post, callback) {
 		if (!this.reference) return callback('reference not found');

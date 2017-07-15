@@ -165,8 +165,6 @@ module.exports = function () {
 	};
 
 	//export sub-modules
-	var _url = require('./url')();
-	return Object.assign(_helpers, _url);
-
+	_helpers = Object.assign(_helpers, require('./url'));
 	return _helpers;
 };

@@ -1,7 +1,7 @@
 var keystone = require('keystone'),
 	PostCategory = keystone.list('PostCategory');
 
-var url = require('../../templates/views/helpers/url')();
+var url = require('../../templates/views/helpers/url');
 
 
 exports = module.exports = function (req, res) {
@@ -21,8 +21,6 @@ exports = module.exports = function (req, res) {
 		PostCategory.model.find()
 			.sort('name')
 			.exec(function (err, results) {
-				console.log(results);
-				console.log(err);
 				locals.data.categories = results;
 				next(err);
 			});

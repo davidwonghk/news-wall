@@ -29,7 +29,7 @@ exports.initLocals = function (req, res, next) {
 	res.locals.user = req.user;
 	res.locals.baseUrl = process.env.BASE_URL;
 	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
-	
+
 	next();
 };
 
@@ -60,3 +60,13 @@ exports.requireUser = function (req, res, next) {
 		next();
 	}
 };
+
+
+exports.onlyMe = function(req, res, next) {
+	if (req.headers['user-agent']!='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:54.0) Gecko/20100101 Firefox/54.0') {
+		// HTTP status 404: NotFound
+		res.status(404).send('Not found');
+	} else {
+		next();
+	}
+}

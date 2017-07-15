@@ -4,7 +4,7 @@
 
 			<article>
 				<header>
-					<h1>{{{data.post.title}}}</h1>
+					<h1>{{{data.post.Title}}}</h1>
 					<h5>
 						{{# each data.post.categories}}
 						<a href="{{ categoryUrl key }}">#{{ name }} </a>
@@ -27,12 +27,7 @@
 					{{> share}}
 					</div>
 					<hr>
-					{{#if data.html}}
 						{{{data.html}}}
-					{{else if data.post.Content}}
-						{{{data.post.Content}}}
-					{{/if}}
-
 					<hr>
 					<div class="share">
 						{{> share}}

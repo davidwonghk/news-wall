@@ -111,3 +111,14 @@ header h1 {
 	color: #555566;
 	font-weight: bold;
 }
+
+#lang-bar {
+	margin-left: 20px;
+	a {
+		padding: 	5px;
+		margin: 	5px;
+		font-weight: bold;
+		border:1px solid #fff;
+		text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	}
+}

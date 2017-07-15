@@ -44,6 +44,7 @@ Post.schema.virtual('Title').get(function() {
 	return decodeURI(this.title);
 });
 
+//------------------------------------------------------------
 
 Post.schema.virtual('Content').get(function() {
 	if (!this.content) return "";
@@ -118,11 +119,12 @@ Post.schema.pre('save', function(next) {
 
 Post.schema.pre('remove', function(next) {
 	this.forEachImages(function(image, imageDom) {
+    if (!image) return;
 		image.remove(function(err) {
-			conole.log("error remove image: " + err);
+			console.log("error remove image: " + err);
 		});
-	}, function(error, globalDom) {
-			if (err) next(err);
+	}, function(err, globalDom) {
+			next(err);
 	})
 });
 

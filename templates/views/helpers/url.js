@@ -1,9 +1,8 @@
 var keystone = require('keystone');
 var cloudinary = require('cloudinary');
+var fs = require('fs');
 
-module.exports = function () {
-
-	var _url = {};
+module.exports = {
 
 	// ### CloudinaryUrl Helper
 	// Direct support of the cloudinary.url method from Handlebars (see
@@ -15,7 +14,7 @@ module.exports = function () {
 	//
 	// Returns an src-string for a cloudinary image
 
-	_url.cloudinaryUrl = function (context, options) {
+	cloudinaryUrl: function (context, options) {
 
 		// if we dont pass in a context and just kwargs
 		// then `this` refers to our default scope block and kwargs
@@ -38,22 +37,24 @@ module.exports = function () {
 		else {
 			return null;
 		}
-	};
+	},
 
 	// ### abstract how to get the image ###
 	// *Usage example:*
 	//  `{{#if post.image}}
 	//     <img src="{{imageUrl post.image}}" />`
 	//   {{/if}}`
-	_url.imageUrl = function(image, options) {
-		if ( image.local ) {
-			return image.local;
+	imageUrl: function(image, options) {
+		var local = '/img/'+image.id;
+		if (fs.existsSync('public/'+local)) {
+			return local;
 		}
+
 		if ( image.cloudinary ) {
 			return _url.cloudinaryUrl(image.cloudinary, {hash:{'crop':'fit'}});
 		}
 		return image.reference;
-	};
+	},
 
 	// ### Content Url Helpers
 	// KeystoneJS url handling so that the routes are in one place for easier
@@ -61,21 +62,20 @@ module.exports = function () {
 	// the routes by keynames to reduce the maintenance of changing urls
 
 	// Direct url link to a specific post
-	_url.postUrl = function (postSlug) {
+	postUrl: function (postSlug) {
 		return ('/post/' + postSlug);
-	};
+	},
 
-	_url.fullPostUrl = function(postSlug) {
+	fullPostUrl: function(postSlug) {
 			return (process.env.BASE_URL + '/post/' + postSlug);
-	}
+	},
 
 	// create the category url for a blog-category page
-	_url.categoryUrl = function (categorySlug, options) {
+	categoryUrl: function (categorySlug, options) {
 		//return ('/blog/' + categorySlug);
 		return ('/?c=' + categorySlug);
-	};
+	},
 
 
-	return _url;
 
 };

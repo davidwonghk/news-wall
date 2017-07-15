@@ -1,8 +1,11 @@
 var keystone = require('keystone'),
 	Post = keystone.list('Post'),
 	PostCategory = keystone.list('PostCategory');
+
 var async = require('async');
-var url = require('../../templates/views/helpers/url')();
+
+var url = require('../../templates/views/helpers/url');
+var filter = require('../filter')
 
 exports = module.exports = function (req, res) {
 
@@ -35,11 +38,11 @@ exports = module.exports = function (req, res) {
 
 	// Load the posts
 	view.on('init', function (next) {
-		var q = keystone.list('Post').model.find({
+		var q = Post.model.find({
 			'state': 'published'
 		}).sort('-publishedDate')
 			.populate('categories image')
-			.limit(8);
+			.limit(8);	//8 posts per flush
 
 		if(locals.filters.timestamp) {
 			q.where('publishedDate').lt(locals.filters.timestamp);
@@ -58,7 +61,7 @@ exports = module.exports = function (req, res) {
 
 
 	view.on('render', function (next) {
-		const  data_posts = locals.data.posts;
+		const data_posts = locals.data.posts;
 
 		if (!data_posts) {
 			res.send([]);
@@ -67,7 +70,7 @@ exports = module.exports = function (req, res) {
 
 		var posts = data_posts.map(function(p) {
 			result = {
-				"title": p.title,
+				"title": filter.chinese(p.Title),
 				"postUrl": url.postUrl(p.slug),
 			};
 

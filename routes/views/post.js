@@ -1,6 +1,8 @@
 var keystone = require('keystone'),
 	Image = keystone.list('Image');
-var url = require('../../templates/views/helpers/url')();
+
+var url = require('../../templates/views/helpers/url');
+var filter = require('../filter')
 
 exports = module.exports = function (req, res) {
 
@@ -13,7 +15,8 @@ exports = module.exports = function (req, res) {
 		post: req.params.post,
 	};
 	locals.data = {
-		posts: [],
+		post: null,		//current post for this page
+		posts: [],		//for other latest posts
 	};
 
 	// Load the current post
@@ -30,11 +33,11 @@ exports = module.exports = function (req, res) {
 
 			locals.data.post = result;
 			locals.data.meta = {
-				title: result.title,
-				description: result.Description
+				title: filter.chinese(result.Title),
+				description: filter.chinese(result.Description),
 			};
 
-			locals.data.html = result.html;
+			locals.data.html = filter.chinese(result.Content);
 			next();
 			//subsitute images src
 			/*
