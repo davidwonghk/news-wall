@@ -1,16 +1,17 @@
-var keystone = require('keystone'),
+const keystone = require('keystone'),
 	Post = keystone.list('Post'),
 	PostCategory = keystone.list('PostCategory');
 
-var async = require('async');
+const async = require('async');
 
-var url = require('../../templates/views/helpers/url');
-var filter = require('../filter')
+const url = require('../../templates/views/helpers/url');
+const Filter = require('../filter')
 
 exports = module.exports = function (req, res) {
 
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
+	var filter = Filter(req);
 
 	// Init locals
 	locals.filters = {

@@ -18,9 +18,11 @@
  * http://expressjs.com/api.html#app.VERB
  */
 
-var keystone = require('keystone');
-var middleware = require('./middleware');
-var importRoutes = keystone.importer(__dirname);
+const keystone = require('keystone');
+const middleware = require('./middleware');
+const importRoutes = keystone.importer(__dirname);
+
+const cookieParser = require('cookie-parser')
 
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
@@ -45,6 +47,8 @@ exports = module.exports = function (app) {
 	app.get('/policy/cookies', render('cookies') );
 
 	// Views
+	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
+	// app.get('/protected', middleware.requireUser, routes.views.protected);
 	app.get('/', routes.views.blog);
 	app.get('/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
@@ -52,8 +56,7 @@ exports = module.exports = function (app) {
 	app.get('/ajax/categories', routes.ajax.categories);
 	app.get('/api/crawl', middleware.onlyMe, routes.api.crawl);
 
-
-	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
-	// app.get('/protected', middleware.requireUser, routes.views.protected);
+	//use additinal middleware globally
+	app.use(cookieParser);
 
 };

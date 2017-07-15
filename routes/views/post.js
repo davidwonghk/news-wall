@@ -1,13 +1,14 @@
-var keystone = require('keystone'),
+const keystone = require('keystone'),
 	Image = keystone.list('Image');
 
-var url = require('../../templates/views/helpers/url');
-var filter = require('../filter')
+const url = require('../../templates/views/helpers/url');
+const Filter = require('../filter')
 
 exports = module.exports = function (req, res) {
 
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
+	var filter = Filter(req);
 
 	// Set locals
 	locals.section = 'blog';

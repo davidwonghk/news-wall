@@ -4,19 +4,21 @@ const opencc = new OpenCC('t2s.json');
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
-function isChinese(c) {
-	/[\u3400-\u9FBF]/.test(c);
-}
 
-module.exports = {
+module.exports = function(req) {
 
+return {
 	chinese: function(text, callback) {
-		text = entities.decode(text);
+		//defualt is tranditional chinese
+		var tc = (req.cookies['zh'] != 'sc')
+		dtext = entities.decode(text);
+
 		if (callback) {
-			opencc.convert(text, callback);
+			return tc ? callback(null, text) : opencc.convert(dtext, callback);
 		} else {
-			return opencc.convertSync(text);
+			return tc ? text : opencc.convertSync(dtext);
 		}
 	},
+}
 
 };

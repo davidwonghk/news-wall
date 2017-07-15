@@ -5,6 +5,7 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "cloudinary": "^1.2.4",
+    "cookie-parser": "^1.4.3",
     "dotenv": "^2.0.0",
     "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.5",
