@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "body-parser": "^1.17.2",
     "cheerio": "^0.22.0",
     "cloudinary": "^1.2.4",
     "dotenv": "^2.0.0",
     "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.5",
+    "html-entities": "^1.2.1",
     "keystone": "^4.0.0-beta.1",
     "limax": "^1.4.1",
     "lodash": "^4.13.1",

@@ -1,15 +1,22 @@
-var OpenCC = require('opencc');
-var opencc = new OpenCC('t2s.json');
+const OpenCC = require('opencc');
+const opencc = new OpenCC('t2s.json');
 
-var async = require('async');
-var cheerio = require('cheerio')  ;
+const Entities = require('html-entities').AllHtmlEntities;
+const entities = new Entities();
+
+function isChinese(c) {
+	/[\u3400-\u9FBF]/.test(c);
+}
 
 module.exports = {
 
-	chinese : function(text, options){
-
-		var $ = cheerio.load(text);
-		return opencc.convertSync(text);
+	chinese: function(text, callback) {
+		text = entities.decode(text);
+		if (callback) {
+			opencc.convert(text, callback);
+		} else {
+			return opencc.convertSync(text);
+		}
 	},
 
 };

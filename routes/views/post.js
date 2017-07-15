@@ -31,14 +31,20 @@ exports = module.exports = function (req, res) {
 		q.exec(function (err, result) {
 			if (err) return next(err);
 
+			//internal use for view, try not to use it in hbs
 			locals.data.post = result;
+
+			locals.data.title = filter.chinese(result.Title);
+
 			locals.data.meta = {
-				title: filter.chinese(result.Title),
+				title: locals.data.title,
 				description: filter.chinese(result.Description),
 			};
 
-			locals.data.html = filter.chinese(result.Content);
-			next();
+			filter.chinese(result.Content, function(err, html) {
+				locals.data.html = html
+				next(err);
+			});
 			//subsitute images src
 			/*
 			result.forEachImages(
@@ -70,7 +76,7 @@ exports = module.exports = function (req, res) {
 
 	view.on('render', function (next) {
 		if (locals.data.post.redirect) {
-			res.redirect(locals.data.post.reference);
+			res.redirect(locals.data.post.Reference);
 		} else {
 			next();
 		}

@@ -114,11 +114,12 @@ header h1 {
 
 #lang-bar {
 	margin-left: 20px;
+	margin-right: 20px;
 	a {
-		padding: 	5px;
-		margin: 	5px;
+		//padding: 	5px;
+		//margin: 	5px;
 		font-weight: bold;
-		border:1px solid #fff;
-		text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+		//border:1px solid #ddd;
+		//text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 	}
 }

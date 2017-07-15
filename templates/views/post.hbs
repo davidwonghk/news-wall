@@ -4,7 +4,7 @@
 
 			<article>
 				<header>
-					<h1>{{{data.post.Title}}}</h1>
+					<h1>{{{data.title}}}</h1>
 					<h5>
 						{{# each data.post.categories}}
 						<a href="{{ categoryUrl key }}">#{{ name }} </a>
@@ -12,9 +12,6 @@
 					</h5>
 				</header>
 				<div class="post">
-					<!--
-					{{#if data.post.image}}<img src="{{{imageUrl data.post.image}}}" />{{/if}}
-				-->
 					<div class="share">
 					<div class="fb-like"
 						data-href="{{data.post.url}}"
