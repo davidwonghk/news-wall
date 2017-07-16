@@ -7,10 +7,19 @@ const entities = new Entities();
 
 module.exports = function(req) {
 
+function isTC(cookies) {
+		var locale = cookies['locale']
+		if (!locale) return true	 //defualt is tranditional chinese
+
+		locale = locale.toLowerCase();
+		if (['zh-cn','zh-sg','zh'].indexOf(locale) > -1) return false
+
+		return true
+}
+
 return {
 	chinese: function(text, callback) {
-		//defualt is tranditional chinese
-		var tc = (req.cookies['zh'] != 'sc')
+		var tc = isTC(req.cookies);
 		dtext = entities.decode(text);
 
 		if (callback) {
