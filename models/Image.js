@@ -20,11 +20,16 @@ Image.add({
 
 
 Image.schema.virtual('localPath').get(function() {
-	const IMAGE_LOCAL_DIR = 'public/img/'
-	return IMAGE_LOCAL_DIR + this.id;
+	return 'public/img/'+ this.id;
 });
 
+Image.schema.virtual('local').get(function() {
+	return '/img/' + this.id;
+});
 
+/**
+ * callback: function(err)
+ */
 Image.schema.methods.publish = function(post, callback) {
 		if (!this.reference) return callback('reference not found');
 

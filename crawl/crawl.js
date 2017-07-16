@@ -1,14 +1,11 @@
-var async = require('async');
-var cheerio = require('cheerio')  ;
+const yahoo = require('./yahoo');
+const buzzbooklet = require('./buzzbooklet');
 
-var yahoo = require('./yahoo');
-var buzzbooklet = require('./buzzbooklet');
-
-var keystone = require('keystone'),
+const keystone = require('keystone'),
     Post = keystone.list('Post'),
-    PostCategory = keystone.list('PostCategory'),
-    Image = keystone.list('Image');
+    PostCategory = keystone.list('PostCategory');
 
+const crawlImage = require('./image');
 
 function _tagsToCategories(tags, _result, callback) {
 		if (!tags) { callback(null, _result); return; }
@@ -37,39 +34,6 @@ function _tagsToCategories(tags, _result, callback) {
 }
 
 
-/**
- * callback(url, image)
- */
-function _urlToImage(url, callback) {
-  var image = new Image.model({reference:url});
-  image.save(function(err) {
-    callback(err, this);
-  }.bind(image));
-}
-
-
-function _extractImages(html, callback) {
-  if (!html) {
-    callback(null, null);
-    return;
-  }
-
-  var $ = cheerio.load(html);
-  async.reduce($('img'), $, function(s, item, cb) {
-    var src = s(item).attr('src');
-    if (!src) cb(null, this[0]);
-
-    _urlToImage(src, function(err, image) {
-      if (!err) {
-        this[1].attr('src', "/img/" + image._id);
-      }
-      cb(err, this[0]);
-    }.bind([s, s(item)]));
-  }, function(err, result) {
-    callback(err, result.html());
-  });
-
-}
 
 /**
  * origin: the origin to crawl
@@ -89,25 +53,22 @@ function _crawl(origin, data, callback) {
         data.categories = categories;
         delete data.tags;
 
-				_urlToImage(data.imageUrl, function(err, image) {
+				crawlImage.urlToImage(data.imageUrl, function(err, image) {
 					if (err) return callback(err);
 
-          data.image = image;
           delete data.imageUrl;
+
           Object.assign(data, {
 						'state': 'published',
 						'redirect': false,
 						'image': image,
           })
+					var newPost = new Post.model(data);
 
-          _extractImages(data.content.html, function(err, html) {
-  					if (err) return callback(err);
+          image.publish(newPost, function(err) {
+            //publish the post image once the post crawled
+            if (err) return callback(err);
 
-            if (html) {
-              data.content.html = html;
-            }
-
-  					var newPost = new Post.model(data);
   					newPost.save(callback);
           });
 

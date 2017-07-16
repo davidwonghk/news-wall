@@ -6,6 +6,7 @@ var Types = keystone.Field.Types;
 var striptags = require('striptags');
 var slug = require('limax');
 
+var crawlImage = require('../crawl/image')
 
 /**
  * Post Model
@@ -31,6 +32,7 @@ Post.add({
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
+  imageUrl: {type: Types.Url},
 	image: { type: Types.Relationship, ref: 'Image', many: false},
 	content: {
 		html: {type: Types.Html, wysiwyg: true, height: 400},
@@ -71,26 +73,38 @@ var cheerio = require('cheerio')  ;
 
 /**
  * @param eachCallback function(image, imageDom)
- * @param postCallback function(error, globalDom)
+ * @param postCallback function(error, html)
  */
 Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
-	var $ = cheerio.load(this.Content);
+  if (!this.content.html) { return postCallback(); }
 
-	async.reduce($('img'), $, function(s, item, cb) {
-		var src = $(item).attr('src');
-	  if (!src || !src.startsWith('/img/')) {
-			cb(null, $);
-		}
+	var $ = cheerio.load(this.content.html);
+
+	async.reduce($('img'), $, function(s, item, next) {
+		var src = s(item).attr('src');
+
+	  if (!src) return next(null, s);
+
+    //crawl the image if it is not yet downloaded
+		if (!src.startsWith('/img/')) {
+      return crawlImage.urlToImage(src, function(err, image) {
+        if (!err) {
+          s(item).attr('src', '/img/'+image._id);
+          eachCallback(image, s(item));
+        }
+        return next(err, s);
+      } );
+    }
 
 		var imageId = src.substring(5);
 		Image.model.findById(imageId).exec(function(err, image) {
-			if (!err) {
-				eachCallback(image, this[1])
-			}
-			cb(err, this[0]);
-		}.bind([s, s(item)]) );
+			if (!err) { eachCallback(image, s(item)) }
+			return next(err, s);
+		} );
 
-	}, postCallback);
+	}, function(err) {
+    postCallback(err, $.html());
+  });
 }
 
 
@@ -100,30 +114,38 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 Post.schema.pre('save', function(next) {
 	this.slug = slug(this.title);
 
-	if (this.isModified('state') && this.isPublished() && !this.publishedDate) {
-		//when publish a post
+	if (!this.isModified('state') || !this.isPublished()) {
+    return next();
+  }
+
+  //first time publish
+  if (!this.publishedDate) {
 		this.publishedDate = new Date();
+  }
 
-		//download the image from reference Url to local, with Referer set
-		this.forEachImages(function(image, imageDom){
-			image.publish(this, function(err) {
-				if (err) throw err;
-			});
-		},function(error, globalDom) {
-			this.image.publish(this, next);
-		}.bind(this));
-	}
+  //on publishing a post
+	//download the image from reference Url to local, with Referer set
+	this.forEachImages(function(image, imageDom) {
+		image.publish(this, function(err) {
+			if (err) console.log("error during publishing image", err);
+		});
+	}.bind(this), function(err, html) {
+    if (!err && html) {
+      this.content.html = html;
+    }
+    return next(err);
+  }.bind(this));
 
-	next();
 });
 
 Post.schema.pre('remove', function(next) {
-	this.forEachImages(function(image, imageDom) {
+	this.forEachImages(function(err, image) {
+    if (err) console.log("error each remove image" + err)
     if (!image) return;
 		image.remove(function(err) {
-			console.log("error remove image: " + err);
+      if (err) console.log("error remove image: " + err);
 		});
-	}, function(err, globalDom) {
+	}, function(err) {
 			next(err);
 	})
 });
