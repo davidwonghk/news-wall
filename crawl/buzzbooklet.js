@@ -1,9 +1,9 @@
-var cheerio = require('cheerio')  ;
-var url = require('url');
-var striptags = require('striptags');
+const cheerio = require('cheerio')  ;
+const url = require('url');
+const striptags = require('striptags');
+const request = require('./util').get;
 
-var request = require('./util').get;
-
+var log = require('logger')(__filename);
 
 /**
 callback
@@ -22,7 +22,8 @@ exports = module.exports = function (num, callback) {
 		crawlLink(data.reference, function(err, html) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
-			console.log('crawl ' + data.reference);
+
+			log.info('crawl', data.reference);
 			callback(null, data);
 		});
 

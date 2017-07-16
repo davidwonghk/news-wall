@@ -1,2 +1,0 @@
-npm install striptags
-npm install download-file

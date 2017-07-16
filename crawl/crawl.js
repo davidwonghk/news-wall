@@ -5,6 +5,8 @@ const keystone = require('keystone'),
     Post = keystone.list('Post'),
     PostCategory = keystone.list('PostCategory');
 
+var log = require('logger')(__filename);
+
 
 function _tagsToCategories(tags, _result, callback) {
 		if (!tags) { callback(null, _result); return; }
@@ -22,7 +24,7 @@ function _tagsToCategories(tags, _result, callback) {
 				category = new PostCategory.model({name:tag});
 				category.save(function(err){
 					if (err) callback(err);
-					console.log('category ' + category + ' created');
+					log.debug('category created', category);
 				})
 			}
 
@@ -44,7 +46,7 @@ function _crawl(origin, data, callback) {
 		Post.model.find().where('title', data.title).limit(1).exec(function(err, posts) {
 			if (err) {callback(err); return;}
 			if (posts.length > 0) {
-				console.log("skip recreate post:" + data.title);
+				log.debug("skip recreate post", data.title);
 				return callback();
 			}
 

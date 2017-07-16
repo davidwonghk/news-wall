@@ -1,6 +1,7 @@
-var keystone = require('keystone')
-var crawl = require('../../crawl/crawl');
+const keystone = require('keystone')
+const crawl = require('../../crawl/crawl');
 
+var log = require('logger')(__filename);
 
 exports = module.exports = function (req, res) {
 
@@ -30,7 +31,7 @@ exports = module.exports = function (req, res) {
 
 		if (locals.data.crawl.indexOf('buzzbook') >= 0) {
 			crawl.crawlBuzzBooklet(locals.data.num, function(err) {
-				if (err) console.log(err);
+				if (err) log.error('crawl buzzbooklet', err);
 			});
 		}
 

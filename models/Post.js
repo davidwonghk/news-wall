@@ -1,10 +1,12 @@
-var keystone = require('keystone'),
+const keystone = require('keystone'),
     Image = keystone.list('Image');
 
-var Types = keystone.Field.Types;
+const Types = keystone.Field.Types;
 
-var striptags = require('striptags');
-var slug = require('limax');
+const striptags = require('striptags');
+const slug = require('limax');
+
+var log = require('logger')(__filename);
 
 
 /**
@@ -134,7 +136,7 @@ var _onPublish = function(post, next) {
   	//download the image from reference Url to local, with Referer set
   	post.forEachImages(function(image, imageDom) {
   		image.publish(post, function(err) {
-  			if (err) console.log("error during publishing image", err);
+  			if (err) log.error("error during publishing image", err);
   		});
   	}, function(err, html) {
       if (!err && html) {
@@ -153,7 +155,7 @@ Post.schema.pre('save', function(next) {
 
   if (this.isModified('reference') && this.reference) {
     this.reference = encodeURI(this.reference);
-    console.log("encode reference to " + this.reference);
+    log.trace("encode reference to ", this.reference);
   }
 
   if (this.isPublished()) {
@@ -179,10 +181,10 @@ Post.schema.pre('save', function(next) {
 
 Post.schema.pre('remove', function(next) {
 	this.forEachImages(function(err, image) {
-    if (err) console.log("error each remove image" + err)
+    if (err) log.error("each image", err)
     if (!image) return;
 		image.remove(function(err) {
-      if (err) console.log("error remove image: " + err);
+      if (err) log.error("remove image", err);
 		});
 	}, function(err) {
 			next(err);

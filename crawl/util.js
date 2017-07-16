@@ -1,7 +1,8 @@
-var request = require('request');
-var fs = require('fs');
+const request = require('request');
+const fs = require('fs');
+var log = require('logger')(__filename);
 
-var UA_HEADER = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0"};
+const UA_HEADER = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0"};
 
 exports = module.exports = {
 
@@ -29,7 +30,7 @@ download: function(url, to, headers, callback) {
   });
 
   r.on('end', function(){
-		console.log("downloaded: " + url);
+		log.debug("downloaded",  url);
     callback();
   });
 },
