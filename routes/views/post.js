@@ -30,7 +30,9 @@ exports = module.exports = function (req, res) {
 		.populate('categories image');
 
 		q.exec(function (err, result) {
-			if (err) return next(err);
+			if (err || !result) {
+				return next(err);
+			}
 
 			//internal use for view, try not to use it in hbs
 			locals.data.post = result;

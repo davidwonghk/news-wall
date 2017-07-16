@@ -5,7 +5,6 @@ const keystone = require('keystone'),
     Post = keystone.list('Post'),
     PostCategory = keystone.list('PostCategory');
 
-const crawlImage = require('./image');
 
 function _tagsToCategories(tags, _result, callback) {
 		if (!tags) { callback(null, _result); return; }
@@ -53,26 +52,13 @@ function _crawl(origin, data, callback) {
         data.categories = categories;
         delete data.tags;
 
-				crawlImage.urlToImage(data.imageUrl, function(err, image) {
-					if (err) return callback(err);
+        Object.assign(data, {
+					'state': 'published',
+					'redirect': false,
+        })
+				var newPost = new Post.model(data);
+				newPost.save(callback);
 
-          delete data.imageUrl;
-
-          Object.assign(data, {
-						'state': 'published',
-						'redirect': false,
-						'image': image,
-          })
-					var newPost = new Post.model(data);
-
-          image.publish(newPost, function(err) {
-            //publish the post image once the post crawled
-            if (err) return callback(err);
-
-  					newPost.save(callback);
-          });
-
-				});
 			});
 
 		});

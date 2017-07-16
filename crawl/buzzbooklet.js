@@ -19,11 +19,10 @@ exports = module.exports = function (num, callback) {
 	crawlCard(num, current, function(err, data) {
     if(err) { callback(err); return; }
 
-		reference = data.references[0]
-		crawlLink(reference, function(err, html) {
+		crawlLink(data.reference, function(err, html) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
-			console.log('crawl ' + reference);
+			console.log('crawl ' + data.reference);
 			callback(null, data);
 		});
 
@@ -46,8 +45,8 @@ function crawlCard(num, timestamp, callback) {
 
 			var card = json.new_card_list[k];
 			var data = {
-				'references': [getCardUrl(card['card_id'], card['uri_title']), parseHtmlEnteties(card['url'])],
-				'from': {'site': card['website'], 'author': card['user_name']},
+				'reference': getCardUrl(card['card_id'], card['uri_title']),
+				'from': {'site': card['website'], 'author': card['user_name'], 'link': parseHtmlEnteties(card['url'])},
 				'imageUrl': getImageUrl(card['image_path']),
 				'title': card['title'],
 			}

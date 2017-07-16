@@ -35,10 +35,12 @@ Image.schema.methods.publish = function(post, callback) {
 
 		var headers = {Referer: post.reference};
 		util.download(this.reference, this.localPath, headers, function() {
-			cloudinary.uploader.upload(this.local, function(result) {
-				this.cloudinary = result;
-				this.save(callback);
-			}.bind(this));
+				var remotePath = process.env.BASE_URL + this.local;
+				console.log('try upload ' + remotePath + ' to cloudinary');
+				cloudinary.uploader.upload(remotePath, function(result) {
+					this.cloudinary = result;
+					this.save(callback);
+				}.bind(this));
 		}.bind(this));
 
 }

@@ -6,7 +6,6 @@ var Types = keystone.Field.Types;
 var striptags = require('striptags');
 var slug = require('limax');
 
-var crawlImage = require('../crawl/image')
 
 /**
  * Post Model
@@ -24,10 +23,11 @@ Post.add({
 	slug: { type: String, hidden: true },
 	title: { type: String, required: true },
 	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
-	references: { type: Types.TextArray	},
+	reference: { type: Types.Url },
 	from: {
 		site: {type: String },
-		author: {type: String}
+		author: {type: String},
+    link: {type: Types.Url},
 	},
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
@@ -57,10 +57,6 @@ Post.schema.virtual('Description').get(function() {
 	return this.description || striptags(this.Content.substring(0,256));
 });
 
-Post.schema.virtual('reference').get(function() {
-	return this.references[0];
-});
-
 Post.schema.methods.isPublished = function() {
 	return this.state == 'published';
 }
@@ -70,6 +66,17 @@ Post.schema.methods.isPublished = function() {
 
 var async = require('async');
 var cheerio = require('cheerio')  ;
+
+/**
+ * not yet support relative path crawling
+ * callback(err, image)
+ */
+function _urlToImage(url, callback) {
+  var image = new Image.model({reference:url});
+  image.save(function(err) {
+    callback(err, image);
+  });
+}
 
 /**
  * @param eachCallback function(image, imageDom)
@@ -87,7 +94,7 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 
     //crawl the image if it is not yet downloaded
 		if (!src.startsWith('/img/')) {
-      return crawlImage.urlToImage(src, function(err, image) {
+      return _urlToImage(src, function(err, image) {
         if (!err) {
           s(item).attr('src', '/img/'+image._id);
           eachCallback(image, s(item));
@@ -110,31 +117,63 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 
 
 //------------------------------------------------------------
+const Entities = require('html-entities').AllHtmlEntities;
+const entities = new Entities();
+
+var _onPublish = function(post, next) {
+  var isModifyContent = post.isModified('content.html');
+
+	if (post.isModified('state') && !post.publishedDate) {
+    //first time publish
+		post.publishedDate = new Date();
+    isModifyContent = true;
+  }
+
+  if (isModifyContent) {
+    //on publishing a post
+  	//download the image from reference Url to local, with Referer set
+  	post.forEachImages(function(image, imageDom) {
+  		image.publish(post, function(err) {
+  			if (err) console.log("error during publishing image", err);
+  		});
+  	}, function(err, html) {
+      if (!err && html) {
+        post.content.html = html;
+      }
+      next(err);
+    });
+  } //if isModified content
+  else {
+    next();
+  }
+};
 
 Post.schema.pre('save', function(next) {
 	this.slug = slug(this.title);
 
-	if (!this.isModified('state') || !this.isPublished()) {
-    return next();
+  if (this.isModified('reference') && this.reference) {
+    this.reference = encodeURI(this.reference);
+    console.log("encode reference to " + this.reference);
   }
 
-  //first time publish
-  if (!this.publishedDate) {
-		this.publishedDate = new Date();
+  if (this.isPublished()) {
+    _onPublish(this, function(err) {
+      if (!this.imageUrl) {
+        return next(err);
+      }
+
+			_urlToImage(this.imageUrl, function(err, image) {
+				if (err) return next(err);
+        this.image = image;
+        delete this.imageUrl;
+        image.publish(this, next);
+			}.bind(this));
+    }.bind(this));
+  } else {
+    next();
   }
 
-  //on publishing a post
-	//download the image from reference Url to local, with Referer set
-	this.forEachImages(function(image, imageDom) {
-		image.publish(this, function(err) {
-			if (err) console.log("error during publishing image", err);
-		});
-	}.bind(this), function(err, html) {
-    if (!err && html) {
-      this.content.html = html;
-    }
-    return next(err);
-  }.bind(this));
+
 
 });
 

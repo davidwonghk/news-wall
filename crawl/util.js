@@ -29,7 +29,7 @@ download: function(url, to, headers, callback) {
   });
 
   r.on('end', function(){
-		console.log("downloaded: " + url + " to " + to);
+		console.log("downloaded: " + url);
     callback();
   });
 },
