@@ -9,7 +9,6 @@
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 		<link href="/styles/site.css" rel="stylesheet">
-		<link href="/styles/font-awesome.css" rel="stylesheet">
 
 		{{!-- This file provides the default styling for the KeystoneJS Content Editor
 			- only renders when user is logged in and admin--}}
@@ -72,8 +71,12 @@
 							--}}
 
 							<ul class="nav navbar-nav navbar-right">
-								<i class="ui-icon icon_user"/>
-								<li><a href="/signin">登入</a></li>
+								<li>
+									<a href="/signin" class='center'>
+										<span class="ui_icon icon_user"></span>
+										<span>登入</span>
+									</a>
+								</li>
 							</ul>
 
 						</div>
