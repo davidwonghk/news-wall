@@ -28,6 +28,7 @@ exports.initLocals = function (req, res, next) {
 	*/
 	res.locals.user = req.user;
 	res.locals.baseUrl = process.env.BASE_URL;
+	res.locals.isDevelop = process.env.DEVELOP;
 	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
 
 	next();
