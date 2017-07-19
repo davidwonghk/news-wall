@@ -44,7 +44,10 @@ exports = module.exports = function (app) {
 
 	//custom signin page
 	app.get('/signin', render('signin') );
-	app.get('/policy/cookies', render('cookies') );
+
+	//policy pages
+	app.get('/policy/privacy', render('policy/privacy') );
+	app.get('/policy/tos', render('policy/tos') );
 
 	// Views
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:

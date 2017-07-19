@@ -21,9 +21,8 @@
 	function renderBlogItem(data) {
 		image = !(data.imageUrl) ? '' : `<img src="${data.imageUrl}" class="img-responsive">`
 		from = !(data.from) ? '' : `
-						<div class="post-from">From
-								<a href="${data.from.url}">${data.from.site}</a>
-								 By ${data.from.author}
+						<div class="post-from">
+								<span class="author">${data.from.author}</span> 分享於 <a href="${data.from.url}">${data.from.site}</a> 
 						</div>
 		`;
 

@@ -75,19 +75,14 @@ exports = module.exports = function (req, res) {
 				"postUrl": url.postUrl(p.slug),
 			};
 
+			//only add necessray key-value to payload to reduce network traffic 
 			if (p.image) {
 				result.imageUrl = url.imageUrl(p.image);
 			}
 
-/*
 			if (p.from) {
 				result.from = p.from;
-
-				if (p.references[1]) {
-					result.from.url = p.references[1];
-				}
 			}
-*/
 
 			return result;
 		});

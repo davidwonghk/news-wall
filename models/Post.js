@@ -29,7 +29,7 @@ Post.add({
 	from: {
 		site: {type: String },
 		author: {type: String},
-    link: {type: Types.Url},
+    url: {type: Types.Url},
 	},
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
