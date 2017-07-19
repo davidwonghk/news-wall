@@ -35,10 +35,11 @@ img.img-logo {
 
 		.author {
 			font-style: italic;
+			color: #888;
 		}
 
 		a {
-			color: #bbb;
+			color: #888;
 		}
 	}
 
@@ -75,11 +76,8 @@ img.img-logo {
 
 	}
 
-}
+}	// .posts
 
-.fb-like {
-	margin-top: 15px;
-}
 
 
 .overlay {
@@ -108,17 +106,72 @@ img.img-logo {
 		@extend .img-responsive;
 		display: block;
 		max-width: 640px;
+		margin-top: 22px;
+		margin-bottom: 12px;
 	}
 }
 
-.share {
-	display: block;
-	margin-bottom: 20px;
+article {
+	div {
+		display: inline-block;
+	}
+	.share {
+		display: block;
+		margin-bottom: 20px;
+		float: left;
+	}
+
+	.fb-like {
+		margin-top: 5px;
+		margin-bottom: 10px;
+	}
+
+	header {
+		.post-from {
+			color: #bbb;
+			margin-top: 2px;
+
+			.author {
+				font-style: italic;
+				color: #888;
+			}
+
+			a {
+				color: #888;
+			}
+		}
+	}
+
+	.tags {
+		display: block;
+		font-size: 15pt;
+	}
 }
 
 header h1 {
 	color: #555566;
 	font-weight: bold;
+}
+
+footer {
+	margin-bottom: 18px;
+	div {
+		display: block;
+	}
+	.top {
+		.copyright {
+			float: left;
+		}
+		display: inline-block;
+		*display: inline;
+		ul {
+			float: right;
+			list-style-type: none;
+			li {
+				display: inline;
+			}
+		}
+	}
 }
 
 #lang-bar {
@@ -131,9 +184,4 @@ header h1 {
 		//border:1px solid #ddd;
 		//text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 	}
-}
-
-p {
-	font-family: "Microsoft YaHei","微软雅黑",Arial;
-	color: #555;
 }

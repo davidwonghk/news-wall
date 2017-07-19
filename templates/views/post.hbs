@@ -6,12 +6,14 @@
 			<article>
 				<header>
 					<h1>{{{data.title}}}</h1>
-					<h5>
-						{{# each data.post.categories}}
-						<a href="{{ categoryUrl key }}">#{{ name }} </a>
-						{{/each}}
-					</h5>
+
+					{{#if data.post.from}}
+					<div class="post-from">
+							<span class="author">{{data.post.from.author}}</span> 分享於 <a href="{{data.post.from.url}}">{{data.post.from.site}}</a>
+					</div>
+					{{/if}}
 				</header>
+
 				<div class="post">
 					<div class="share">
 					<div class="fb-like"
@@ -24,7 +26,14 @@
 					</div>
 					{{> share}}
 					</div>
+
 					<hr>
+					<div class='tags'>
+						{{#each data.post.categories}}
+						<a href="{{ categoryUrl key }}">#{{ name }} </a>
+						{{/each}}
+					</div>
+
 						{{{data.html}}}
 					<hr>
 					<div class="share">
@@ -33,7 +42,6 @@
 
 				</div>
 			</article>
-			<hr>
 
 		</div>
 	</div>
