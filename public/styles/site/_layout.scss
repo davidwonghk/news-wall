@@ -1,5 +1,5 @@
 #body {
-	font-family: Helvetica, "Heiti TC", "Microsoft JhengHei" , "新細明體", "PMingLiU", sans-serif
+	font-family: Helvetica, "Heiti TC", "Microsoft JhengHei", "Microsoft YaHei","微软雅黑", "新細明體", "PMingLiU", sans-serif, Arial;
 }
 
 #header {
@@ -30,8 +30,16 @@ img.img-logo {
 	margin-top: 20px;
 
 	.post-from {
-		color: #BBBBBB;
+		color: #bbb;
 		margin-top: 15px;
+
+		.author {
+			font-style: italic;
+		}
+
+		a {
+			color: #bbb;
+		}
 	}
 
 	.post-item {
@@ -39,13 +47,14 @@ img.img-logo {
 
 		img {
 			width: 100%;
-			height: auto;
-			max-height: 300px;
+			height: 200px;
 			overflow: hidden;
 		}
 
 		.title {
 			width: 100%;
+			max-height: 60px;
+			overflow: hidden;
 			font-size: 16pt;
 			color: #222;
 			display: block;
@@ -122,4 +131,9 @@ header h1 {
 		//border:1px solid #ddd;
 		//text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 	}
+}
+
+p {
+	font-family: "Microsoft YaHei","微软雅黑",Arial;
+	color: #555;
 }

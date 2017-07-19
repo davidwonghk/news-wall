@@ -31,6 +31,11 @@ exports.initLocals = function (req, res, next) {
 	res.locals.isDevelop = process.env.DEVELOP;
 	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
 
+	res.locals.policy = {
+		appName: 'News-Wall網',
+	  lastUpdated: '2017年07月22日',
+	};
+
 	next();
 };
 
