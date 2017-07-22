@@ -1,0 +1,13 @@
+
+.dialog-no-title .ui-dialog-titlebar {
+  display: none;
+}
+
+.dialog-fixed {
+  position: fixed !important;
+}
+
+
+.dialog-no-close .ui-dialog-titlebar-close {
+  display: none;
+}

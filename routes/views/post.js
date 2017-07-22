@@ -2,8 +2,9 @@ const keystone = require('keystone'),
 	Image = keystone.list('Image'),
 	Post = keystone.list('Post');
 
+const path = require('path');
 const url = require('../../templates/views/helpers/url');
-const Filter = require('../filter')
+const Filter = require('../filter');
 
 exports = module.exports = function (req, res) {
 
@@ -36,6 +37,7 @@ exports = module.exports = function (req, res) {
 			}
 
 			//internal use for view, try not to use it in hbs
+			locals.url = path.join(process.env.BASE_URL, req.originalUrl);
 			locals.data.post = result;
 
 			locals.data.title = filter.chinese(result.Title);

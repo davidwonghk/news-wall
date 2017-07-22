@@ -10,18 +10,39 @@
 
 <script type="text/javascript">
 $( function() {
-  var $rdialog = null;
 	$('#btn_report').click(function() {
-    if ($rdialog!=null) return;
-    $.get('/report', {id: '{{data.post.slug}}'}, function(data) {
-      $rdialog = $(data);
-      console.log($rdialog);
-      $rdialog.dialog({
+    $.get('/report', {post: '{{data.post.slug}}'}, function(data) {
+      $('#dialog_report').html(data).dialog({
         title: "檢舉 {{data.title}}",
-        close: function(event, ui) { $rdialog.remove(); $rdialog=null; }
+        dialogClass: "dialog-no-close",
+        modal: true,
+        buttons: [
+          {text: "確定", click: function() { $('#report_form').submit(); }},
+          {text: "取消", click: function() { $( this ).dialog( "close" ); }}
+        ]
       });
     })
 	});
+
+  $('#dialog_like').hide();
+  var askLike = setInterval(function() {
+    try {
+      if ($('#dialog_report').dialog('isOpen')) return;
+    } catch(err) {
+    }
+
+    $('#dialog_like').dialog({
+      dialogClass: "dialog-no-title dialog-fixed",
+      closeOnEscape: false,
+      width:'auto',
+      height:'auto'
+   });
+
+    $('.overlay').height("100%").click(function() {
+      $('#dialog_like').dialog('close');
+      $(this).height("0");
+    });
+  }, 30000);
 });
 </script>
 
@@ -67,6 +88,17 @@ $( function() {
 	</div>
 </div>
 
-<div class="overlay">
-
+<div id="dialog_report"> </div>
+<div class="overlay"> </div>
+<div id='dialog_like'>
+  <div class='text-center'>
+    <p>喜歡這篇文章？
+      <br> 按個<span class="fb_text">讚</span>及<span class="fb_text">分享</span>給朋友吧
+    <div class="fb-like" data-href="{{url}}"
+      data-layout="button "
+      $data-action="like"
+      data-size="large"
+      data-show-faces="true"
+      data-share="true"></div>
+</div>
 </div>

@@ -1,6 +1,5 @@
-<div id="report_dialog">
-	<form method='POST' action='/report'>
-		<input type="hidden" name="post" value="{{query.id}}"/>
+	<form id="report_form" method='POST' action='/report'>
+		<input type="hidden" name="post" value="{{query.post}}"/>
 		<div class="form-group">
 			<label class="required" for='report_type'>檢舉類型</label>
 			<div class="content">
@@ -28,15 +27,4 @@
 				<p class="error"></p>
 			</div>
 		</div>
-		<div class="text-center">
-			<input type="submit" class="btn btn-info" value="確定" />
-			<span id="btn_close" class="btn btn-default">取消</span>
-		</div>
 	</form>
-
-	<script type='text/javascript'>
-	 $('#btn_close').click(function() {
-		 $('#report_dialog').dialog('close');
-	 });
-	</script>
-</div>
