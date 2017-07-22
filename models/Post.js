@@ -151,7 +151,7 @@ var _onPublish = function(post, next) {
 };
 
 Post.schema.pre('save', function(next) {
-	this.slug = slug(this.title);
+	this.slug = slug(this.title, {tone:false});
 
   if (this.isModified('reference') && this.reference) {
     this.reference = encodeURI(this.reference);
