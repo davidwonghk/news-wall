@@ -1,19 +1,37 @@
 <div class='share'>
-		<a class="btn btn-social btn-twitter" href="https://twitter.com/intent/tweet?text={{data.post.title}}&url={{fullPostUrl data.post.slug}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+	<ul class="list-inline">
+		<li>
+		<a class="btn btn-social btn-twitter" href="https://twitter.com/intent/tweet?text={{data.post.Title}}&url={{fullPostUrl data.post.slug}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
 			<span class="fa fa-twitter"></span> Twitter
 		</a>
+		</li>
+
+		<li>
 		<a class="btn btn-social btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{fullPostUrl data.post.slug}}" onclick="FB.ui({ method: 'share', display: 'popup', href: '{{fullPostUrl data.post.slug}}', }, function(response){});return false">
 			<span class="fa fa-facebook"></span> Facebook
 		</a>
+		</li>
+
+		<li>
 		<a class="btn btn-social btn-google" href="https://plus.google.com/share?url={{fullPostUrl data.post.slug}}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
 			<span class="fa fa-google"></span> GooglePlus
 		</a>
+		</li>
+
 		{{#if data.mobile}}
+
+		<li>
 		<a class="btn btn-social btn-whatsapp" href="whatsapp://send?text={{fullPostUrl data.post.slug}}">
 			<span class="fa fa-whatsapp"></span> Whatsapp
 		</a>
+		</li>
+
+		<li>
 		<a class="btn btn-social btn-line" href="line://msg/text/{{fullPostUrl data.post.slug}}">
 			<span class="fa fa-link"></span> Line
 		</a>
+		</li>
 		{{/if}}
+
+	</ul>
 </div>

@@ -1,3 +1,6 @@
+{{#if raw}}
+	{{{body}}}
+{{else}}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,7 +11,8 @@
 		{{> meta}}
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-		<link href="/styles/site.css" rel="stylesheet">
+		<link rel="stylesheet" href="/styles/site.css" >
+
 
 		{{!-- This file provides the default styling for the KeystoneJS Content Editor
 			- only renders when user is logged in and admin--}}
@@ -21,16 +25,18 @@
 			<script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
-		{{#if isDevelop}}
+	{{#if develop}}
+		{{!-- use local files for development --}}
 		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
 		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
-		{{else}}
+	{{else}}
 		<script
-		src="https://code.jquery.com/jquery-3.1.1.min.js"
-		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-		crossorigin="anonymous"></script>
+			src="https://code.jquery.com/jquery-3.1.1.min.js"
+			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			crossorigin="anonymous">
+		</script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		{{/if}}
+	{{/if}}
 
 
 	</head>
@@ -151,20 +157,21 @@
 				{{!--
 				<p>Powered by <a href="http://keystonejs.com" target="_blank">KeystoneJS</a>.</p>
 				--}}
+
 				<div class="top">
+					<p>
+						免責聲明：本網站是以實時上傳文章的方式運作，本站對所有文章的真實性、完整性及立場等，不負任何法律責任。而一切文章內容只代表發文者個人意見，並非本網站之立場，用戶不應信賴內容，並應自行判斷內容之真實性。發文者擁有在本站張貼的文章。由於本站是受到「實時發表」運作方式所規限，故不能完全監查所有即時文章，若讀者發現有留言出現問題，請聯絡我們。本站有權刪除任何內容及拒絕任何人士發文，同時亦有不刪除文章的權力。切勿撰寫粗言穢語、毀謗、渲染色情暴力或人身攻擊的言論，敬請自律。本網站保留一切法律權利。
+					</p>
+				</div>
+				<div class="bottom">
           <span class="copyright">
           	©2017 {{policy.appName}}. All Rights Reserved.
           </span>
           <ul>
-          	<li> <a rel="nofollow" href="/policy/tos">條款</a> </li>
-          	<li> <a rel="nofollow" href="/policy/privacy">隱私</a> </li>
+          	<li> <a rel="nofollow" href="/policy/tos">使用條款</a> | </li>
+          	<li> <a rel="nofollow" href="/policy/privacy">隱私條款</a> | </li>
           	<li> <a rel="nofollow" href="/policy/contactus">聯繫我們</a> </li>
           </ul>
-				</div>
-				<div class="bottom">
-					<p>
-						免責聲明：本網站是以實時上傳文章的方式運作，本站對所有文章的真實性、完整性及立場等，不負任何法律責任。而一切文章內容只代表發文者個人意見，並非本網站之立場，用戶不應信賴內容，並應自行判斷內容之真實性。發文者擁有在本站張貼的文章。由於本站是受到「實時發表」運作方式所規限，故不能完全監查所有即時文章，若讀者發現有留言出現問題，請聯絡我們。本站有權刪除任何內容及拒絕任何人士發文，同時亦有不刪除文章的權力。切勿撰寫粗言穢語、毀謗、渲染色情暴力或人身攻擊的言論，敬請自律。本網站保留一切法律權利。
-					</p>
 				</div>
 		</footer>
 
@@ -192,3 +199,4 @@
 
 	</body>
 </html>
+{{/if}}

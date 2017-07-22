@@ -1,0 +1,42 @@
+<div id="report_dialog">
+	<form method='POST' action='/report'>
+		<input type="hidden" name="post" value="{{query.id}}"/>
+		<div class="form-group">
+			<label class="required" for='report_type'>檢舉類型</label>
+			<div class="content">
+				<select id="report_type" name="type" class="form-control">
+								<option value="">請選擇檢舉類型</option>
+								<option value="sex_violent">色情/暴力</option>
+								<option value="copyright">侵犯版權</option>
+								<option selected="selected" value="repeat">重複</option>
+								<option value="others">侵犯他人權益</option>
+							</select>
+				<p class="error"></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="required" for="report_reason">檢舉理由</label>
+			<div class="content">
+				<textarea id="report_reason" name="reason" class="form-control	" placeholder="請說明您的檢舉理由"></textarea>
+				<p class="error"></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="report_contact">聯繫方式</label>
+			<div class="content">
+				<input type="text" id="report_contact" name="contact" placeholder="請留下你的聯繫方式" class="form-control" value="">
+				<p class="error"></p>
+			</div>
+		</div>
+		<div class="text-center">
+			<input type="submit" class="btn btn-info" value="確定" />
+			<span id="btn_close" class="btn btn-default">取消</span>
+		</div>
+	</form>
+
+	<script type='text/javascript'>
+	 $('#btn_close').click(function() {
+		 $('#report_dialog').dialog('close');
+	 });
+	</script>
+</div>

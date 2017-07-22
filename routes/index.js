@@ -24,6 +24,7 @@ const importRoutes = keystone.importer(__dirname);
 
 const cookieParser = require('cookie-parser')
 
+
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
 keystone.pre('render', middleware.flashMessages);
@@ -35,8 +36,12 @@ var routes = {
 	api: importRoutes('./api'),
 };
 
-var render = function(name) {
-	return function (res, req){res.res.render(name)}
+var render = function(name, local) {
+	return function (req, res){
+		if (!local) local = {};
+		local.query = req.query;
+		res.render(name, local);
+	}
 }
 
 // Setup Route Bindings
@@ -46,8 +51,14 @@ exports = module.exports = function (app) {
 	app.get('/signin', render('signin') );
 
 	//policy pages
-	app.get('/policy/privacy', render('policy/privacy') );
-	app.get('/policy/tos', render('policy/tos') );
+	app.get('/policy/:page', function(req, res) {
+		res	.render('policy/' + req.params.page)
+	});
+
+	//report pages
+	app.get('/report', render('report', {raw:true}));
+	app.post('/report', routes.views.report);
+
 
 	// Views
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
@@ -55,8 +66,10 @@ exports = module.exports = function (app) {
 	app.get('/', routes.views.blog);
 	app.get('/post/:post', routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
+
 	app.get('/ajax/posts/:timestamp', routes.ajax.posts);
 	app.get('/ajax/categories', routes.ajax.categories);
+
 	app.get('/api/crawl', middleware.onlyMe, routes.api.crawl);
 
 	//use additinal middleware globally

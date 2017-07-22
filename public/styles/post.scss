@@ -1,0 +1,54 @@
+.post {
+	font-size: 17px;
+	line-height: 2;
+	color: #333;
+
+	img {
+		display: block;
+		//max-width: 640px;
+		max-width: 100%;
+		margin-top: 22px;
+		margin-bottom: 12px;
+	}
+}	//.post
+
+
+
+article {
+
+	.share {
+		li {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.fb-like {
+		display: inline;
+	}
+
+	.tags {
+		font-size: 15pt;
+		margin-bottom: 12px;
+	}
+
+	.post-from {
+		margin-bottom: 20px;
+	}
+
+	header {
+		margin-bottom: 12px;
+		h1 {
+			color: #555566;
+			font-weight: bold;
+		}
+
+		sub-header {
+			font-size: 11pt;
+			span {
+				display: inline;
+			}
+		}
+	}
+
+}	//article

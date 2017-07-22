@@ -1,5 +1,6 @@
 const keystone = require('keystone'),
-	Image = keystone.list('Image');
+	Image = keystone.list('Image'),
+	Post = keystone.list('Post');
 
 const url = require('../../templates/views/helpers/url');
 const Filter = require('../filter')
@@ -23,7 +24,7 @@ exports = module.exports = function (req, res) {
 	// Load the current post
 	view.on('init', function (next) {
 
-		var q = keystone.list('Post').model.findOne({
+		var q = Post.model.findOne({
 			state: 'published',
 			slug: locals.filters.post,
 		})
@@ -68,7 +69,7 @@ exports = module.exports = function (req, res) {
 	// Load other posts
 	view.on('init', function (next) {
 
-		var q = keystone.list('Post').model.find().where('state', 'published').sort('-publishedDate').limit('4');
+		var q = Post.model.find().where('state', 'published').sort('-publishedDate').limit('4');
 
 		q.exec(function (err, results) {
 			locals.data.posts = results;

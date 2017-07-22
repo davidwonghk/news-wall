@@ -1,4 +1,30 @@
-<link href="/styles/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/post.css" >
+<link rel="stylesheet" href="/css/font-awesome.css" >
+{{#if develop}}
+  <link rel="stylesheet" href="/css/jquery-ui.min.css">
+	<script src="/js/jquery/jquery-ui.min.js"></script>
+{{else}}
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{{/if}}
+
+<script type="text/javascript">
+$( function() {
+  var $rdialog = null;
+	$('#btn_report').click(function() {
+    if ($rdialog!=null) return;
+    $.get('/report', {id: '{{data.post.slug}}'}, function(data) {
+      $rdialog = $(data);
+      console.log($rdialog);
+      $rdialog.dialog({
+        title: "檢舉 {{data.title}}",
+        close: function(event, ui) { $rdialog.remove(); $rdialog=null; }
+      });
+    })
+	});
+});
+</script>
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -7,40 +33,34 @@
 				<header>
 					<h1>{{{data.title}}}</h1>
 
-					{{#if data.post.from}}
-					<div class="post-from">
-							<span class="author">{{data.post.from.author}}</span> 分享於 <a href="{{data.post.from.url}}">{{data.post.from.site}}</a>
+					<div class="sub-header">
+						<span class='btn btn-small btn-link' id="btn_report">檢舉</span>
+						 &nbsp;|&nbsp;
+						{{#if data.post.from}}
+						<span class="post-from col-md">
+								<span class="author">{{data.post.from.author}}</span> 分享於 <a href="{{data.post.from.url}}">{{data.post.from.site}}</a>
+						</span>
+						{{/if}}
 					</div>
-					{{/if}}
 				</header>
 
-				<div class="post">
-					<div class="share">
-					<div class="fb-like"
-						data-href="{{data.post.url}}"
-						data-layout="standard"
-						data-action="like"
-						data-size="large"
-						{{!--data-share="true"--}}
-						data-show-faces="true">
-					</div>
-					{{> share}}
-					</div>
+				{{> share}}
 
-					<hr>
-					<div class='tags'>
-						{{#each data.post.categories}}
-						<a href="{{ categoryUrl key }}">#{{ name }} </a>
-						{{/each}}
-					</div>
+				<hr>
 
-						{{{data.html}}}
-					<hr>
-					<div class="share">
-						{{> share}}
-					</div>
-
+				<div class="tags">
+					{{#each data.post.categories}}
+					<a href="{{ categoryUrl key }}">#{{ name }} &nbsp;&nbsp;</a>
+					{{/each}}
 				</div>
+
+				<div class="post">
+						{{{data.html}}}
+				</div>
+
+				<hr>
+				{{> share}}
+
 			</article>
 
 		</div>
