@@ -151,7 +151,12 @@ var _onPublish = function(post, next) {
 };
 
 Post.schema.pre('save', function(next) {
-	this.slug = slug(this.title, {tone:false});
+  //limit slug to 128 character
+  var slugTitle = slug(this.title, {tone:false});
+  if (slugTitle.lengh > 64) {
+    slugTitle = slugTitle.substring(0, 64);
+  }
+	this.slug = slugTitle;
 
   if (this.isModified('reference') && this.reference) {
     this.reference = encodeURI(this.reference);
