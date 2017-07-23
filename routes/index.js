@@ -63,7 +63,7 @@ exports = module.exports = function (app) {
 	app.get('/protected', middleware.requireUser, routes.views.protected);
 
 	app.get('/ajax/posts/:timestamp', routes.ajax.posts);
-	app.get('/ajax/categories', routes.ajax.categories);
+	app.get('/ajax/tags', routes.ajax.tags);
 
 	app.get('/api/crawl', middleware.onlyMe, routes.api.crawl);
 

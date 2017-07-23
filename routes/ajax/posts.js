@@ -1,6 +1,6 @@
 const keystone = require('keystone'),
 	Post = keystone.list('Post'),
-	PostCategory = keystone.list('PostCategory');
+	PostTag = keystone.list('PostTag');
 
 const async = require('async');
 
@@ -15,7 +15,7 @@ exports = module.exports = function (req, res) {
 
 	// Init locals
 	locals.filters = {
-		category: req.query.c,
+		tag: req.query.tag,
 		timestamp: req.params.timestamp,
 	};
 	locals.data = {
@@ -23,34 +23,20 @@ exports = module.exports = function (req, res) {
 	};
 
 
-	// Load the current category filter
-	view.on('init', function (next) {
-
-		if (!locals.filters.category) {
-			next();
-			return;
-		}
-
-		PostCategory.model.findOne({ key: locals.filters.category }).exec(function (err, result) {
-			locals.data.category = result;
-			next(err);
-		});
-	});
-
 	// Load the posts
 	view.on('init', function (next) {
 		var q = Post.model.find({
 			'state': 'published'
 		}).sort('-publishedDate')
-			.populate('categories image')
+			.populate('image')
 			.limit(8);	//8 posts per flush
 
 		if(locals.filters.timestamp) {
 			q.where('publishedDate').lt(locals.filters.timestamp);
 		}
 
-		if (locals.data.category) {
-			q.where('categories').in([locals.data.category]);
+		if (locals.filters.tag) {
+			q.where('tags').in([locals.filters.tag]);
 		}
 
 		q.exec(function (err, results) {

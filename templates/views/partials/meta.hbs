@@ -31,10 +31,10 @@
     <meta property="og:url" content="{{fullPostUrl data.post.slug}}">
     <meta name="twitter:url" content="{{fullPostUrl data.post.slug}}">
     <meta property="article:published_time" content="{{data.post.publishedDate}}">
-    {{# each data.post.categories}}
+    {{# each data.post.tags}}
         <meta property="article:tag" content="{{name}}">
     {{/each}}
-    <meta name="keywords" content="{{# each data.post.categories}}{{name}}, {{/each}}">
+    <meta name="keywords" content="{{# each data.post.tags}}{{name}}, {{/each}}">
 {{else}}
     <title>News-Wall</title>
     <meta name="description" content="Provide the News you want to read">

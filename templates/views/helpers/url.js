@@ -71,10 +71,9 @@ exports = module.exports = {
 			return path.join(process.env.BASE_URL, exports.postUrl(postSlug));
 	},
 
-	// create the category url for a blog-category page
-	categoryUrl: function (categorySlug, options) {
-		//return ('/blog/' + categorySlug);
-		return ('/?c=' + categorySlug);
+	// create the tag url for a blog-tag page
+	tagUrl: function (tagSlug, options) {
+		return ('/?tag=' + tagSlug);
 	},
 
 

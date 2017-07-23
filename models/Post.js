@@ -24,7 +24,7 @@ var Post = new keystone.List('Post', {
 Post.add({
 	slug: { type: String, hidden: true },
 	title: { type: String, required: true },
-	categories: { type: Types.Relationship, ref: 'PostCategory', many: true },
+	tags: { type: Types.TextArray },
 	reference: { type: Types.Url },
 	from: {
 		site: {type: String },

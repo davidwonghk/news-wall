@@ -4,39 +4,10 @@ const how01 = require('./how01');
 
 const keystone = require('keystone'),
     Post = keystone.list('Post'),
-    PostCategory = keystone.list('PostCategory');
+    PostTag = keystone.list('PostTag');
 
 var log = require('logger')(__filename);
 
-
-function _tagsToCategories(tags, _result, callback) {
-		if (!tags) { callback(null, _result); return; }
-
-		var tag = tags.pop();
-		if (!tag) { callback(null, _result); return; }
-
-		PostCategory.model.findOne({'name': tag}).exec(function(err, postCategories){
-			if (err) {callback(err); return;}
-
-			var category;
-			if (postCategories && postCategories.length > 0) {
-        log.debug('tag found', tag, postCategories);
-  			_result.push(postCategories[0]);
-  			_tagsToCategories(tags, _result, callback); //tail recustion
-			} else {
-        log.debug('tag not found', tag);
-
-				var category = new PostCategory.model({name:tag});
-				category.save(function(err){
-					if (err) callback(err);
-					log.info('category created', category.name);
-    			_result.push(category);
-    			_tagsToCategories(tags, _result, callback); //tail recustion
-				});
-			}
-
-		});
-}
 
 
 
@@ -54,19 +25,12 @@ function _saveCrawl(origin, data, callback) {
 				return callback();
 			}
 
-			_tagsToCategories(data.tags, [], function(err, categories) {
-        data.categories = categories;
-        delete data.tags;
-
-        Object.assign(data, {
-					'state': 'published',
-					'redirect': false,
-        })
-				var newPost = new Post.model(data);
-				newPost.save(callback);
-
-			});
-
+      Object.assign(data, {
+				'state': 'published',
+				'redirect': false,
+      })
+			var newPost = new Post.model(data);
+			newPost.save(callback);
 		});
 
 }

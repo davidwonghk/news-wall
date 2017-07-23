@@ -2,7 +2,7 @@ jQuery(function($) {
 
 	function loadTags() {
 		$.ajax({
-			url: '/ajax/categories' + getQuery(),
+			url: '/ajax/tags' + getQuery(),
 			dataType: 'json',
 			success: function(data) {
 				data.forEach(function(item) {

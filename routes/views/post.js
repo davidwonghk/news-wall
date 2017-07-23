@@ -28,7 +28,7 @@ exports = module.exports = function (req, res) {
 			state: 'published',
 			slug: locals.filters.post,
 		})
-		.populate('categories image');
+		.populate('image');
 
 		q.exec(function (err, result) {
 			if (err || !result) {

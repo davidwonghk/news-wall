@@ -1,5 +1,5 @@
 var keystone = require('keystone'),
-	PostCategory = keystone.list('PostCategory');
+	PostTag = keystone.list('PostTag');
 
 var url = require('../../templates/views/helpers/url');
 
@@ -10,45 +10,45 @@ exports = module.exports = function (req, res) {
 	var locals = res.locals;
 
 	locals.filters = {
-		category: req.query.c
+		tag: req.query.tag
 	}
 
 	locals.data = {
-		categories: [],
+		tags: [],
 	};
 
 	view.on('init', function (next) {
-		PostCategory.model.find()
+		PostTag.model.find()
 			.sort('name')
 			.exec(function (err, results) {
-				locals.data.categories = results;
+				locals.data.tags = results;
 				next(err);
 			});
 	});
 
 
 	view.on('render', function (next) {
-		const  data_categories = locals.data.categories;
+		const data_tags = locals.data.tags;
 
-		if (!data_categories) {
+		if (!data_tags) {
 			res.send([]);
 			return;
 		}
 
-		var categories = data_categories.map(function(c) {
+		var tags = data_tags.map(function(tag) {
 			var result = {
-				"name": c.name,
-				"url": url.categoryUrl(c.name),
+				"name": tag,
+				"url": url.tagUrl(tag),
 			}
-			if (locals.filters.category == c.name) {
+			if (locals.filters.tag == tag) {
 				result.active = true;
 			}
 			return result;
 		});
 
-		res.send(categories);
+		res.send(tags);
 	});
 
-	view.render('categories');
+	view.render('tags');
 
 }

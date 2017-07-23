@@ -60,12 +60,6 @@
 								<li><a href="" onclick="createCookie('locale', 'zh-tw')">繁</a></li>
 								<li><a href="" onclick="createCookie('locale', 'zh-cn')">简</a></li>
 							</ul>
-							<script type="javascript">
-								var language = window.navigator.userLanguage || window.navigator.language;
-								if (!readCookie('locale')) {
-									createCookie('locale', language);
-								}
-							</script>
 
 							{{!--
 							<ul class="nav navbar-nav navbar-right">
@@ -195,6 +189,12 @@
 		<script src="/js/consent.js"></script>
 		<script src="/js/util.js"></script>
 		<script src="/js/ajax-tags.js"></script>
+		<script type="javascript">
+			var language = window.navigator.userLanguage || window.navigator.language;
+			if (!readCookie('locale')) {
+				createCookie('locale', language);
+			}
+		</script>
 
 	</body>
 </html>

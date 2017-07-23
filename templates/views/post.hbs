@@ -68,8 +68,8 @@ $( function() {
 				<hr>
 
 				<div class="tags">
-					{{#each data.post.categories}}
-					<a href="{{ categoryUrl key }}">#{{ name }} &nbsp;&nbsp;</a>
+					{{#each data.post.tags}}
+					<a href="{{ tagUrl this }}">#{{ this }} &nbsp;&nbsp;</a>
 					{{/each}}
 				</div>
 
