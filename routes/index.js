@@ -23,6 +23,7 @@ const middleware = require('./middleware');
 const importRoutes = keystone.importer(__dirname);
 
 const cookieParser = require('cookie-parser')
+const render = require('./render')
 
 
 // Common Middleware
@@ -36,19 +37,13 @@ var routes = {
 	api: importRoutes('./api'),
 };
 
-var render = function(name, local) {
-	return function (req, res){
-		if (!local) local = {};
-		local.query = req.query;
-		res.render(name, local);
-	}
-}
 
 // Setup Route Bindings
 exports = module.exports = function (app) {
 
 	//custom signin page
 	app.get('/signin', render('signin') );
+	app.post('/signin', render('signin', {}, {warning: 'login failed'}) );
 
 	//policy pages
 	app.get('/policy/:page', function(req, res) {
