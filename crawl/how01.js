@@ -57,6 +57,10 @@ function _crawl(id, callback) {
 			data.tags.push($(ele).text().trim());
 		});
 
+    //remove the btn_report and related span
+    $('a.btn_report').parent().remove();
+    $('i.icon_original').parent().remove();
+
 		//convert content html to tranditional chinese
 		var html = $('#detailMain').html();
 		chinese.toTranditional(html, function(err, converted) {
