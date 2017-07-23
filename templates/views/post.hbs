@@ -25,18 +25,16 @@ $( function() {
 	});
 
   $('#dialog_like').hide();
-  var askLike = setInterval(function() {
-    try {
-      if ($('#dialog_report').dialog('isOpen')) return;
-    } catch(err) {
-    }
+  setInterval(function() {
+    try { if ($('#dialog_report').dialog('isOpen')) return; } catch(err) {}
+    try { if ($('#dialog_like').dialog('isOpen')) return; } catch(err) {}
 
     $('#dialog_like').dialog({
       dialogClass: "dialog-no-title dialog-fixed",
       closeOnEscape: false,
       width:'auto',
       height:'auto'
-   });
+     });
 
     $('.overlay').height("100%").click(function() {
       $('#dialog_like').dialog('close');
@@ -80,6 +78,7 @@ $( function() {
 				</div>
 
 				<hr>
+        <div class="fb-comments" data-href="{{fullPostUrl data.post.slug}}" data-numposts="3"></div>
 				{{> share}}
 
 			</article>
@@ -94,7 +93,7 @@ $( function() {
   <div class='text-center'>
     <p>喜歡這篇文章？
       <br> 按個<span class="fb_text">讚</span>及<span class="fb_text">分享</span>給朋友吧
-    <div class="fb-like" data-href="{{url}}"
+    <div class="fb-like" data-href="{{fullPostUrl data.post.slug}}"
       data-layout="button "
       $data-action="like"
       data-size="large"

@@ -1,8 +1,9 @@
-var keystone = require('keystone');
-var cloudinary = require('cloudinary');
-var fs = require('fs');
+const keystone = require('keystone');
+const cloudinary = require('cloudinary');
+const fs = require('fs');
+const path = require('path');
 
-module.exports = {
+exports = module.exports = {
 
 	// ### CloudinaryUrl Helper
 	// Direct support of the cloudinary.url method from Handlebars (see
@@ -63,11 +64,11 @@ module.exports = {
 
 	// Direct url link to a specific post
 	postUrl: function (postSlug) {
-		return ('/post/' + postSlug);
+		return path.join('/post', postSlug);
 	},
 
 	fullPostUrl: function(postSlug) {
-			return (process.env.BASE_URL + '/post/' + postSlug);
+			return path.join(process.env.BASE_URL, exports.postUrl(postSlug));
 	},
 
 	// create the category url for a blog-category page

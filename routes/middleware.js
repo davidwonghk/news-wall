@@ -31,8 +31,9 @@ exports.initLocals = function (req, res, next) {
 	res.locals.develop = process.env.DEVELOP;
 	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
 
-	res.locals.policy = {
-		appName: 'News-Wal',
+	res.locals.admin = {
+		appName: 'News-Wall',
+		fbAppId: '361801474173911',
 	  lastUpdated: '2017年07月22日',
 	};
 

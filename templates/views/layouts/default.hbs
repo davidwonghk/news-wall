@@ -41,6 +41,7 @@
 
 	</head>
 	<body>
+		{{> facebook}}
 		<div id="header">
 			<div class="container-fluid">
 				<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
@@ -165,12 +166,12 @@
 				</div>
 				<div class="bottom">
           <span class="copyright">
-          	©2017 {{policy.appName}}. All Rights Reserved.
+          	©2017 {{admin.appName}}. All Rights Reserved.
           </span>
           <ul>
           	<li> <a rel="nofollow" href="/policy/tos">使用條款</a> | </li>
           	<li> <a rel="nofollow" href="/policy/privacy">隱私條款</a> | </li>
-          	<li> <a rel="nofollow" href="/policy/contactus">聯繫我們</a> </li>
+          	<li> <a rel="nofollow" href="mailto:newswall2017@gmail.com">聯繫我們</a> </li>
           </ul>
 				</div>
 		</footer>
@@ -191,8 +192,6 @@
 		</div>
 
 		{{{isAdminEditorJS user}}}
-
-		<script src="/js/fb.js"></script>
 		<script src="/js/consent.js"></script>
 		<script src="/js/util.js"></script>
 		<script src="/js/ajax-tags.js"></script>

@@ -1,6 +1,5 @@
-<meta property="og:type"          content="article" />
 <meta property="og:site_name"     content="News-Wall" />
-<meta property="fb:app_id"        content="361801474173911" />
+<meta property="fb:app_id"        content="{{admin.fbAppId}}" />
 
 {{#if data.post}}
     {{#if data.meta.title}}
@@ -22,6 +21,10 @@
         <meta name="twitter:description" content="{{data.post.content.brief}}">
     {{/if}}
     <meta property="og:type" content="article">
+    <!--TODO:
+    <meta property="article:publisher" content="https://www.facebook.com/"/>
+    <meta property="article:author" content="https://www.facebook.com/"/>
+    -->
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image" content="{{data.post.image.url}}">
     <meta name="twitter:image:src" content="{{data.post.image.url}}">

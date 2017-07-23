@@ -43,7 +43,7 @@ exports = module.exports = function (app) {
 
 	//custom signin page
 	app.get('/signin', render('signin') );
-	app.post('/signin', render('signin', {}, {warning: 'login failed'}) );
+	app.post('/signin', render('signin', {}, {error: '用戶名無效或密碼錯誤'}) );
 
 	//policy pages
 	app.get('/policy/:page', function(req, res) {
