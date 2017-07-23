@@ -1,6 +1,7 @@
 const yahoo = require('./yahoo');
 const buzzbooklet = require('./buzzbooklet');
 const how01 = require('./how01');
+const bomb01 = require('./bomb01');
 
 const keystone = require('keystone'),
     Post = keystone.list('Post'),
@@ -22,10 +23,11 @@ function _saveCrawl(origin, data, callback) {
 			if (err) return callback(err);
 
 			if (exist) {
-				log.debug("skip recreate post", data.title);
+				log.debug("skip recreate from " + origin+":", data.title);
 				return callback();
 			}
 
+      log.info("crawl from "+origin+":", data.reference)
       Object.assign(data, {
 				'state': 'published',
 				'redirect': false,
@@ -36,13 +38,15 @@ function _saveCrawl(origin, data, callback) {
 
 }
 
+//-------------------------------------------------------------------------------
+//exports
 
-exports = module.exports = {
+exports = module.exports = {}
 
 /**
  * callback: function(err)
  */
-crawlYahooStyle: function(callback) {
+exports.crawlYahooStyle = function(callback) {
   var yahooTags = ['power-look', 'video', 'fashion', 'beauty', 'men', 'weddings', 'horoscope', 'red-carpet', 'popculture', 'exclusive'];
 	yahooTags.forEach(function (tagName) {
     yahoo(tagName, tagName, function(err, data) {
@@ -50,20 +54,25 @@ crawlYahooStyle: function(callback) {
       _saveCrawl('yahoo', data, callback);
   	});
 	});
-},
+}
 
-crawlBuzzBooklet: function(num, callback) {
+exports.crawlBuzzBooklet = function(num, callback) {
   buzzbooklet(num, function(err, data) {
 		if (err) {callback(err); return;}
     _saveCrawl('buzzbooklet', data, callback);
   });
-},
+}
 
-crawlHow01: function(num, callback) {
+exports.crawlHow01 = function(num, callback) {
   how01(num, function(err, data) {
 		if (err) {callback(err); return;}
     _saveCrawl('how01', data, callback);
   });
-},
+}
 
+exports.crawlBomb01 = function(num, callback) {
+  bomb01(num, function(err, data) {
+		if (err) {callback(err); return;}
+    _saveCrawl('bomb01', data, callback);
+  });
 }

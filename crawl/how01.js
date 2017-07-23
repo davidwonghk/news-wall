@@ -57,14 +57,12 @@ function _crawl(id, callback) {
 		});
 
     //remove the btn_report and related span
-    $('a.btn_report').parent().remove();
-    $('i.icon_original').parent().remove();
+    $('li.tips').remove();
 
 		//convert content html to tranditional chinese
 		var html = $('#detailMain').html();
 		chinese.toTranditional(html, function(err, converted) {
 			data['content'] = {'html': converted};
-			log.info('crawl', data.reference);
 			callback(null, data);
 		});
 	});

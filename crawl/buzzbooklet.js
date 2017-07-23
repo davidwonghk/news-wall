@@ -22,7 +22,6 @@ exports = module.exports = function (limit, callback) {
 	    if(err) { callback(err); return; }
 			data['content'] = {'html': html};
 
-			log.info('crawl', data.reference);
 			callback(null, data);
 		});
 

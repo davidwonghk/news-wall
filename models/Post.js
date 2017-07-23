@@ -75,9 +75,15 @@ var cheerio = require('cheerio')  ;
  * callback(err, image)
  */
 function _urlToImage(url, callback) {
-  var image = new Image.model({reference:url});
-  image.save(function(err) {
-    callback(err, image);
+  //skip download the image again if it is in db
+  Image.model.findOne({'reference': url}).exec(function(err, exists){
+    if (err) return callback(err);
+    if (exists)  return callback(err, exists);
+
+    var image = new Image.model({reference:url});
+    image.save(function(err) {
+      callback(err, image);
+    });
   });
 }
 
@@ -92,25 +98,16 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 
 	async.reduce($('img'), $, function(s, item, next) {
 		var src = s(item).attr('src');
-
 	  if (!src) return next(null, s);
 
     //crawl the image if it is not yet downloaded
 		if (!src.startsWith('/img/')) {
-      var substituteImgage = function(err, img) {
+      return _urlToImage(src, function(err, img) {
         if (!err) {
           s(item).attr('src', '/img/'+img._id);
           eachCallback(img, s(item));
         }
-        return next(err, s);
-      };
-
-      //skip download the image again if it is in db
-      return Image.model.findOne({'reference': src}).exec(function(err, exist){
-        if (!exist) return _urlToImage(src,substituteImgage);
-
-        log.debug("skip exist image", exist._id, src);
-        return substituteImgage(err, exist);
+        next(err, s);
       });
     }
 

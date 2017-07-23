@@ -44,6 +44,12 @@ exports = module.exports = function (req, res) {
 			});
 		}
 
+		if (locals.data.crawl.indexOf('bomb01') >= 0) {
+			crawl.crawlBomb01(num, function(err) {
+				if (err) log.error('crawl bomb01:', err);
+			});
+		}
+
 		res.setHeader('Content-Type', 'application/json');
 		next();
 
