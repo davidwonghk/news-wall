@@ -45,22 +45,20 @@ exports = module.exports = function (req, res) {
 				description: filter.chinese(result.Description),
 			};
 
-			filter.chinese(result.Content, function(err, html) {
-				locals.data.html = html
-				next(err);
-			});
 			//subsitute images src
-			/*
 			result.forEachImages(
 				function(image, imageDom) {
 					imageDom.attr('src', url.imageUrl(image));
 				},
-			  function(err, globalDom) {
-					locals.data.html = result.html
-					next(err);
+			  function(err, html) {
+					filter.chinese(html, function(err, converted) {
+						locals.data.html = converted;
+						next(err);
+					});
 			  }
 			);
-			*/
+
+
 
 		});
 

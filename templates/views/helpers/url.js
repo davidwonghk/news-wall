@@ -46,14 +46,15 @@ exports = module.exports = {
 	//     <img src="{{imageUrl post.image}}" />`
 	//   {{/if}}`
 	imageUrl: function(image, options) {
-		var local = '/img/'+image.id;
-		if (fs.existsSync('public/'+local)) {
+		if ('cloudinary ' in image) {
+			return exports.cloudinaryUrl(image.cloudinary, {hash:{'crop':'fit'}});
+		}
+
+		var local = '/img/'+image._id;
+		if (fs.existsSync('public'+local)) {
 			return local;
 		}
 
-		if ( image.cloudinary ) {
-			return _url.cloudinaryUrl(image.cloudinary, {hash:{'crop':'fit'}});
-		}
 		return image.reference;
 	},
 
