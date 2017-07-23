@@ -1,9 +1,4 @@
-const OpenCC = require('opencc');
-const opencc = new OpenCC('t2s.json');
-
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
-
+const chinese = require('../util/chinese');
 
 module.exports = function(req) {
 
@@ -20,12 +15,11 @@ function isTC(cookies) {
 return {
 	chinese: function(text, callback) {
 		var tc = isTC(req.cookies);
-		dtext = entities.decode(text);
 
 		if (callback) {
-			return tc ? callback(null, text) : opencc.convert(dtext, callback);
+			return tc ? callback(null, text) : chinese.toTranditional(text, callback);
 		} else {
-			return tc ? text : opencc.convertSync(dtext);
+			return tc ? text : toTranditionalSync(text);
 		}
 	},
 }

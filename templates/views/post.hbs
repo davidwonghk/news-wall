@@ -25,7 +25,7 @@ $( function() {
 	});
 
   $('#dialog_like').hide();
-  setInterval(function() {
+  setTimeout(function() {
     try { if ($('#dialog_report').dialog('isOpen')) return; } catch(err) {}
     try { if ($('#dialog_like').dialog('isOpen')) return; } catch(err) {}
 
@@ -40,7 +40,7 @@ $( function() {
       $('#dialog_like').dialog('close');
       $(this).height("0");
     });
-  }, 30000);
+  }, 10000);
 });
 </script>
 

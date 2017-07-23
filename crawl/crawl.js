@@ -1,5 +1,6 @@
 const yahoo = require('./yahoo');
 const buzzbooklet = require('./buzzbooklet');
+const how01 = require('./how01');
 
 const keystone = require('keystone'),
     Post = keystone.list('Post'),
@@ -18,19 +19,22 @@ function _tagsToCategories(tags, _result, callback) {
 			if (err) {callback(err); return;}
 
 			var category;
-			if (postCategories.length > 0) {
-				category = postCategories[0];
+			if (postCategories && postCategories.length > 0) {
+        log.debug('tag found', tag, postCategories);
+  			_result.push(postCategories[0]);
+  			_tagsToCategories(tags, _result, callback); //tail recustion
 			} else {
-				category = new PostCategory.model({name:tag});
+        log.debug('tag not found', tag);
+
+				var category = new PostCategory.model({name:tag});
 				category.save(function(err){
 					if (err) callback(err);
-					log.debug('category created', category);
-				})
+					log.info('category created', category.name);
+    			_result.push(category);
+    			_tagsToCategories(tags, _result, callback); //tail recustion
+				});
 			}
 
-			_result.push(category);
-      //tail recustion
-			_tagsToCategories(tags, _result, callback);
 		});
 }
 
@@ -40,7 +44,7 @@ function _tagsToCategories(tags, _result, callback) {
  * origin: the origin to crawl
  * data: {tags, imageUrl, *}
  */
-function _crawl(origin, data, callback) {
+function _saveCrawl(origin, data, callback) {
 
 		//find post by title
 		Post.model.find().where('title', data.title).limit(1).exec(function(err, posts) {
@@ -78,7 +82,7 @@ crawlYahooStyle: function(callback) {
 	yahooTags.forEach(function (tagName) {
     yahoo(tagName, tagName, function(err, data) {
 			if (err) return callback(err);
-      _crawl('yahoo', data, callback);
+      _saveCrawl('yahoo', data, callback);
   	});
 	});
 },
@@ -86,7 +90,14 @@ crawlYahooStyle: function(callback) {
 crawlBuzzBooklet: function(num, callback) {
   buzzbooklet(num, function(err, data) {
 		if (err) {callback(err); return;}
-    _crawl('buzzbooklet', data, callback);
+    _saveCrawl('buzzbooklet', data, callback);
+  });
+},
+
+crawlHow01: function(num, callback) {
+  how01(num, function(err, data) {
+		if (err) {callback(err); return;}
+    _saveCrawl('how01', data, callback);
   });
 },
 

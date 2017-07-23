@@ -2,7 +2,7 @@ const keystone = require('keystone');
 const Types = keystone.Field.Types;
 const cloudinary = require('cloudinary');
 
-const util = require('../crawl/util')
+const request = require('../util/request')
 const fs = require('fs');
 
 var log = require('logger')(__filename);
@@ -37,7 +37,7 @@ Image.schema.methods.publish = function(post, callback) {
 		if (!this.reference) return callback('reference not found');
 
 		var headers = {Referer: post.reference};
-		util.download(this.reference, this.localPath, headers, function() {
+		request.download(this.reference, this.localPath, headers, function() {
 				var remotePath = process.env.BASE_URL + this.local;
 				log.trace('try upload ' + remotePath + ' to cloudinary');
 				cloudinary.uploader.upload(remotePath, function(result) {

@@ -1,14 +1,14 @@
 var cheerio = require('cheerio')  ;
 var url = require('url');
 var striptags = require('striptags');
-var request = require('request');
+const request = require('../util/request').get;
 
 
 exports = module.exports = function (tag, category, callback) {
   crawlTag(tag, category, function(err, data) {
     if(err) { callback(err); return; }
 
-    crawlLink(data.link, function(err, html) {
+    crawlLink(data.reference, function(err, html) {
       if(err) { callback(err); return; }
 
       data.content.html = html

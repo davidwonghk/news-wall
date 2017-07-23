@@ -1,7 +1,6 @@
 const cheerio = require('cheerio')  ;
 const url = require('url');
-const striptags = require('striptags');
-const request = require('./util').get;
+const request = require('../util/request').get;
 
 var log = require('logger')(__filename);
 
@@ -10,13 +9,13 @@ callback
     'title': title,
     'tags': [tag],
     'imageUrl': imageUrl,
-    'link': link,
+    'from': {'site': site, author: author, link: link},
 		'content': {html:html}
 */
-exports = module.exports = function (num, callback) {
+exports = module.exports = function (limit, callback) {
 
 	const current = Date.now()/1000;
-	crawlCard(num, current, function(err, data) {
+	crawlCard(limit, current, function(err, data) {
     if(err) { callback(err); return; }
 
 		crawlLink(data.reference, function(err, html) {
@@ -32,8 +31,8 @@ exports = module.exports = function (num, callback) {
 
 
 
-function crawlCard(num, timestamp, callback) {
-	if (num <= 0) return;
+function crawlCard(limit, timestamp, callback) {
+	if (limit <= 0) return;
 
 	const url = getCardListUrl(timestamp);
 	request(url, function(err, resp, body) {
@@ -42,7 +41,7 @@ function crawlCard(num, timestamp, callback) {
 		var json = JSON.parse(body);
 
 		for (k in json.new_card_list) {
-			if (--num < 0) return;
+			if (--limit < 0) return;
 
 			var card = json.new_card_list[k];
 			var data = {
@@ -55,7 +54,7 @@ function crawlCard(num, timestamp, callback) {
 			callback(null, data);
 		}
 
-		crawlCard(num, json['build'], callback);
+		crawlCard(limit, json['build'], callback);
 	});
 }
 

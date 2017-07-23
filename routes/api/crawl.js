@@ -16,12 +16,13 @@ exports = module.exports = function (req, res) {
 
 	locals.data = {
 		num: 1,
-		crawl: ['buzzbook'],
+		crawl: ['buzzbook', 'how01'],
 	};
 
 
 	view.on('init', function (next) {
 		if (locals.filters.num) {
+			//override default value
 			locals.data.num = locals.filters.num
 		}
 
@@ -29,9 +30,17 @@ exports = module.exports = function (req, res) {
 			locals.data.crawl = locals.filters.c.split(',')
 		}
 
+		const num = parseInt(locals.data.num);
+		
 		if (locals.data.crawl.indexOf('buzzbook') >= 0) {
-			crawl.crawlBuzzBooklet(locals.data.num, function(err) {
+			crawl.crawlBuzzBooklet(num, function(err) {
 				if (err) log.error('crawl buzzbooklet', err);
+			});
+		}
+
+		if (locals.data.crawl.indexOf('how01') >= 0) {
+			crawl.crawlHow01(num, function(err) {
+				if (err) log.error('crawl how01', err);
 			});
 		}
 

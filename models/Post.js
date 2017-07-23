@@ -34,6 +34,7 @@ Post.add({
 	redirect: { type: Boolean, default: false },
 	state: { type: Types.Select, options: 'draft, published, posted, archived', default: 'draft', index: true },
 	publishedDate: { type: Types.Datetime, dependsOn: { state: 'published' } },
+	createdDate: { type: Types.Datetime },
   imageUrl: {type: Types.Url},
 	image: { type: Types.Relationship, ref: 'Image', many: false},
 	content: {
@@ -157,6 +158,12 @@ Post.schema.pre('save', function(next) {
     slugTitle = slugTitle.substring(0, 64);
   }
 	this.slug = slugTitle;
+
+
+  //set createdDate
+  if (!this.createdDate) {
+    this.createdDate = new Date();
+  }
 
   if (this.isModified('reference') && this.reference) {
     this.reference = encodeURI(this.reference);
