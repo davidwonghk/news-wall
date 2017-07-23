@@ -97,13 +97,21 @@ Post.schema.methods.forEachImages = function(eachCallback, postCallback) {
 
     //crawl the image if it is not yet downloaded
 		if (!src.startsWith('/img/')) {
-      return _urlToImage(src, function(err, image) {
+      var substituteImgage = function(err, img) {
         if (!err) {
-          s(item).attr('src', '/img/'+image._id);
-          eachCallback(image, s(item));
+          s(item).attr('src', '/img/'+img._id);
+          eachCallback(img, s(item));
         }
         return next(err, s);
-      } );
+      };
+
+      //skip download the image again if it is in db
+      return Image.model.findOne({'reference': src}).exec(function(err, exist){
+        if (!exist) return _urlToImage(src,substituteImgage);
+
+        log.debug("skip exist image", exist._id, src);
+        return substituteImgage(err, exist);
+      });
     }
 
 		var imageId = src.substring(5);

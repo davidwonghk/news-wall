@@ -1,4 +1,4 @@
-const cheerio = require('cheerio')  ;
+const cheerio = require('cheerio');
 const request = require('../util/request').get;
 const chinese = require('../util/chinese');
 
@@ -9,16 +9,15 @@ var log = require('logger')(__filename);
 
 
 exports = module.exports = function (num, callback) {
-	Post.model.find()
+	Post.model.findOne()
 		.where('from.site', source)
 		.sort({createdDate: -1})
-		.limit(1)
 		.exec(function(err, post) {
 			if (err) return callback(err);
 
 			var offset = 0;
-			if (post && post.length>0) {
-				offset = _grepArticleId(post[0].reference);
+			if (post) {
+				offset = _grepArticleId(post.reference);
 			}
 
 			for (var i=offset+1; i<=offset+num; i++) {
@@ -34,7 +33,7 @@ function _crawl(id, callback) {
 	const url = _getArticleUrl(id);
 
 	request(url, function(err, resp, html) {
-		if (err) { callback(err); return; }
+		if (err) return callback(err);
 
     var $ = cheerio.load(html);
 		var data = {

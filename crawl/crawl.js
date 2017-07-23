@@ -18,9 +18,10 @@ var log = require('logger')(__filename);
 function _saveCrawl(origin, data, callback) {
 
 		//find post by title
-		Post.model.find().where('title', data.title).limit(1).exec(function(err, posts) {
-			if (err) {callback(err); return;}
-			if (posts.length > 0) {
+		Post.model.findOne({'title': data.title}).exec(function(err, exist) {
+			if (err) return callback(err);
+
+			if (exist) {
 				log.debug("skip recreate post", data.title);
 				return callback();
 			}
