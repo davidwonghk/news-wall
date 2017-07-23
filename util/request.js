@@ -16,7 +16,10 @@ request : request.defaults({
 */
 
 get: function(url, callback) {
-  request.get( {url: url, headers: UA_HEADER}, callback );
+  request.get( {url: url, headers: UA_HEADER}, function(err, resp, body) {
+    if (resp.statusCode != 200) return callback('request ' + url + ' return ' + resp.statusCode, resp);
+    return callback(err, resp, body);
+  });
 },
 
 download: function(url, to, headers, callback) {

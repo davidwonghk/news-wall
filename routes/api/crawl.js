@@ -31,16 +31,16 @@ exports = module.exports = function (req, res) {
 		}
 
 		const num = parseInt(locals.data.num);
-		
+
 		if (locals.data.crawl.indexOf('buzzbook') >= 0) {
 			crawl.crawlBuzzBooklet(num, function(err) {
-				if (err) log.error('crawl buzzbooklet', err);
+				if (err) log.error('crawl buzzbooklet:', err);
 			});
 		}
 
 		if (locals.data.crawl.indexOf('how01') >= 0) {
 			crawl.crawlHow01(num, function(err) {
-				if (err) log.error('crawl how01', err);
+				if (err) log.error('crawl how01:', err);
 			});
 		}
 
