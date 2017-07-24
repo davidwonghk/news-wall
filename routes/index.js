@@ -66,6 +66,7 @@ exports = module.exports = function (app) {
 	app.get('/ajax/tags', routes.ajax.tags);
 
 	app.get('/api/crawl', middleware.onlyMe, routes.api.crawl);
+	app.get('/api/sync/:action', middleware.onlyMe, routes.api.sync);
 
 	//use additinal middleware globally
 	app.use(cookieParser);

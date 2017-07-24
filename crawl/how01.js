@@ -11,12 +11,13 @@ var log = require('logger')(__filename);
 exports = module.exports = function (num, callback) {
 	Post.model.findOne()
 		.where('from.site', source)
+    .select('reference  -_id')
 		.sort({createdDate: -1})
 		.exec(function(err, post) {
 			if (err) return callback(err);
 
 			var offset = 0;
-			if (post) {
+			if (post.reference) {
 				offset = _grepArticleId(post.reference);
 			}
 

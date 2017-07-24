@@ -13,32 +13,29 @@ exports = module.exports = function (req, res) {
 		tag: req.query.tag
 	}
 
-	locals.data = {
-		tags: [],
-	};
+	var tags = []
 
 	view.on('init', function (next) {
 		PostTag.model.find()
-			.sort('name')
+			.sort('-count')
+			.limit(8)
 			.exec(function (err, results) {
-				locals.data.tags = results;
+				tags = results;
 				next(err);
 			});
 	});
 
 
 	view.on('render', function (next) {
-		const data_tags = locals.data.tags;
-
-		if (!data_tags) {
+		if (!tags) {
 			res.send([]);
 			return;
 		}
 
-		var tags = data_tags.map(function(tag) {
+		var payload = tags.map(function(tag) {
 			var result = {
-				"name": tag,
-				"url": url.tagUrl(tag),
+				"name": tag.name,
+				"url": url.tagUrl(tag.name),
 			}
 			if (locals.filters.tag == tag) {
 				result.active = true;
@@ -46,7 +43,7 @@ exports = module.exports = function (req, res) {
 			return result;
 		});
 
-		res.send(tags);
+		res.send(payload);
 	});
 
 	view.render('tags');

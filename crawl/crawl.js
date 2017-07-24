@@ -76,3 +76,25 @@ exports.crawlBomb01 = function(num, callback) {
     _saveCrawl('bomb01', data, callback);
   });
 }
+
+
+/*
+ * grep all post.tags to sync it to PostTag
+ * @param callback function(err)
+ */
+exports.syncPostTags = function() {
+  Post.model.find().distinct('tags', function(err, tags) {
+    tags.forEach(function(tag) {
+      PostTag.model.findOne({'name': tag}).exec(function(err, postTag) {
+        if (err) return;
+        if (postTag) return;
+
+        postTag = new PostTag.model({'name': tag})
+        postTag.save(function(err) {
+          if (err) return;
+          log.info('PostTag created ', tag);
+        });
+      });
+    });
+  });
+}
