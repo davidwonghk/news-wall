@@ -8,45 +8,24 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 
-	// Init locals
-	locals.filters = {
-		num: req.query.num,
-		c: req.query.crawl,
+	const operations = {
+		'buzzbook': crawl.crawlBuzzBooklet,
+		'bomb01': crawl.crawlBomb01,
+		'how01': crawl.crawlHow01,
 	};
 
+	// Init locals
 	locals.data = {
-		num: 1,
-		crawl: ['buzzbook', 'how01'],
+		num: req.query.num ? parseInt(req.query.num) : 1,
+		targets: req.query.c ? req.query.c : Object.keys(operations),
 	};
 
 
 	view.on('init', function (next) {
-		if (locals.filters.num) {
-			//override default value
-			locals.data.num = locals.filters.num
-		}
-
-		if (locals.filters.c) {
-			locals.data.crawl = locals.filters.c.split(',')
-		}
-
-		const num = parseInt(locals.data.num);
-
-		if (locals.data.crawl.indexOf('buzzbook') >= 0) {
-			crawl.crawlBuzzBooklet(num, function(err) {
-				if (err) log.error('crawl buzzbooklet:', err);
-			});
-		}
-
-		if (locals.data.crawl.indexOf('how01') >= 0) {
-			crawl.crawlHow01(num, function(err) {
-				if (err) log.error('crawl how01:', err);
-			});
-		}
-
-		if (locals.data.crawl.indexOf('bomb01') >= 0) {
-			crawl.crawlBomb01(num, function(err) {
-				if (err) log.error('crawl bomb01:', err);
+		for(var i in locals.data.targets) {
+			var t = locals.data.targets[i];
+			operations[t](locals.data.num, function(err) {
+				if (err) log.error('crawl '+t+':', err);
 			});
 		}
 

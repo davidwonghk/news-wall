@@ -26,3 +26,8 @@ exports.toTranditionalSync = function(text) {
 	text = entities.decode(text);
 	return s2t.convertSync(text);
 }
+
+exports.toSimplifiedSync = function(text) {
+	text = entities.decode(text);
+	return t2s.convertSync(text);
+}

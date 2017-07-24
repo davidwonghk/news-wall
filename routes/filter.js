@@ -17,9 +17,9 @@ return {
 		var tc = isTC(req.cookies);
 
 		if (callback) {
-			return tc ? callback(null, text) : chinese.toTranditional(text, callback);
+			return tc ? callback(null, text) : chinese.toSimplified(text, callback);
 		} else {
-			return tc ? text : toTranditionalSync(text);
+			return tc ? text : chinese.toSimplifiedSync(text);
 		}
 	},
 }
