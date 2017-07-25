@@ -20,21 +20,16 @@ var MobileDetect = require('mobile-detect');
 	or replace it with your own templates / logic.
 */
 exports.initLocals = function (req, res, next) {
-	/*
-	res.locals.navLinks = [
-		{ label: 'Home', key: 'home', href: '/' },
-		{ label: 'Blog', key: 'blog', href: '/blog' },
-	];
-	*/
-	res.locals.user = req.user;
-	res.locals.baseUrl = process.env.BASE_URL;
-	res.locals.develop = process.env.DEVELOP;
-	res.locals.mobile = new MobileDetect(req.headers['user-agent']).mobile();
-
-	res.locals.admin = {
-		appName: 'News-Wall',
-		fbAppId: '361801474173911',
-	  lastUpdated: '2017年07月22日',
+	res.locals = {
+		user : req.user,
+		baseUrl : process.env.BASE_URL,
+		develop : process.env.DEVELOP,
+		mobile : new MobileDetect(req.headers['user-agent']).mobile(),
+		admin : {
+			appName: 'News-Wall',
+			fbAppId: '361801474173911',
+		  lastUpdated: '2017年07月22日',
+		},
 	};
 
 	next();

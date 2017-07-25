@@ -43,9 +43,7 @@
 	<body>
 		{{> facebook}}
 		<div id="header">
-			<div class="container-fluid">
-				<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-					<div class="container-fluid">
+				<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
 						<div class="navbar-header">
 							<button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
 								<span class="sr-only">Toggle navigation</span>
@@ -54,7 +52,12 @@
 							<a href="/" class="navbar-brand"><img src='/images/logo.png' class='img-logo' /></a>
 						</div>
 						<div class="collapse navbar-collapse">
-							<ul id="tag-bar" class="nav navbar-nav navbar-left"> </ul>
+							<ul class="nav navbar-nav navbar-left">
+								<li id="tags-dropdown" class="dropdown">
+									<a href = "#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">更多分類</a>
+									<ul id="all-tags" class="dropdown-menu"> </ul>
+								</li>
+							</ul>
 
 							<ul id="lang-bar" class="nav navbar-nav navbar-right">
 								<li><a href="" onclick="createCookie('locale', 'zh-tw')">繁</a></li>
@@ -80,10 +83,8 @@
 								</li>
 							</ul>
 
-						</div>
 					</div>
-				</div>
-			</div>
+				</nav>
 		</div>
 		<div id="body">
 			{{!--

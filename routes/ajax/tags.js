@@ -18,7 +18,6 @@ exports = module.exports = function (req, res) {
 	view.on('init', function (next) {
 		PostTag.model.find()
 			.sort('-count')
-			.limit(8)
 			.exec(function (err, results) {
 				tags = results;
 				next(err);
@@ -36,9 +35,6 @@ exports = module.exports = function (req, res) {
 			var result = {
 				"name": tag.name,
 				"url": url.tagUrl(tag.name),
-			}
-			if (locals.filters.tag == tag) {
-				result.active = true;
 			}
 			return result;
 		});
