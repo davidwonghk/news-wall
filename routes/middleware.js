@@ -7,10 +7,12 @@
  * you have more middleware you may want to group it as separate
  * modules in your project's /lib directory.
  */
-var _ = require('lodash');
-var keystone = require('keystone');
-var MobileDetect = require('mobile-detect');
+const _ = require('lodash');
+const keystone = require('keystone');
+const MobileDetect = require('mobile-detect');
+const Filter = require('./filter');
 
+var log = require('logger')(__filename);
 
 /**
 	Initialises the standard view locals
@@ -71,4 +73,21 @@ exports.onlyMe = function(req, res, next) {
 	} else {
 		next();
 	}
+}
+
+exports.chinese = function(req, res, next) {
+	var filter = Filter(req);
+	var oldSend = res.send;
+
+	res.send = function(data) {
+		filter.chinese(data, function(err, txt) {
+			if (err) {
+				log.error ('chinese filter', err);
+				txt = data;
+			}
+			oldSend.apply(res, [txt]);
+		});
+	};
+
+	next();
 }

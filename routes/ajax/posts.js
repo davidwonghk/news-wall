@@ -35,7 +35,7 @@ exports = module.exports = function (req, res) {
 			q.where('publishedDate').lt(locals.filters.timestamp);
 		}
 
-		if (locals.filters.tag) {
+		if (locals.filters.tag) 	{
 			q.where('tags').in([locals.filters.tag]);
 		}
 

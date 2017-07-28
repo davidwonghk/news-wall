@@ -4,13 +4,11 @@ const keystone = require('keystone'),
 	PostCount = keystone.list('PostCount');
 
 const url = require('../../templates/views/helpers/url');
-const Filter = require('../filter');
 
 exports = module.exports = function (req, res) {
 
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
-	var filter = Filter(req);
 
 	// Set locals
 	locals.section = 'blog';
@@ -39,11 +37,11 @@ exports = module.exports = function (req, res) {
 			//internal use for view, try not to use it in hbs
 			locals.data.post = result;
 
-			locals.data.title = filter.chinese(result.Title);
+			locals.data.title = result.Title;
 
 			locals.data.meta = {
 				title: locals.data.title,
-				description: filter.chinese(result.Description),
+				description: result.Description,
 			};
 
 			//subsitute images src
@@ -52,10 +50,8 @@ exports = module.exports = function (req, res) {
 					imageDom.attr('src', url.imageUrl(image));
 				},
 			  function(err, html) {
-					filter.chinese(html, function(err, converted) {
-						locals.data.html = converted;
-						next(err);
-					});
+					locals.data.html = html;
+					next(err);
 			  }
 			);
 

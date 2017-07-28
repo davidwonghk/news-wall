@@ -1,13 +1,15 @@
-var keystone = require('keystone'),
+const keystone = require('keystone'),
 	PostTag = keystone.list('PostTag');
 
-var url = require('../../templates/views/helpers/url');
+const url = require('../../templates/views/helpers/url');
+const Filter = require('../filter')
 
 
 exports = module.exports = function (req, res) {
 
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
+	var filter = Filter(req);
 
 	locals.filters = {
 		tag: req.query.tag
@@ -33,7 +35,8 @@ exports = module.exports = function (req, res) {
 
 		var payload = tags.map(function(tag) {
 			var result = {
-				"name": tag.name,
+				"key": tag.name,
+				"name": filter.chinese(tag.name),
 				"url": url.tagUrl(tag.name),
 			}
 			return result;

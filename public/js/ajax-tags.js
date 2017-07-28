@@ -1,8 +1,6 @@
 jQuery(function($) {
 
 	function loadTags() {
-		console.log(getCurrentTag())
-
 		$.ajax({
 			url: '/ajax/tags' + getQuery(),
 			dataType: 'json',
@@ -22,7 +20,7 @@ jQuery(function($) {
 	function renderTag(data) {
 		var li = $('<li>');
 		li.append( `<a href="${data.url}">${data.name}</a>` );
-		if (data.name == getCurrentTag()) {
+		if (data.key == getCurrentTag()) {
 			li.addClass('active');
 		}
 		return li;

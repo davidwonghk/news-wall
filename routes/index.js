@@ -46,7 +46,7 @@ exports = module.exports = function (app) {
 	app.post('/signin', render('signin', {}, {error: '用戶名無效或密碼錯誤'}) );
 
 	//policy pages
-	app.get('/policy/:page', function(req, res) {
+	app.get('/policy/:page', middleware.chinese, function(req, res) {
 		res	.render('policy/' + req.params.page)
 	});
 
@@ -58,8 +58,8 @@ exports = module.exports = function (app) {
 	// Views
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
-	app.get('/', routes.views.blog);
-	app.get('/post/:post', routes.views.post);
+	app.get('/', middleware.chinese, routes.views.blog);
+	app.get('/post/:post', middleware.chinese, routes.views.post);
 	app.get('/protected', middleware.requireUser, routes.views.protected);
 
 	app.get('/ajax/posts/:timestamp', routes.ajax.posts);
