@@ -32,6 +32,9 @@ exports.initLocals = function (req, res, next) {
 			fbAppId: '361801474173911',
 		  lastUpdated: '2017年07月22日',
 		},
+		ga: {
+			trackingId: 'UA-103610924-1'
+		}
 	};
 
 	next();

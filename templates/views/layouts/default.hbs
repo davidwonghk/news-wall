@@ -187,16 +187,29 @@
 		</div>
 
 		{{{isAdminEditorJS user}}}
-		<script src="/js/consent.js"></script>
-		<script src="/js/util.js"></script>
-		<script src="/js/ajax-tags.js"></script>
-		<script type="javascript">
-			var language = window.navigator.userLanguage || window.navigator.language;
-			if (!readCookie('locale')) {
-				createCookie('locale', language);
-			}
-		</script>
-
 	</body>
+
+	<script src="/js/consent.js"></script>
+	<script src="/js/util.js"></script>
+	<script src="/js/ajax-tags.js"></script>
+	<script type="javascript">
+		var language = window.navigator.userLanguage || window.navigator.language;
+		if (!readCookie('locale')) {
+			createCookie('locale', language);
+		}
+	</script>
+
+	{{#unless develop}}
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', '{{ga.trackingId}}', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	{{/unless}}
 </html>
 {{/if}}
