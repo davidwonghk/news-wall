@@ -7,12 +7,9 @@ jQuery(function($) {
 			url: '/ajax/tags' + getQuery(),
 			dataType: 'json',
 			success: function(data) {
-				var i = 0;
 				data.forEach(function(item) {
 					var view = renderTag(item);
-					if (i++ < 3) {
-						view.insertBefore($('#tags-dropdown'));
-					} else if(view.hasClass('active')) {
+					if(view.hasClass('active')) {
 						$('#tags-dropdown').parent().prepend(view);
 					} else {
 						$('#all-tags').append(view);

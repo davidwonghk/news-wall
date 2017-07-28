@@ -1,6 +1,7 @@
 const keystone = require('keystone'),
 	Image = keystone.list('Image'),
-	Post = keystone.list('Post');
+	Post = keystone.list('Post'),
+	PostCount = keystone.list('PostCount');
 
 const url = require('../../templates/views/helpers/url');
 const Filter = require('../filter');
@@ -58,8 +59,6 @@ exports = module.exports = function (req, res) {
 			  }
 			);
 
-
-
 		});
 
 	});
@@ -67,13 +66,35 @@ exports = module.exports = function (req, res) {
 	// Load other posts
 	view.on('init', function (next) {
 
-		var q = Post.model.find().where('state', 'published').sort('-publishedDate').limit('4');
+		var query = Post.model.find({'state': 'pulished'}).sort('-publishedDate').limit('4');
 
-		q.exec(function (err, results) {
+		query.exec(function (err, results) {
 			locals.data.posts = results;
 			next(err);
 		});
+	});
 
+	//add post count
+	view.on('init', function (next) {
+		var post = locals.data.post;
+		var query = PostCount.model.findOne({'post': post._id});
+
+		query.exec(function(err, postCount) {
+			if (err) {
+				log.error("postCount query error", err);
+				return next();
+			}
+
+			if (!postCount) {
+				postCount = new PostCount.model({'post': post, 'count': 0})
+			}
+
+			postCount.count += 1;
+			postCount.save(function(err, postCount) {
+				next(err);
+			});
+
+		})
 	});
 
 	view.on('render', function (next) {
