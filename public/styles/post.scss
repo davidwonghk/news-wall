@@ -1,0 +1,88 @@
+.post {
+	font-size: 17px;
+	line-height: 2;
+	color: #333;
+
+	img {
+		display: block;
+		//max-width: 640px;
+		max-width: 100%;
+		margin-top: 22px;
+		margin-bottom: 12px;
+	}
+}	//.post
+
+
+
+article {
+
+	.share {
+		li {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.fb-like {
+		display: inline;
+	}
+
+	.tags {
+		font-size: 15pt;
+		margin-bottom: 12px;
+	}
+
+	.post-from {
+		margin-bottom: 20px;
+	}
+
+	header {
+		margin-bottom: 12px;
+		h1 {
+			color: #555566;
+			font-weight: bold;
+		}
+
+		sub-header {
+			font-size: 11pt;
+			span {
+				display: inline;
+			}
+		}
+	}
+
+}	//article
+
+
+
+.overlay {
+	/* Height & width depends on how you want to reveal the overlay (see JS below) */
+	height: 0;
+	width: 100%;
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	background-color: rgb(100,100,100);
+	background-color: rgba(0,0,0, 0.5);
+	overflow-x: hidden;
+	/* Disable horizontal scroll */
+	transition: 0.2s;
+}
+
+#report_dialog {
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.fb_text {
+	font-weight: bold;
+	color: #3b5998;
+}
+
+
+@import "site/dialog";

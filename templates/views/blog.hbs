@@ -1,31 +1,8 @@
+<link rel="stylesheet" href="/styles/blog.css" >
+
 <div class="container-fluid">
 	<div class="row">
-
-			<div>
-					<ul role="navigation" class="nav nav-tabs">
-						{{# each data.categories }}
-							<li>
-								<a href="{{categoryUrl key}}" class="tag tag-info">#{{name}}</a>
-							</li>
-						{{/each}}
-					</ul>
-			</div>
-
-			<div class="blog">
-				{{# each data.posts.results}}
-				<div class="col-md-4">
-					<a href="{{postUrl slug}}">
-						<div class="img-container">
-							{{#if image}}
-							<img src="{{{cloudinaryUrl image crop='fit' }}}" class="img-thumbnail">
-							{{/if}}
-							<span class="img-footer">{{{title}}}</span>
-						</div>
-					</a>
-				</div>
-				{{/each}}
-			</div>
+			<script src="js/ajax-posts.js"></script>
+			<div class="posts" id="posts"></div>
 		</div>
-
-	{{>pagination}}
 </div>

@@ -37,7 +37,18 @@ keystone.init({
 	'wysiwyg menubar': true,
 	'wysiwyg skin': 'lightgray',
 	'wysiwyg additional buttons': 'searchreplace visualchars, charmap ltr rtl pagebreak paste, forecolor backcolor, emoticons media, preview print ',
-	'wysiwyg additional plugins': 'example, table, advlist, anchor, autolink, autosave, bbcode, charmap, contextmenu, directionality, emoticons, fullpage, hr, media, pagebreak, paste, preview, print, searchreplace, textcolor, visualblocks, visualchars, wordcount',
+	//'wysiwyg additional plugins': 'example, table, advlist, anchor, autolink, autosave, bbcode, charmap, contextmenu, directionality, emoticons, fullpage, hr, media, pagebreak, paste, preview, print, searchreplace, textcolor, visualblocks, visualchars, wordcount',
+	'wysiwyg additional plugins': 'example, table, advlist, anchor, autolink, autosave, charmap, contextmenu, directionality, emoticons, fullpage, hr, media, pagebreak, paste, preview, print, searchreplace, textcolor, visualblocks, visualchars, wordcount',
+	'wysiwyg additional options': {
+		relative_urls: false,
+	}
+	/*
+	//to fool keystone to use cloudinary upload ui to upload image locally
+	'cloudinary config': { cloud_name: 'not', api_key: 'really', api_secret: 'used' },
+  'wysiwyg additional options': {
+    'uploadimage_form_url': '/api/admin/upload-image'
+  }
+	*/
 
 });
 
@@ -60,7 +71,7 @@ keystone.set('routes', require('./routes'));
 
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
-	posts: ['posts', 'post-categories'],
+	posts: ['posts', 'post-tags', 'post-counts', 'images'],
 	users: 'users',
 });
 
@@ -69,11 +80,3 @@ keystone.set('cloudinary secure', true);
 
 // Start Keystone to connect to your database and initialise the web server
 keystone.start();
-
-
-/*
-var crawl = require('./crawl/crawl');
-crawl.crawlYahooStyle(function(err) {
-	if (err) console.log(err);
-});
-*/

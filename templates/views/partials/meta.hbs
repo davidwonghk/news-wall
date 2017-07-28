@@ -1,6 +1,5 @@
-<meta property="og:type"          content="article" />
 <meta property="og:site_name"     content="News-Wall" />
-<meta property="fb:app_id"        content="361801474173911" />
+<meta property="fb:app_id"        content="{{admin.fbAppId}}" />
 
 {{#if data.post}}
     {{#if data.meta.title}}
@@ -22,16 +21,20 @@
         <meta name="twitter:description" content="{{data.post.content.brief}}">
     {{/if}}
     <meta property="og:type" content="article">
+    <!--TODO:
+    <meta property="article:publisher" content="https://www.facebook.com/"/>
+    <meta property="article:author" content="https://www.facebook.com/"/>
+    -->
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image" content="{{data.post.image.url}}">
     <meta name="twitter:image:src" content="{{data.post.image.url}}">
-    <meta property="og:url" content="{{data.post.url}}">
-    <meta name="twitter:url" content="{{data.post.url}}">
+    <meta property="og:url" content="{{fullPostUrl data.post.slug}}">
+    <meta name="twitter:url" content="{{fullPostUrl data.post.slug}}">
     <meta property="article:published_time" content="{{data.post.publishedDate}}">
-    {{# each data.post.categories}}
+    {{# each data.post.tags}}
         <meta property="article:tag" content="{{name}}">
     {{/each}}
-    <meta name="keywords" content="{{# each data.post.categories}}{{name}}, {{/each}}">
+    <meta name="keywords" content="{{# each data.post.tags}}{{name}}, {{/each}}">
 {{else}}
     <title>News-Wall</title>
     <meta name="description" content="Provide the News you want to read">

@@ -1,48 +1,103 @@
+<link rel="stylesheet" href="/styles/post.css" >
+<link rel="stylesheet" href="/css/font-awesome.css" >
+{{#if develop}}
+  <link rel="stylesheet" href="/css/jquery-ui.min.css">
+	<script src="/js/jquery/jquery-ui.min.js"></script>
+{{else}}
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{{/if}}
+
+<script type="text/javascript">
+$( function() {
+	$('#btn_report').click(function() {
+    $.get('/report', {post: '{{data.post.slug}}'}, function(data) {
+      $('#dialog_report').html(data).dialog({
+        title: "檢舉 {{data.title}}",
+        dialogClass: "dialog-no-close",
+        modal: true,
+        buttons: [
+          {text: "確定", click: function() { $('#report_form').submit(); }},
+          {text: "取消", click: function() { $( this ).dialog( "close" ); }}
+        ]
+      });
+    })
+	});
+
+  $('#dialog_like').hide();
+  setTimeout(function() {
+    try { if ($('#dialog_report').dialog('isOpen')) return; } catch(err) {}
+    try { if ($('#dialog_like').dialog('isOpen')) return; } catch(err) {}
+
+    $('#dialog_like').dialog({
+      dialogClass: "dialog-no-title dialog-fixed",
+      closeOnEscape: false,
+      width:'auto',
+      height:'auto'
+     });
+
+    $('.overlay').height("100%").click(function() {
+      $('#dialog_like').dialog('close');
+      $(this).height("0");
+    });
+  }, 10000);
+});
+</script>
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-			<p><a href="/blog">&larr; back to the blog</a></p>
+
 			<article>
+				<header>
+					<h1>{{{data.title}}}</h1>
+
+					<div class="sub-header">
+						<span class='btn btn-small btn-link' id="btn_report">檢舉</span>
+						 &nbsp;|&nbsp;
+						{{#if data.post.from}}
+						<span class="post-from col-md">
+								<i class="ui-icon ui-icon-person"></i><span class="author">{{data.post.from.author}}</span>分享於 <a href="{{data.post.from.url}}">{{data.post.from.site}}</a>
+						</span>
+						{{/if}}
+					</div>
+				</header>
+
+				{{> share}}
 
 				<hr>
-				<header>
-					<h1>{{{data.post.title}}}</h1>
-					<h5>
-						{{{categoryList data.post.categories head="#" separator="&nbsp;&nbsp; "}}}
-					</h5>
-				</header>
-				<div class="post">
-					{{#if data.post.image}}<img src="{{{cloudinaryUrl data.post.image crop='fit' }}}" class="img-responsive" />{{/if}}
-					<div class="fb-like"
-						data-href="{{data.post.url}}"
-						data-layout="standard"
-						data-action="like"
-						data-size="large"
-						{{!--data-share="true"--}}
-						data-show-faces="true">
-					</div>
-					<hr>
-					{{{data.post.Content}}}
-				</div>
-			</article>
-			<hr>
 
-			<div>
-					<a class="btn btn-social btn-twitter" href="https://twitter.com/intent/tweet?text={{data.post.title}}&url={{data.post.url}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-						<span class="fa fa-twitter"></span> Twitter
-					</a>
-					<a class="btn btn-social btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{data.post.url}}" onclick="FB.ui({ method: 'share', display: 'popup', href: '{{data.post.url}}', }, function(response){});return false">
-						<span class="fa fa-facebook"></span> Facebook
-					</a>
-					<a class="btn btn-social btn-google" href="https://plus.google.com/share?url={{data.post.url}}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-						<span class="fa fa-google"></span> GooglePlus
-					</a>
-			</div>
+				<div class="tags">
+					{{#each data.post.tags}}
+					<a href="{{ tagUrl this }}">#{{ this }} &nbsp;&nbsp;</a>
+					{{/each}}
+				</div>
+
+				<div class="post">
+						{{{data.html}}}
+				</div>
+
+				<hr>
+        <div class="fb-comments" data-href="{{fullPostUrl data.post.slug}}" data-numposts="3"></div>
+				{{> share}}
+
+			</article>
 
 		</div>
 	</div>
 </div>
 
-<div class="overlay">
-
+<div id="dialog_report"> </div>
+<div class="overlay"> </div>
+<div id='dialog_like'>
+  <div class='text-center'>
+    <p>喜歡這篇文章？
+      <br> 按個<span class="fb_text">讚</span>及<span class="fb_text">分享</span>給朋友吧
+    <div class="fb-like" data-href="{{fullPostUrl data.post.slug}}"
+      data-layout="button "
+      $data-action="like"
+      data-size="large"
+      data-show-faces="true"
+      data-share="true"></div>
+</div>
 </div>

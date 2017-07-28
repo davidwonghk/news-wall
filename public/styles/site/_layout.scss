@@ -1,3 +1,7 @@
+#body {
+	font-family: Helvetica, "Heiti TC", "Microsoft JhengHei", "Microsoft YaHei","微软雅黑", "新細明體", "PMingLiU", sans-serif, Arial;
+}
+
 #header {
 	padding-top: 50px;
 }
@@ -6,7 +10,26 @@
 	margin-top: 30px;
 	border-top: 1px solid #eeeeee;
 	padding-top: 30px;
-	color: #777777;
+	color: #777777;	//footer text color
+
+	margin-bottom: 18px;
+
+	div {
+		display: inline-block;
+		*display: inline;
+	}
+
+	.copyright {
+		float: left;
+	}
+
+	ul {
+		float: right;
+		list-style-type: none;
+		li {
+			display: inline;
+		}
+	}
 }
 
 #cookie_accept {
@@ -17,71 +40,47 @@
 	color: #ffffff;
 }
 
-.blog {
-	margin-top: 20px;
-}
-
-.gallery-image img{
-	display: block;
-	max-width: 100%;
-	height: auto;
-}
-
 img.img-logo {
 	@extend .img-responsive;
 	height: 100%;
 }
 
+.post-from {
+	color: #bbb;
 
+	.author {
+		font-style: italic;
+		color: #888;
+	}
 
-.img-container {
-	position: relative;
-
+	a {
+		color: #888;
+	}
 }
 
-.img-container img {
-	height: 100%;
-	width: 100%;
+#all-tags {
+	@extend .navbar-inverse;
+	li a {
+		color: #9d9d9d;
+	}
+	li a:hover {
+		color: #fff;
+    background-color: transparent;
+	}
 }
 
-.img-container .img-footer {
-	position: absolute;
-	bottom: 0; left: 0;
-	padding: 0 10px;
-
-	width: 100%;
-	color: #fff;
-	background: rgba(0,0,0,0.7);
-
-	font-size: 12pt;
+#lang-bar {
+	margin-left: 20px;
+	margin-right: 20px;
+	a {
+		//padding: 	5px;
+		//margin: 	5px;
+		font-weight: bold;
+		//border:1px solid #ddd;
+		//text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	}
 }
 
-.img-container .img-footer {
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
-}
-
-.img-container:hover > .img-footer {
-	text-overflow:clip;
-	white-space: normal;
-}
-
-.post .fb-like {
-	display: inline-block;
-	margin-top: 5px;
-}
-
-.overlay {
-	/* Height & width depends on how you want to reveal the overlay (see JS below) */
-	height: 100%;
-	width: 0%;
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	left: 0;
-	top: 0;
-	background-color: rgb(100,100,100);
-	background-color: rgba(0,0,0, 0.5);
-	overflow-x: hidden; /* Disable horizontal scroll */
-	transition: 0.2s;
+#flash-messages {
+	margin-top: 18px;
 }

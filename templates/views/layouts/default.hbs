@@ -1,3 +1,6 @@
+{{#if raw}}
+	{{{body}}}
+{{else}}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,8 +11,8 @@
 		{{> meta}}
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-		<link href="/styles/site.css" rel="stylesheet">
-		<link href="/styles/font-awesome.css" rel="stylesheet">
+		<link rel="stylesheet" href="/styles/site.css" >
+
 
 		{{!-- This file provides the default styling for the KeystoneJS Content Editor
 			- only renders when user is logged in and admin--}}
@@ -22,27 +25,25 @@
 			<script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
-		{{!--
+	{{#if develop}}
+		{{!-- use local files for development --}}
 		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
-		--}}
+		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
+	{{else}}
 		<script
 			src="https://code.jquery.com/jquery-3.1.1.min.js"
 			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-			crossorigin="anonymous"></script>
-		{{!--
-			//- Customise which Bootstrap javascript files are served by including
-			//- them specifically here, instead of bootstrap-3.3.5.min.js
-		<script src="/js/bootstrap/bootstrap-3.3.5.min.js"></script>
-		--}}
+			crossorigin="anonymous">
+		</script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	{{/if}}
 
 
 	</head>
 	<body>
+		{{> facebook}}
 		<div id="header">
-			<div class="container-fluid">
-				<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-					<div class="container-fluid">
+				<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
 						<div class="navbar-header">
 							<button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
 								<span class="sr-only">Toggle navigation</span>
@@ -52,12 +53,17 @@
 						</div>
 						<div class="collapse navbar-collapse">
 							<ul class="nav navbar-nav navbar-left">
-									{{# each navLinks}}
-									<li {{#ifeq ../section key}}class="active"{{else}}{{/ifeq}}>
-										<a href="{{ href }}">{{ label }}</a>
-									</li>
-								{{/each}}
+								<li id="tags-dropdown" class="dropdown">
+									<a href = "#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">更多分類</a>
+									<ul id="all-tags" class="dropdown-menu"> </ul>
+								</li>
 							</ul>
+
+							<ul id="lang-bar" class="nav navbar-nav navbar-right">
+								<li><a href="" onclick="createCookie('locale', 'zh-tw')">繁</a></li>
+								<li><a href="" onclick="createCookie('locale', 'zh-cn')">简</a></li>
+							</ul>
+
 							{{!--
 							<ul class="nav navbar-nav navbar-right">
 								{{#if user}}
@@ -69,18 +75,22 @@
 							--}}
 
 							<ul class="nav navbar-nav navbar-right">
-								<li><a href="/signin">Sign In</a></li>
+								<li>
+									<a href="/signin" class='center'>
+										<span class="glyphicon glyphicon-log-in"></span>
+										<span>登入</span>
+									</a>
+								</li>
 							</ul>
-						</div>
+
 					</div>
-				</div>
-			</div>
+				</nav>
 		</div>
 		<div id="body">
-			<!--
+			{{!--
 				Flash messages allow you to display once-off status messages to users, e.g. form
 				validation errors, success messages, etc
-			-->
+			--}}
 			{{#if messages}}
 			<div id="flash-messages" class="container">
 				{{#if messages.info}}
@@ -134,8 +144,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="footer">
-			<div class="container">
+		<footer id="footer" class="container">
 				{{!--
 				<div id="ad_bidvertiser_banner">
 					<SCRIPT SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=756052&bid=1861224" TYPE="text/javascript"></SCRIPT>
@@ -144,8 +153,23 @@
 				{{!--
 				<p>Powered by <a href="http://keystonejs.com" target="_blank">KeystoneJS</a>.</p>
 				--}}
-			</div>
-		</div>
+
+				<div class="top">
+					<p>
+						免責聲明：本網站是以實時上傳文章的方式運作，本站對所有文章的真實性、完整性及立場等，不負任何法律責任。而一切文章內容只代表發文者個人意見，並非本網站之立場，用戶不應信賴內容，並應自行判斷內容之真實性。發文者擁有在本站張貼的文章。由於本站是受到「實時發表」運作方式所規限，故不能完全監查所有即時文章，若讀者發現有留言出現問題，請聯絡我們。本站有權刪除任何內容及拒絕任何人士發文，同時亦有不刪除文章的權力。切勿撰寫粗言穢語、毀謗、渲染色情暴力或人身攻擊的言論，敬請自律。本網站保留一切法律權利。
+					</p>
+				</div>
+				<div class="bottom">
+          <span class="copyright">
+          	©2017 {{admin.appName}}. All Rights Reserved.
+          </span>
+          <ul>
+          	<li> <a rel="nofollow" href="/policy/tos">使用條款</a> | </li>
+          	<li> <a rel="nofollow" href="/policy/privacy">隱私條款</a> | </li>
+          	<li> <a rel="nofollow" href="mailto:newswall2017@gmail.com">聯繫我們</a> </li>
+          </ul>
+				</div>
+		</footer>
 
 		<div id="cookie_directive_container" class="container" style="display: none">
 			<nav class="navbar navbar-inverse navbar-fixed-bottom">
@@ -154,7 +178,7 @@
 						<a href="#" class="btn btn-warning pull-right">Got it!</a>
 						<p class="text credit">
 						This website uses cookies to ensure you get the best experience on our website.
-						<br>By using our website, you agree to our <a href="/policy/cookies">Cookie Policy</a>.
+						<br>By using our website, you agree to our <a href="/policy/privacy">Cookie&Privacy Policy</a>.
 						</p>
 						<br>
 					</div>
@@ -163,10 +187,29 @@
 		</div>
 
 		{{{isAdminEditorJS user}}}
-
-		<script src="/js/fb.js"></script>
-		<script src="/js/consent.js"></script>
-
-
 	</body>
+
+	<script src="/js/consent.js"></script>
+	<script src="/js/util.js"></script>
+	<script src="/js/ajax-tags.js"></script>
+	<script type="javascript">
+		var language = window.navigator.userLanguage || window.navigator.language;
+		if (!readCookie('locale')) {
+			createCookie('locale', language);
+		}
+	</script>
+
+	{{#unless develop}}
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', '{{ga.trackingId}}', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	{{/unless}}
 </html>
+{{/if}}

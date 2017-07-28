@@ -7,8 +7,12 @@
  * you have more middleware you may want to group it as separate
  * modules in your project's /lib directory.
  */
-var _ = require('lodash');
+const _ = require('lodash');
+const keystone = require('keystone');
+const MobileDetect = require('mobile-detect');
+const Filter = require('./filter');
 
+var log = require('logger')(__filename);
 
 /**
 	Initialises the standard view locals
@@ -18,12 +22,21 @@ var _ = require('lodash');
 	or replace it with your own templates / logic.
 */
 exports.initLocals = function (req, res, next) {
-	res.locals.navLinks = [
-//		{ label: 'Home', key: 'home', href: '/' },
-		{ label: 'Blog', key: 'blog', href: '/blog' },
-	];
-	res.locals.user = req.user;
-	res.locals.baseUrl = process.env.BASE_URL
+	res.locals = {
+		user : req.user,
+		baseUrl : process.env.BASE_URL,
+		develop : process.env.DEVELOP,
+		mobile : new MobileDetect(req.headers['user-agent']).mobile(),
+		admin : {
+			appName: 'News-Wall',
+			fbAppId: '361801474173911',
+		  lastUpdated: '2017年07月22日',
+		},
+		ga: {
+			trackingId: 'UA-103610924-1'
+		}
+	};
+
 	next();
 };
 
@@ -54,3 +67,30 @@ exports.requireUser = function (req, res, next) {
 		next();
 	}
 };
+
+
+exports.onlyMe = function(req, res, next) {
+	if (req.headers['user-agent']!='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:54.0) Gecko/20100101 Firefox/54.0') {
+		// HTTP status 404: NotFound
+		res.status(404).send('Not found');
+	} else {
+		next();
+	}
+}
+
+exports.chinese = function(req, res, next) {
+	var filter = Filter(req);
+	var oldSend = res.send;
+
+	res.send = function(data) {
+		filter.chinese(data, function(err, txt) {
+			if (err) {
+				log.error ('chinese filter', err);
+				txt = data;
+			}
+			oldSend.apply(res, [txt]);
+		});
+	};
+
+	next();
+}
